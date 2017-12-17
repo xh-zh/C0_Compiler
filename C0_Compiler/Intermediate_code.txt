@@ -1,0 +1,255 @@
+CONST	INTSY	10	MAX_FACTOR
+CONST	INTSY	0	MIN_FACTOR
+CONST	CHARSY	95	SUBSCRIPT
+VAL	INTSY		m
+VAL	INTSY		n
+VAL	INTSY		result
+FUN	BEGIN		
+FUN	INTSY	factorial	
+PARA	INTSY	f	
++	0	f	0_t
++	0	1	1_t
+<=	0_t	1_t	2_t
+BZ	2_t	lable_0	
++	0	1	3_t
+RETURN	INTSY	3_t	
+GOTO	lable_1		
+LABLE	lable_0		
+=	f		4_t
++	0	f	5_t
+-	5_t	1	5_t
+PUSH	5_t	f	factorial
+CALL	factorial		
+LOAD_RETURN_VALUE			6_t
+*	4_t	6_t	4_t
++	0	4_t	7_t
+RETURN	INTSY	7_t	
+LABLE	lable_1		
+END	factorial		
+FUN	VOID	display_error	
+PARA	INTSY	error_code	
++	0	error_code	8_t
+-	8_t	1	9_t
+BNZ	9_t	lable_3	
+PRINT	STRING	string_1	
+PRINT	STRING	string_0	
+GOTO	lable_2		
+LABLE	lable_3		
+-	8_t	2	10_t
+BNZ	10_t	lable_4	
+PRINT	STRING	string_2	
+PRINT	STRING	string_0	
+GOTO	lable_2		
+LABLE	lable_4		
+-	8_t	3	11_t
+BNZ	11_t	lable_5	
+PRINT	STRING	string_3	
+PRINT	STRING	string_0	
+GOTO	lable_2		
+LABLE	lable_5		
+-	8_t	4	12_t
+BNZ	12_t	lable_6	
+PRINT	STRING	string_4	
+PRINT	STRING	string_0	
+GOTO	lable_2		
+LABLE	lable_6		
+-	8_t	5	13_t
+BNZ	13_t	lable_7	
+PRINT	STRING	string_5	
+PRINT	STRING	string_0	
+GOTO	lable_2		
+LABLE	lable_7		
+PRINT	STRING	string_6	
+PRINT	STRING	string_0	
+LABLE	lable_2		
+END	display_error		
+FUN	INTSY	expression_test	
+VAL	INTSY		this_is_1
++	0	1	14_t
++	0	1	15_t
++	0	1	16_t
++	0	1	17_t
++	0	1	18_t
++	0	1	19_t
++	0	1	20_t
++	0	1	21_t
++	0	1	22_t
++	0	1	23_t
++	0	1	24_t
++	0	1	25_t
++	0	1	26_t
++	0	1	27_t
++	0	1	28_t
++	0	1	29_t
++	0	1	30_t
++	0	1	31_t
++	0	1	32_t
+-	31_t	32_t	31_t
+-	30_t	31_t	30_t
+-	29_t	30_t	29_t
+-	28_t	29_t	28_t
+-	27_t	28_t	27_t
+-	26_t	27_t	26_t
+-	25_t	26_t	25_t
+-	24_t	25_t	24_t
+-	23_t	24_t	23_t
+-	22_t	23_t	22_t
+-	21_t	22_t	21_t
+-	20_t	21_t	20_t
+-	19_t	20_t	19_t
+-	18_t	19_t	18_t
+-	17_t	18_t	17_t
+-	16_t	17_t	16_t
+-	15_t	16_t	15_t
+-	14_t	15_t	14_t
+=	14_t		this_is_1
++	0	this_is_1	33_t
+RETURN	INTSY	33_t	
+END	expression_test		
+FUN	INTSY	for_factorial	
+PARA	INTSY	m	
+VAL	INTSY		f
++	0	m	34_t
+=	34_t		f
++	0	m	35_t
+-	35_t	1	35_t
+=	35_t		m
+LABLE	lable_8		
+=	f		36_t
+*	36_t	m	36_t
++	0	36_t	37_t
+=	37_t		f
+-	m	1	m
++	0	m	38_t
+BNZ	38_t	lable_8	
++	0	f	39_t
+RETURN	INTSY	39_t	
+END	for_factorial		
+FUN	VOID	main	
+VAL	INTSY		error_code
+VAL	INTSY		fact_m
+VAL	INTSY		fact_n
+VAL	INTSY		fact_m_sub_n
++	0	0	40_t
+=	40_t		error_code
+SCANF	INTSY	m	
+SCANF	INTSY	n	
+CALL	expression_test		
+LOAD_RETURN_VALUE			41_t
++	0	41_t	42_t
++	0	1	43_t
+!=	42_t	43_t	44_t
+BZ	44_t	lable_9	
+PRINT	STRING	string_7	
+PRINT	STRING	string_0	
+GOTO	lable_10		
+LABLE	lable_9		
+LABLE	lable_10		
++	0	m	45_t
++	0	MAX_FACTOR	46_t
+>	45_t	46_t	47_t
+BZ	47_t	lable_11	
++	0	1	48_t
+=	48_t		error_code
+GOTO	lable_12		
+LABLE	lable_11		
+LABLE	lable_12		
++	0	m	49_t
++	0	MIN_FACTOR	50_t
+<	49_t	50_t	51_t
+BZ	51_t	lable_13	
++	0	2	52_t
+=	52_t		error_code
+GOTO	lable_14		
+LABLE	lable_13		
+LABLE	lable_14		
++	0	n	53_t
++	0	MAX_FACTOR	54_t
+>	53_t	54_t	55_t
+BZ	55_t	lable_15	
++	0	3	56_t
+=	56_t		error_code
+GOTO	lable_16		
+LABLE	lable_15		
+LABLE	lable_16		
++	0	n	57_t
++	0	MIN_FACTOR	58_t
+<	57_t	58_t	59_t
+BZ	59_t	lable_17	
++	0	4	60_t
+=	60_t		error_code
+GOTO	lable_18		
+LABLE	lable_17		
+LABLE	lable_18		
++	0	m	61_t
+-	61_t	n	61_t
++	0	0	62_t
+<	61_t	62_t	63_t
+BZ	63_t	lable_19	
++	0	5	64_t
+=	64_t		error_code
+GOTO	lable_20		
+LABLE	lable_19		
+LABLE	lable_20		
++	0	error_code	65_t
+PUSH	65_t	error_code	display_error
+CALL	display_error		
+LOAD_RETURN_VALUE			66_t
++	0	error_code	67_t
++	0	0	68_t
+==	67_t	68_t	69_t
+BZ	69_t	lable_21	
++	0	m	70_t
+PUSH	70_t	f	factorial
+CALL	factorial		
+LOAD_RETURN_VALUE			71_t
++	0	71_t	72_t
+=	72_t		fact_m
++	0	n	73_t
+PUSH	73_t	f	factorial
+CALL	factorial		
+LOAD_RETURN_VALUE			74_t
++	0	74_t	75_t
+=	75_t		fact_n
++	0	m	76_t
+-	76_t	n	76_t
+PUSH	76_t	f	factorial
+CALL	factorial		
+LOAD_RETURN_VALUE			77_t
++	0	77_t	78_t
+=	78_t		fact_m_sub_n
+PRINT	STRING	string_8	
++	0	fact_m	79_t
+PRINT	INTSY	79_t	
+PRINT	STRING	string_0	
+PRINT	STRING	string_9	
++	0	m	80_t
+PUSH	80_t	m	for_factorial
+CALL	for_factorial		
+LOAD_RETURN_VALUE			81_t
++	0	81_t	82_t
+PRINT	INTSY	82_t	
+PRINT	STRING	string_0	
+PRINT	STRING	string_10	
++	0	fact_n	83_t
+PRINT	INTSY	83_t	
+PRINT	STRING	string_0	
+PRINT	STRING	string_11	
++	0	n	84_t
+PUSH	84_t	m	for_factorial
+CALL	for_factorial		
+LOAD_RETURN_VALUE			85_t
++	0	85_t	86_t
+PRINT	INTSY	86_t	
+PRINT	STRING	string_0	
+PRINT	STRING	string_12	
+=	fact_m		87_t
+/	87_t	fact_n	87_t
+/	87_t	fact_m_sub_n	87_t
++	0	87_t	88_t
+PRINT	INTSY	88_t	
+PRINT	STRING	string_0	
+GOTO	lable_22		
+LABLE	lable_21		
+LABLE	lable_22		
+TERMINATE			

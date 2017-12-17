@@ -1,0 +1,14 @@
+const char ch = 'a';
+const char ch1 = 'b', ch2 = 'c';
+const int n = 1;
+const int n1 = 2, n2 = 3;
+char ch3;
+char ch4, ch5;
+int n3;
+int n4,n5;
+void fun1(){}
+void fun2(int a){}
+int fun3(){}
+int fun4(int a){}
+void main(){
+printf("d");}
