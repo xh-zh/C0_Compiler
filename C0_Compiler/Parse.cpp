@@ -298,6 +298,9 @@ int Parse::proc_var_defi() {
 					return 1;
 				}
 				const int dim = Lexer::num;
+				if (dim <= 0) {
+					Error::addError(Lexer::line, ERROR_ARRAY_DIM_0);
+				}
 				Lexer::getToken();
 				if (Lexer::symbol != kinds::RBRACSY) {
 					//Ã»ÓÐÓÒ·½À¨ºÅ

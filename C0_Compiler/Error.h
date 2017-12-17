@@ -21,16 +21,12 @@ const int MISS_LBRACSY = 16;		//缺失左方括号
 const int MISS_RBRACSY = 17;		//缺失右方括号
 const int UNDEFINED_STAT = 18;		//未定义语句
 const int ERROR_DIM_FUN = 19;		//函数参数不对
-const int ERROR_DIM_ARRAY = 20;		//数组越界
 const int MISS_PLUS_MINU = 21;		//步长部分缺少加减号
 const int ERROR_TYPE_IN_BC = 22;	//步长不是正整数
 const int MISS_COLONSY = 23;		//缺少冒号（switch-case）
 const int ERROR_TYPE_IN_CASE = 24;	//case中类型错误
 const int ERROR_TYPE_IN_CONST = 25;	//常量类型错误
 const int MISS_DEFAULT = 26;		//缺失default
-const int ERROR_USE_ARRAY = 27;		//错误使用数组（标识符不是数组）
-const int ERROR_TYP_ARRAY_INDEX = 28;//数组索引类型错误（只能用INTSY、CHARSY）
-const int ARRAY_OUT_OF_BOUND = 29;	//数组越界
 const int ERROR_IDSY = 30;			//标识符错误（期望标识符，读到的非标识符)
 const int ERROR_SCANF = 31;			//读的不是变量
 const int ERROR_PRINT = 32;			//打印的不是变量（可以是数组）
@@ -39,6 +35,11 @@ const int CAL_FUN_UNMATCHING = 34;	//函数调用参数类型错误
 const int ERROR_COND_TYPE = 35;		//条件类型错误
 const int ERROR_CAL_MAIN = 36;		//调用main函数
 const int ERROR_RET_TYPE = 37;		//返回类型错误
+const int ERROR_USE_ARRAY = 27;		//错误使用数组（标识符不是数组）
+const int ERROR_TYP_ARRAY_INDEX = 28;//数组索引类型错误（只能用INTSY、CHARSY）
+const int ERROR_DIM_ARRAY = 20;		//数组越界
+const int ARRAY_OUT_OF_BOUND = 29;	//数组越界
+const int ERROR_ARRAY_DIM_0 = 38;	//数组维数非正整数错误
 
 struct errorEntity
 {

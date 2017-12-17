@@ -9,7 +9,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (debug_in_main) {
 		int b;
 		cin >> b;
-		Lexer::init(b==1?"./in.txt":"./in2.txt");
+		Lexer::init(b==1?"../data/in.txt":"../data/in2.txt");
 	} else {
 		char ipath[100];
 		cin >> ipath;
@@ -17,10 +17,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	Lexer::getToken();
 	Parse::proc_program();
-	Table::print("./table.txt");
-	StringTable::print("./StringTable.txt");
-	Intermediate_code::print("./Intermediate_code.txt");
-	Translator::init("./mips.asm");
+	Table::print("../data/table.txt");
+	StringTable::print("../data/StringTable.txt");
+	Intermediate_code::print("../data/Intermediate_code.txt");
+	Translator::init("../data/mips.asm");
 	Translator::translate();
 	cout << "Done!" << endl;
 

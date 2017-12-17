@@ -6,11 +6,11 @@ int Table::addr = 0;
 string Table::cur_parent = "top";
 int Table::cur_level_pointer = 0;
 
-Table::Table(void)
+Table::Table()
 {
 }
 
-Table::~Table(void)
+Table::~Table()
 {
 }
 
