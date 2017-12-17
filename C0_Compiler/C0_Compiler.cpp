@@ -1,7 +1,7 @@
 // Compiler.cpp : 定义控制台应用程序的入口点。
 //
 #include "stdafx.h"
-bool debug_in_main = true;
+bool debug_in_main = false;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
