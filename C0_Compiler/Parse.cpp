@@ -525,7 +525,7 @@ int Parse::proc_para(int &dim) {
 			}
 		}
 		const string name = Lexer::token;
-		if (0 != Table::para_enter(name, type)) {//填符号表
+		if (0 != Table::para_enter(name, type, d)) {//填符号表
 			//本层有同名标识符，报错
 			Error::addError(Lexer::line, ANOTHER_DEF);
 		}

@@ -1,13 +1,1 @@
 string_0	\n
-string_1	m is too big. 
-string_2	m is too small
-string_3	n is too big. 
-string_4	n is too small. 
-string_5	n should be no greater than m.
-string_6	no errors seem found. 
-string_7	Expression test failed! 
-string_8	m! = 
-string_9	repeat m! : 
-string_10	n! = 
-string_11	repeat n! : 
-string_12	C(m, n) = 

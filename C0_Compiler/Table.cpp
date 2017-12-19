@@ -55,12 +55,12 @@ int Table::array_enter(const string name, const enum kinds type, const int dim) 
 	return 0;
 }
 
-int Table::para_enter(const string name, const kinds type) {
+int Table::para_enter(const string name, const kinds type, const int para_dim_cut) {
 	if (in_this_level(name)) {//当前层有同名标识符
 		return 1;
 	}
-	table.push_back(TableEntity(name, addr, _CLASS::PARA_CLASS, type, 0, 0, cur_parent));
-	addr += 4;
+	table.push_back(TableEntity(name, addr, _CLASS::PARA_CLASS, type, 0, para_dim_cut, cur_parent));
+	if (para_dim_cut >= 4) addr += 4;//少于四个参数就不分配栈空间了，从0开始计数
 	return 0;
 }
 
@@ -70,7 +70,7 @@ int Table::func_enter(const string name, const kinds type) {
 	}
 	const enum _CLASS kind = type == kinds::VOID?_CLASS::FUN_VOID_CLASS:_CLASS::FUN_IOC_CLASS;
 	table.push_back(TableEntity(name, 0, kind, type, 0, 0, cur_parent));//value(size)、dim暂时设为0
-	addr = 4;//0保存$ra
+	addr = 4 + 4 * 8;//0保存$ra，其余8个word保存$s0-$s7
 	cur_parent = name;//函数声明后，马上改父函数名，声明结束时记得要改回去
 	cur_level_pointer = table.size();//level_pointer改为当前函数u所在位置++，声明结束时要改回去
 	return 0;
@@ -235,15 +235,26 @@ int Table::get_fun_size(const string fun_name) {
 	return get_value("top", fun_name);
 }
 
+string Table::get_parent(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			return fun_name;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name)
+			return "top";
+	}
+	return "";
+}
+
 vector<TableEntity> Table::get_para(const string name) {
 	vector<TableEntity> para;
 	for (int i=0; i < table.size(); i++) {
 		if (table[i].name == name && (table[i]._class == FUN_IOC_CLASS || table[i]._class == FUN_VOID_CLASS)) {
-			for (int j=i+1;j <table.size();j++)
-				if (table[j]._class == PARA_CLASS) {
-					para.push_back(TableEntity(table[j]));
-				} else 
-					return para;
+			for (int j=i+1; j<=i+table[i].dim; j++)
+				para.push_back(TableEntity(table[j]));
 		}
 	}
 	return para;

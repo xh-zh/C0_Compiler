@@ -16,7 +16,7 @@ public:
 	static int func_enter(string name, enum kinds type);			//函数登录
 	static int func_fill_back_value(string name);					//栈大小并恢复现场
 	static int func_fill_back_dim(string name, int dim);			//函数回填参数个数
-	static int para_enter(string name, enum kinds type);			//参数登录
+	static int para_enter(string name, enum kinds type, int para_dim_cut);			//参数登录
 
 	static bool in_this_level(string name);				//当前层有同名标识符， 只能在登录时使用， 不允许与本函数名同名
 	static bool contain_func(string name);				//声明过名为name的函数
@@ -34,6 +34,7 @@ public:
 	static int get_addr(string fun_name, string name);			//查询当前函数的变量的地址（生成代码，初始化变量时用到）
 	static bool is_global(string fun_name, string name);		//是否是全局变量
 	static int get_fun_size(string fun_name);					//get函数栈大小
+	static string get_parent(string fun_name, string name);
 
 	static vector<TableEntity> get_para(string name);			//得到函数参数
 
