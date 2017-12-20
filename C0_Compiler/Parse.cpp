@@ -824,7 +824,7 @@ int Parse::proc_fact(string &result, kinds &type) {
 		break;
 	case kinds::CHARSY://×Ö·û
 		//result = new_val(CHARSY, Lexer::num);
-		result = int2str(Lexer::num);
+		result = "$"+int2str(Lexer::num);
 		type = kinds::CHARSY;
 		Lexer::getToken();
 		break;

@@ -286,8 +286,8 @@ void Translator::translate() {
 void Translator::load_to(const string name, const string register_name) {
 	if (isnum(name)) {//Êý×Ö
 		out << "li	" << register_name << ", " << name << endl;
-	} else if ((!Table::contain(cur_fun_name, name)) && name.length() == 1) {//×Ö·û
-		out << "li	" << register_name << ", '" << name[0] << "'" << endl;
+	} else if (name[0] == '$') {//×Ö·û
+		out << "li	" << register_name << ", '" << name[1] << "'" << endl;
 	} else if (Table::get_CLASS(cur_fun_name, name) == _CLASS::PARA_CLASS &&
 		Table::get_dim(cur_fun_name, name) < 4) {
 		const int para_cnt = Table::get_dim(cur_fun_name, name);
@@ -305,7 +305,7 @@ void Translator::load_to(const string name, const string register_name) {
 
 void Translator::store_to(const string name, const string register_name) {
 	if (isnum(name)) {} //Êý×Ö
-	else if ((!Table::contain(cur_fun_name, name)) && name.length() == 1) {} //×Ö·û
+	else if (name[0] == '$') {} //×Ö·û
 	else if (Table::is_global(cur_fun_name, name)) {
 		out << "sw	" << register_name << ", " << name << endl;
 	} else {
