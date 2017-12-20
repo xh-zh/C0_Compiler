@@ -13,5 +13,6 @@ public:
 	DAG_node();
 	~DAG_node();
 	void add_val(string val);
+	void del_val(const string val);
 };
 

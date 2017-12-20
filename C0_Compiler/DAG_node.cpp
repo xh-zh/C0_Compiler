@@ -2,7 +2,7 @@
 #include "DAG_node.h"
 
 
-DAG_node::DAG_node(string op, DAG_node* l, DAG_node* r, const string val, const int cnt) {
+DAG_node::DAG_node(const string op, DAG_node* l, DAG_node* r, const string val, const int cnt) {
 	this->op = op;
 	this->l = l;
 	this->r = r;
@@ -29,4 +29,12 @@ DAG_node::~DAG_node()
 
 void DAG_node::add_val(const string val) {
 	vals.push_back(val);
+}
+
+void DAG_node::del_val(const string val) {
+	for (vector<string>::iterator iter = vals.begin(); iter!=vals.end(); ++iter)
+		if (*iter == val) {
+			vals.erase(iter);
+			break;
+		}
 }
