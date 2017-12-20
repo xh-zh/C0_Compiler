@@ -32,6 +32,7 @@ void DAG_node::add_val(const string val) {
 }
 
 void DAG_node::del_val(const string val) {
+	if (vals.size() <= 1) return;//防止生成代码时没有标识符用
 	for (vector<string>::iterator iter = vals.begin(); iter!=vals.end(); ++iter)
 		if (*iter == val) {
 			vals.erase(iter);
