@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "Intermediate_code.h"
-#include "map"
 #include "DAG_node.h"
 
 vector<Quaternion> Intermediate_code::code;
@@ -68,7 +67,8 @@ void Intermediate_code::divd_blk() {
 		if (code[i].op == "+" || code[i].op == "-" || code[i].op == "*" ||
 			code[i].op == "/" || code[i].op == "<" || code[i].op == "<=" ||
 			code[i].op == ">" || code[i].op == ">=" || code[i].op == "==" ||
-			code[i].op == "=" || code[i].op == "!=" || code[i].op == "PRINT") {
+			code[i].op == "=" || code[i].op == "!=" || code[i].op == "PRINT" ||
+			code[i].op == "=[]" || code[i].op == "[]=") {
 			const int begin = i;
 			do {
 				end = i++;
@@ -76,7 +76,8 @@ void Intermediate_code::divd_blk() {
 			while (code[i].op == "+" || code[i].op == "-" || code[i].op == "*" ||
 				code[i].op == "/" || code[i].op == "<" || code[i].op == "<=" ||
 				code[i].op == ">" || code[i].op == ">=" || code[i].op == "==" ||
-				code[i].op == "=" || code[i].op == "!=" || code[i].op == "PRINT");
+				code[i].op == "=" || code[i].op == "!=" || code[i].op == "PRINT" ||
+				code[i].op == "=[]" || code[i].op == "[]=");
 			basic_block bb;
 			bb.begin = begin;
 			bb.end = end;
@@ -90,14 +91,18 @@ void Intermediate_code::generate_DAG(const int begin, const int end) {
 	map<string, int> node_list;//由变量名找到节点号
 	vector<DAG_node> nodes;//由节点号找到节点
 	for (int i=begin; i<=end; i++) {
+		//左右节点都在节点表里找，符号节点在DAG图中找
 		const Quaternion q = code[i];
-		int lnode_cnt, rnode_cnt;
-		DAG_node* lnode = nullptr;
-		DAG_node* rnode = nullptr;
+		DAG_node* lnode;
+		DAG_node* rnode;
 		//左节点
 		if (node_list.find(q.para1) == node_list.end()) {//左节点不在节点表里，即不在DAG图中
-			lnode_cnt = node_cnt++;
-			lnode = new DAG_node(q.para1 + "0", nullptr, nullptr, "", lnode_cnt);
+			//这里应该先检查一下是否是整数、字符，整数、字符的话不需要加0
+			const int lnode_cnt = node_cnt++;
+			if (Translator::isnum(q.para1) || q.para1[0] == '$')
+				lnode = new DAG_node(q.para1, nullptr, nullptr, "", lnode_cnt);
+			else
+				lnode = new DAG_node(q.para1 + "0", nullptr, nullptr, "", lnode_cnt);
 			node_list[q.para1] = lnode_cnt;//节点表中是不用加0的
 			nodes.push_back(*lnode);
 		} else {//左节点在节点表里，即在DAG图中
@@ -105,7 +110,6 @@ void Intermediate_code::generate_DAG(const int begin, const int end) {
 		}
 		//判断指令是否是单目运算符
 		if (q.op == "=" || q.op == "PRINT") {
-			bool exist = false;
 			const int index = in_DAG(nodes, q.op, lnode, nullptr);
 			if (-1 != index) {//存在这样的节点
 				node_list[q.result] = index;
@@ -118,8 +122,11 @@ void Intermediate_code::generate_DAG(const int begin, const int end) {
 		}
 		//右节点
 		if (node_list.find(q.para2) == node_list.end()) {//右部不在节点表里，即不在DAG图中
-			rnode_cnt = node_cnt++;
-			rnode = new DAG_node(q.para2 + "0", nullptr, nullptr, "", rnode_cnt);
+			const int rnode_cnt = node_cnt++;
+			if (Translator::isnum(q.para2) || q.para2[0] == '$')
+				rnode = new DAG_node(q.para2, nullptr, nullptr, "", rnode_cnt);
+			else
+				rnode = new DAG_node(q.para2 + "0", nullptr, nullptr, "", rnode_cnt);
 			node_list[q.para2] = rnode_cnt;//节点表中是不用加0的
 			nodes.push_back(*rnode);
 		} else {//等式右部在节点表里，即在DAG图中
@@ -145,4 +152,7 @@ int Intermediate_code::in_DAG(vector<DAG_node> nodes, const string op, DAG_node*
 	return -1;
 }
 
+void Intermediate_code::generate(map<string, int> node_list, vector<DAG_node> nodes, int node_cnt) {
+
+}
 
