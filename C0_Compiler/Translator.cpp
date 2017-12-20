@@ -114,14 +114,14 @@ void Translator::proc_quat(const Quaternion q) {
 			load_to(q.para1, IDSY_reg);//直接把value load到IDSY对应的寄存器里
 		}
 
-	} else if (q.op == "[]=") {//[]=, array_name, index_name, expr_name
-		const int array_addr = Table::get_addr(cur_fun_name, q.para1);
-		const string index_reg = reg_alloc_and_load(q.para2, "");
-		const string expr_reg = reg_alloc_and_load(q.result, q.para2);
+	} else if (q.op == "[]=") {//[]=, index_name, expr_name, array_name
+		const int array_addr = Table::get_addr(cur_fun_name, q.result);
+		const string index_reg = reg_alloc_and_load(q.para1, "");
+		const string expr_reg = reg_alloc_and_load(q.para2, q.para1);
 		//load_to(q.para2, index_reg);//index
 		//load_to(q.result, expr_reg);
-		if (Table::is_global(cur_fun_name, q.para1)) {//全局数组
-			out << "la	$t0, " << q.para1 << endl;//base绝对地址
+		if (Table::is_global(cur_fun_name, q.result)) {//全局数组
+			out << "la	$t0, " << q.result << endl;//base绝对地址
 		} else {
 			out << "li	$t0, " << int2str(array_addr) << endl;//base相对于栈指针的地址
 			out << "add	$t0, $t0, $sp" << endl;//现在是绝对地址了

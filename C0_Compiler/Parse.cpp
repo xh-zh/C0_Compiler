@@ -1292,7 +1292,7 @@ int Parse::proc_assi_stat() {
 		string expr_name;
 		enum kinds expr_type;
 		proc_expr(expr_name, expr_type);//表达式
-		Intermediate_code::push_back(Quaternion("[]=", ID_name, index_name, expr_name));//给数组元素赋值
+		Intermediate_code::push_back(Quaternion("[]=", index_name, expr_name, ID_name));//给数组元素赋值
 		if(print_grammar_item) cout <<"赋值语句"<<endl;
 		return 0;		
 	} else {
