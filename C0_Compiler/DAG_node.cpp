@@ -9,8 +9,15 @@ DAG_node::DAG_node(string op, DAG_node* l, DAG_node* r, const string val, const 
 	this->cnt = cnt;
 	if (val != "") add_val(val);
 	if (l == nullptr) child_cnt = 0;
-	else if (r == nullptr) child_cnt = 1;
-	else child_cnt = 2;
+	else if (r == nullptr) {
+		child_cnt = 1;
+		l->parents.push_back(this);
+	}
+	else {
+		child_cnt = 2;
+		l->parents.push_back(this);
+		r->parents.push_back(this);
+	}
 }
 
 DAG_node::DAG_node() {
