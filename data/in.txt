@@ -1,7 +1,61 @@
+const int con_i_1=1;
+const int con_i_2=1, con_i_3=2;
+const char con_c_1='+';
+const char con_c_2='-', con_c_3='*';
+int i_1;
+int i_2, i_3;
+int i_4[10];
+char c_1;
+char c_2, c_3;
+char c_4[10];
+
+int fun0(int a){
+	return (a);
+}
+int fun1(int a, int b){
+	int fun;
+	fun = a + b;
+	return (fun);
+}
+char fun2(){
+	return ('A');
+}
+void fun3(int a){
+	return;
+}
+void fun4(int a, char b){
+	printf(a);
+	printf(b);
+}
+void fun5(){
+	printf("Funtion_5");
+}
+int fun6(int n){
+	if (n == 1)
+		return (1);
+	else
+		return (n * fun6(n-1));
+}
 void main(){
-	int m_i_1, m_i_2;
-	for(m_i_1=0; m_i_1<5; m_i_1=m_i_1+1)
-		for(m_i_2=0; m_i_2<5; m_i_2=m_i_2+1){
-			printf(m_i_1+m_i_2);
-		}
+	const int m_con_i_1=1;
+	const int M_con_i_1=100;
+	const int m_con_i_2=1, m_con_i_3=2;
+	const char m_con_c_1='+';
+	const char m_con_c_2='-', m_con_c_3='*';
+	int m_i_1;
+	int M_i_1;
+	int m_i_2, m_i_3;
+	int m_i_4[10];
+	char m_c_1;
+	char m_c_2, m_c_3;
+	char m_c_4[300];
+	m_i_1=1;
+	M_i_1=100;
+
+	for(m_i_1='a'; m_i_1<'a'+10; m_i_1=m_i_1+1){
+		m_c_4[m_i_1] = m_i_1;
+		printf(m_c_4[m_i_1]);
+	}
+	
+	printf("DONE!");
 }

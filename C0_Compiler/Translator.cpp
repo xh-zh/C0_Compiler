@@ -11,6 +11,7 @@ string Translator::cur_fun_name = "top";
 string Translator::regs[8];
 int Translator::para_dim_cnt = 0;
 int Translator::counter = 0;
+vector<vector<string>> Translator::saveRegs;
 
 Translator::Translator()
 {
@@ -71,24 +72,42 @@ void Translator::proc_quat(const Quaternion q) {
 			//相当于初始化成0
 		}
 
+
 	} else if (q.op=="+" || q.op=="-" || q.op=="*" || q.op=="/" ||
 		q.op=="<" || q.op=="<=" || q.op==">" || q.op==">=" || 
 		q.op=="==" || q.op=="!=") {//op	para1	para2	result
 		//$t0, $t1中存操作数, $t2中存结果
-		string para1_reg, para2_reg;
-		if (isnum(q.para1) && q.para1 == "0") para1_reg = "$0";
-		else para1_reg = reg_alloc_and_load(q.para1, "");
-		if (isnum(q.para2) && q.para2 == "0") para2_reg = "$0";
-		else para2_reg = reg_alloc_and_load(q.para2, q.para1);
-		const string result_reg = reg_alloc(q.result, q.para1, q.para2);
+		string para1_reg, para2_reg, result_reg;
+		if ((Table::contain(cur_fun_name, q.para1) && 
+			-1 != Table::get_dim(cur_fun_name, q.para1)) ||
+			isnum(q.para1) || q.para1[0] == '$'){//注册在符号表中的非临时变量
+			para1_reg = "$t0";
+			load_to(q.para1, para1_reg);
+		} else 
+			para1_reg = reg_alloc_and_load(q.para1, "");
+
+		if ((Table::contain(cur_fun_name, q.para2) &&
+			-1 != Table::get_dim(cur_fun_name, q.para2)) ||
+			isnum(q.para2) || q.para2[0] == '$') {//注册在符号表的非临时变量
+			para2_reg = "$t1";
+			load_to(q.para2, para2_reg);
+		} else 
+			para2_reg = reg_alloc_and_load(q.para2, q.para1);
+
+		if (Table::contain(cur_fun_name, q.result) &&
+			-1 != Table::get_dim(cur_fun_name, q.result)) {
+			result_reg = "$t2";
+		} else
+			result_reg = reg_alloc(q.result, q.para1, q.para2);
+		//cout << q.para1 << "\t" << para1_reg << endl;
+		//cout << q.para2 << "\t" << para2_reg << endl;
 		if (q.op == "+") {
 			out << "add	" << result_reg << ", " << para1_reg << ", " << para2_reg << endl;
 		} else if (q.op == "-") {
 			out << "sub	" << result_reg << ", " << para1_reg << ", " << para2_reg << endl;
 		} else if (q.op == "*") {
-			out << "mult	" << para1_reg << ", " << para2_reg << endl;
-			out << "mflo	" << result_reg << endl;
-		} else if (q.op == "/") {
+			out << "mul	" << result_reg << ", " << para1_reg << ", " << para2_reg << endl;
+		} else if (q.op == "/") {//之所以不直接用div是因为div最终转化成4行mips代码
 			out << "div	" << para1_reg << ", " << para2_reg << endl;
 			out << "mflo	" << result_reg << endl;
 		} else if (q.op == "<") {
@@ -105,19 +124,51 @@ void Translator::proc_quat(const Quaternion q) {
 				out << "xori	" << result_reg << ", 1" << endl;
 			}
 		}
+		if (Table::contain(cur_fun_name, q.result) &&
+			-1 == Table::get_dim(cur_fun_name, q.result)) {
+			store_to(q.result, result_reg);
+		}
+
 
 	} else if (q.op == "=") {//=	value	blank	IDSY_name
-		if (in_reg(q.para1)) {
-			out << "move	" << reg_alloc(q.result, "") << ", " << reg_alloc(q.para1, q.result) << endl;
-		} else {
-			const string IDSY_reg = reg_alloc(q.result, "");
-			load_to(q.para1, IDSY_reg);//直接把value load到IDSY对应的寄存器里
+		if (Table::contain(cur_fun_name, q.result) && 
+			-1 != Table::get_dim(cur_fun_name, q.result)) {//被赋值的是一个非临时变量
+			if ((Table::contain(cur_fun_name, q.para1) &&
+				-1 != Table::get_dim(cur_fun_name, q.para1)) ||
+				isnum(q.para1) || q.para1[0] == '$') {//赋值的是一个非临时变量
+				load_to(q.para1, "$t0");
+				store_to(q.result, "$t0");
+			} else if (in_reg(q.para1)) {//在寄存器池的临时变量
+				store_to(q.result, reg_alloc(q.para1, ""));
+			} else {//不在寄存器池的临时变量
+				store_to(q.result, reg_alloc_and_load(q.para1, ""));
+			}
+		} else {//被赋值量是一个临时变量
+			const string result_reg = reg_alloc(q.result, "");
+			if (in_reg(q.para1)) {
+				out << "move	" << reg_alloc(q.result, q.para1) << ", " << result_reg << endl;
+			} else {
+				load_to(q.para1, result_reg);//直接把value load到IDSY对应的寄存器里
+			}
 		}
 
 	} else if (q.op == "[]=") {//[]=, index_name, expr_name, array_name
 		const int array_addr = Table::get_addr(cur_fun_name, q.result);
-		const string index_reg = reg_alloc_and_load(q.para1, "");
-		const string expr_reg = reg_alloc_and_load(q.para2, q.para1);
+		string index_reg, expr_reg;
+		if ((Table::contain(cur_fun_name, q.para1) &&
+			-1 != Table::get_dim(cur_fun_name, q.para1)) ||
+			isnum(q.para1) || q.para1[0] == '$') {
+			index_reg = "$t3";
+			load_to(q.para1, index_reg);
+		} else
+			index_reg = reg_alloc_and_load(q.para1, "");
+		if ((Table::contain(cur_fun_name, q.para2) &&
+			-1 != Table::get_dim(cur_fun_name, q.para2)) ||
+			isnum(q.para2) || q.para2[0] == '$'){
+			expr_reg = "$t4";
+			load_to(q.para2, expr_reg);
+		} else
+			expr_reg = reg_alloc_and_load(q.para2, q.para1);
 		//load_to(q.para2, index_reg);//index
 		//load_to(q.result, expr_reg);
 		if (Table::is_global(cur_fun_name, q.result)) {//全局数组
@@ -127,7 +178,7 @@ void Translator::proc_quat(const Quaternion q) {
 			out << "add	$t0, $t0, $sp" << endl;//现在是绝对地址了
 		}
 		//$t0:	数组首绝对地址
-		out << "mul	$t1, " << index_reg << ", 4" << endl;//offest
+		out << "sll	$t1, " << index_reg << ", 2" << endl;//offest
 		//$t1:	该元素相对于首地址的偏移
 		out << "add	$t0, $t0, $t1" << endl;
 		//$t0:	该元素绝对地址
@@ -135,8 +186,15 @@ void Translator::proc_quat(const Quaternion q) {
 
 	} else if (q.op == "=[]") {//=[], array_name, index_name, result
 		const int array_addr = Table::get_addr(cur_fun_name, q.para1);
-		const string index_reg = reg_alloc_and_load(q.para2, "");
-		const string result_reg = reg_alloc(q.result, q.para2);
+		string index_reg;
+		if ((Table::contain(cur_fun_name, q.para2) &&
+			-1 != Table::get_dim(cur_fun_name, q.para2)) ||
+			isnum(q.para2) || q.para2[0] == '$') {
+			index_reg = "$t3";
+			load_to(q.para1, index_reg);
+		} else
+			index_reg = reg_alloc_and_load(q.para2, "");
+			
 		//load_to(q.para2, index_reg);//index
 		if (Table::is_global(cur_fun_name, q.para1)) {
 			out << "la	$t0, " << q.para1 << endl;//base绝对地址
@@ -145,20 +203,36 @@ void Translator::proc_quat(const Quaternion q) {
 			out << "add	$t0, $t0 ,$sp" << endl;//绝对地址
 		}
 		//$t0:	数组首绝对地址
-		out << "mul	$t1, " << index_reg << ", 4" << endl;//offest
+		out << "sll	$t1, " << index_reg << ", 2" << endl;//offest
 		//$t1:	该元素相对于首地址的偏移
 		out << "add	$t0, $t0, $t1" << endl;
 		//$t0:	该元素绝对地址
-		out << "lw	" << result_reg << ", 0($t0)" << endl;
+		if (Table::contain(cur_fun_name, q.result) &&
+			-1 != Table::get_dim(cur_fun_name, q.result)) {
+			out << "lw	$t0, 0($t0)" << endl;
+			store_to(q.result, "$t0");
+		} else {
+			const string result_reg = reg_alloc(q.result, q.para2);	
+			out << "lw	" << result_reg << ", 0($t0)" << endl;
+		}
 
 	} else if (q.op == "BZ") {//BZ	条件		LABLE，不成立跳转
+		//条件后面的寄存器在优化之前都是临时变量寄存器
 		const string cond_reg = reg_alloc_and_load(q.para1, "");
 		//load_to(q.para1, cond_reg);
+		const string lable = Parse::new_lable();
+		out << "bne " << cond_reg << ", $0, " << lable << endl;
+		save_in_jb();
+		out << lable << ":" << endl;
 		out << "beq	" << cond_reg << ", $0, " << q.para2 << endl;
 
 	} else if (q.op == "BNZ") {//BNZ	条件		LABLE，成立跳转
 		const string cond_reg = reg_alloc_and_load(q.para1, "");
 		//load_to(q.para1, cond_reg);
+		const string lable = Parse::new_lable();
+		out << "beq " << cond_reg << ", $0, " << lable << endl;
+		save_in_jb();
+		out << lable << ":" << endl;
 		out << "bne	" << cond_reg << ", $0, " << q.para2 << endl;
 
 	} else if (q.op == "GOTO") {//GOTO	LABLE
@@ -214,7 +288,7 @@ void Translator::proc_quat(const Quaternion q) {
 			} else 
 				load_to(q.para2, "$v0");//返回值
 		}
-		save_in_return();
+		save_in_return(q.op);
 		const int size = Table::get_fun_size(cur_fun_name);
 		out << "lw	$ra, 0($sp)" << endl;
 		out << "addi	$sp, $sp, " << int2str(size) << endl;
@@ -229,7 +303,7 @@ void Translator::proc_quat(const Quaternion q) {
 			} else 
 				load_to(q.para2, "$v0");//返回值
 		}
-		save_in_return();
+		save_in_return(q.op);
 		const int size = Table::get_fun_size(cur_fun_name);
 		out << "lw	$ra, 0($sp)" << endl;
 		out << "addi	$sp, $sp, " << int2str(size) << endl;
@@ -274,6 +348,9 @@ void Translator::proc_quat(const Quaternion q) {
 		out << "li	$v0, 10" << endl;
 		out << "syscall" << endl;
 	}
+	if (debug)
+		for (int i=0; i<8; i++)
+			out << "#Reg: $" << int2str(i) << "\t" << regs[i] << endl;
 	if (debug) out << endl;
 }
 
@@ -287,7 +364,7 @@ void Translator::load_to(const string name, const string register_name) {
 	if (isnum(name)) {//数字
 		out << "li	" << register_name << ", " << name << endl;
 	} else if (name[0] == '$') {//字符
-		out << "li	" << register_name << ", '" << name[1] << "'" << endl;
+		out << "li	" << register_name << ", " << name.substr(1) << endl;
 	} else if (Table::get_CLASS(cur_fun_name, name) == _CLASS::PARA_CLASS &&
 		Table::get_dim(cur_fun_name, name) < 4) {
 		const int para_cnt = Table::get_dim(cur_fun_name, name);
@@ -314,18 +391,30 @@ void Translator::store_to(const string name, const string register_name) {
 	}
 }
 
+//string Translator::reg_alloc(const string name, const string ban_name_1, const string ban_name_2) {
+//	for (int i=0; i<8; i++)//变量已经申请了寄存器
+//		if (regs[i] == name)
+//			return "$s" + int2str(i);
+//	//变量没有申请过寄存器，这时还要进行写存
+//	if (isnum(name) && name == "0") return "$0";
+//	if (regs[counter] == ban_name_1 && ban_name_1 != "") counter = (counter+1) % 8;
+//	if (regs[counter] == ban_name_2 && ban_name_2 != "") counter = (counter+1) % 8;
+//	string reg = "$s" + int2str(counter);
+//	if (regs[counter] != "") store_to(regs[counter], reg);
+//	regs[counter] = name;
+//	counter = (counter+1) % 8;
+//	return reg;
+//}
 string Translator::reg_alloc(const string name, const string ban_name_1, const string ban_name_2) {
-	for (int i=0; i<8; i++)//变量已经申请了寄存器
-		if (regs[i] == name)
-			return "$s" + int2str(i);
-	//变量没有申请过寄存器，这时还要进行写存
-	if (regs[counter] == ban_name_1) counter = (counter+1) % 8;
-	if (regs[counter] == ban_name_2) counter = (counter+1) % 8;
-	string reg = "$s" + int2str(counter);
-	if (regs[counter] != "") store_to(regs[counter], reg);
-	regs[counter] = name;
-	counter = (counter+1) % 8;
-	return reg;
+	if (isnum(name) && name == "0") return "$0";
+	//cout << "reg_alloc" << endl;
+	int reg_num;
+	sscanf_s(name.substr(0, name.size()-2).data(), "%d", &reg_num);
+	//cout << name << "\t" << reg_num << endl;
+	reg_num %= 8;
+	if (regs[reg_num] != "" && regs[reg_num] != name) store_to(regs[reg_num], "$s" + int2str(reg_num));
+	regs[reg_num] = name;
+	return "$s" + int2str(reg_num);
 }
 
 string Translator::reg_alloc(const string name, const string ban_name) {
@@ -333,33 +422,44 @@ string Translator::reg_alloc(const string name, const string ban_name) {
 }
 
 string Translator::reg_alloc_and_load(const string name, const string ban_name) {
-	for (int i=0; i<8; i++)//变量已经申请了寄存器，就没必要再load了
-		if (regs[i] == name)
-			return "$s" + int2str(i);
-	//变量没有申请过寄存器，这时还要进行写存
-	if (regs[counter] == ban_name) counter = (counter+1) % 8;
-	string reg = "$s" + int2str(counter);
-	if (regs[counter] != "") store_to(regs[counter], reg);
-	regs[counter] = name;
-	counter = (counter+1) % 8;
-	load_to(name, reg);
-	return reg;
+	if (isnum(name) && name == "0") return "$0";
+	//cout << "reg_alloc_and_load" << endl;
+	int reg_num;
+	sscanf_s(name.substr(0, name.size()-2).data(), "%d", &reg_num);
+	//cout << name << "\t" << reg_num << endl;
+	reg_num %= 8;
+	if (regs[reg_num] != "" && regs[reg_num] != name) store_to(regs[reg_num], "$s" + int2str(reg_num));
+	regs[reg_num] = name;
+	load_to(name, "$s" + int2str(reg_num));
+	return "$s" + int2str(reg_num);
 }
 
 void Translator::save_in_cal() {
 	int addr = 4;
-	for (int i=0; i<8; i++,addr+=4)
+	vector<string> save;
+	for (int i=0; i<8; i++,addr+=4) {
 		out << "sw	" << "$s"+int2str(i) << ", " << int2str(addr) << "($sp)" << endl;
+		save.push_back(regs[i]);
+		regs[i] = "";
+	}
+	saveRegs.push_back(save);//保存寄存器对应变量的状态
 }
 
-void Translator::save_in_return() {
+void Translator::save_in_return(const string op) {
 	int addr = 4;
 	for (int i=0; i<8; i++,addr+=4) {
 		if (Table::get_parent(cur_fun_name, regs[i]) == "top") {
 			store_to(regs[i], "$s"+int2str(i));
 		}
 		out << "lw	" << "$s"+int2str(i) << ", " << int2str(addr) << "($sp)" << endl;
-		regs[i] = "";
+		regs[i] = saveRegs.back()[i];
+	}
+	if (op == "END") saveRegs.erase(saveRegs.end()-1);//恢复寄存器对应变量的状态
+}
+
+void Translator::save_in_jb() {
+	for (int i=0; i<8; i++) {
+		store_to(regs[i], "$s"+int2str(i));
 	}
 }
 

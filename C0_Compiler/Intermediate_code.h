@@ -24,6 +24,6 @@ public:
 	static void divd_blk();//划分基本块
 	static void generate_DAG(int begin, int end);//生成DAG图
 	static int in_DAG(vector<DAG_node*> nodes, string op, DAG_node *l, DAG_node *r);//DAG图中是否存在这样一个节点，是的话返回索引，否的话返回-1，这个是查找符号节点用的
-	static void generate(map<string, int> node_list, vector<DAG_node*> nodes, int node_cnt);//从DAG图中生成优化后的中间代码 	
+	static vector<Quaternion> generate(map<string, int> node_list, vector<DAG_node*> nodes, int node_cnt);//从DAG图中生成优化后的中间代码 	
 };
 

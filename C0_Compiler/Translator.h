@@ -7,6 +7,7 @@ private:
 	static string regs[8];
 	static int para_dim_cnt;//函数参数个数，第一个为0号
 	static int counter;//寄存器分配指针
+	static vector<vector<string>> saveRegs;
 public:
 	static ofstream out;
 	Translator(void);
@@ -22,7 +23,8 @@ public:
 	static string reg_alloc(string name, string ban_name);//申请寄存器（FIFO算法）
 	static string reg_alloc_and_load(string name, string ban_name);//申请寄存器（FIFO算法）
 	static void save_in_cal();//被调用者被调用时，保存$s0-$s7，在被调用者开辟栈空间后使用
-	static void save_in_return();//被调用者返回时，保存$s0-$s7里的变量，恢复现场，在被调用者恢复栈空间前使用
+	static void save_in_return(string op);//被调用者返回时，保存$s0-$s7里的变量，恢复现场，在被调用者恢复栈空间前使用
+	static void save_in_jb();//跳转/分支时也应该保存寄存器
 	static bool in_reg(string name);//通过切换函数时清空regs表来保证此函数行为正确
 
 };

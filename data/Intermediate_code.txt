@@ -2,24 +2,44 @@ FUN	BEGIN
 FUN	VOID	main	
 VAL	INTSY		m_i_1
 VAL	INTSY		m_i_2
-+	0	0	0_t
+ARRAY	CHARSY	10	m_c_4
+=	1		0_t
 =	0_t		m_i_1
+=	$97		1_t
+=	1_t		m_i_1
 LABLE	lable_0		
-+	0	0	1_t
-=	1_t		m_i_2
+=	m_i_1		2_t
+=	m_i_1		3_t
+[]=	2_t	3_t	m_c_4
+=	m_i_1		4_t
+=[]	m_c_4	4_t	5_t
+=	5_t		6_t
+PRINT	CHARSY	6_t	
+PRINT	STRING	string_0	
++	m_i_1	1	m_i_1
+=	m_i_1		7_t
+=	$97		8_t
++	8_t	10	8_t
+<	7_t	8_t	9_t
+BNZ	9_t	lable_0	
+=	0		10_t
+=	10_t		m_i_1
 LABLE	lable_1		
-+	0	m_i_1	2_t
-+	2_t	m_i_2	2_t
-PRINT	INTSY	2_t	
+=	0		11_t
+=	11_t		m_i_2
+LABLE	lable_2		
+=	m_i_1		12_t
++	12_t	m_i_2	12_t
+PRINT	INTSY	12_t	
 PRINT	STRING	string_0	
 +	m_i_2	1	m_i_2
-+	0	m_i_2	3_t
-+	0	5	4_t
-<	3_t	4_t	5_t
-BNZ	5_t	lable_1	
+=	m_i_2		13_t
+=	3		14_t
+<	13_t	14_t	15_t
+BNZ	15_t	lable_2	
 +	m_i_1	1	m_i_1
-+	0	m_i_1	6_t
-+	0	5	7_t
-<	6_t	7_t	8_t
-BNZ	8_t	lable_0	
+=	m_i_1		16_t
+=	5		17_t
+<	16_t	17_t	18_t
+BNZ	18_t	lable_1	
 TERMINATE			

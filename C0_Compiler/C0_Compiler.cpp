@@ -17,9 +17,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	Lexer::getToken();
 	Parse::proc_program();
-	Table::print("../data/table.txt");
-	StringTable::print("../data/StringTable.txt");
-	Intermediate_code::print("../data/Intermediate_code.txt");
+	if (debug_in_main) {
+		Table::print("../data/table.txt");
+		StringTable::print("../data/StringTable.txt");
+		Intermediate_code::print("../data/Intermediate_code.txt");
+	}
 	Translator::init("../data/mips.asm");
 	Translator::translate();
 	cout << "Done!" << endl;

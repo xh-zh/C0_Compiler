@@ -1,37 +1,14 @@
 void main(){
-	int i,j,k,m;
-	char c;
-	c = 'a';
-	m=97;
-	i=1;
-	j=2;
-	k=3;
-	if(i>j)
-		printf("Test_1_Error");
-	if(j>i)
-		printf("Test_1_Correct");
-	if(k<j)
-		printf("Test_2_Error");
-	if(j<k)
-		printf("Test_2_Correct");
-	if(k<=j)
-		printf("Test_3_Error");
-	if(j<=k)
-		printf("Test_3_Correct");
-	if(j<=j)
-		printf("Test_3_Correct");
-	if(j>=k)
-		printf("Test_4_Error");
-	if(k>=j)
-		printf("Test_4_Correct");
-	if(k>=k)
-		printf("Test_4_Correct");
-	if(i==j)
-		printf("Test_5_Error");
-	if(c==m)
-		printf("Test_5_Correct");
-	if(c!=m)
-		printf("Test_6_Error");
-	if(i!=j)
-		printf("Test_6_Correct");
+int m_i_1, m_i_2;
+char m_c_4[10];
+m_i_1 = 1;
+for(m_i_1='a'; m_i_1<'a'+10; m_i_1=m_i_1+1){
+		m_c_4[m_i_1] = m_i_1;
+		printf(m_c_4[m_i_1]);
+	}
+
+for(m_i_1=0; m_i_1<5; m_i_1=m_i_1+1)
+		for(m_i_2=0; m_i_2<3; m_i_2=m_i_2+1){
+			printf(m_i_1+m_i_2);
+		}
 }

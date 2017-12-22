@@ -764,6 +764,7 @@ int Parse::proc_expr(string &result, kinds &type) {
 	type = term_type;
 	const string tmp_result = new_val(type, 0);
 	if (sign == "-") Intermediate_code::push_back(Quaternion(sign, "0", term_result, tmp_result));//正号就不操作了
+	else Intermediate_code::push_back(Quaternion("=", term_result, "", tmp_result));
 	while (Lexer::symbol == kinds::PLUSSY || Lexer::symbol == kinds::MINUSSY) {
 		//只要有加法运算符，就必有term，否则就是错的，所以只要是正确的输入，循环只会因为循环条件截止而不会return 1强制截止
 		sign = Lexer::symbol==kinds::PLUSSY?"+":"-";
@@ -1459,6 +1460,6 @@ string Parse::new_lable() {
 string Parse::new_val(const kinds type, const int value) {
 	static int val_num = 0;
 	string name = int2str(val_num++) + "_t";//这样取名字避免了和临时变量重名
-	Table::val_enter(name, type, value);
+	Table::val_enter_t(name, type, value);
 	return name;
 }

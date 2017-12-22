@@ -162,7 +162,7 @@ int Intermediate_code::in_DAG(vector<DAG_node*> nodes, const string op, DAG_node
 	return -1;
 }
 
-void Intermediate_code::generate(map<string, int> node_list, vector<DAG_node*> nodes, int node_cnt) {
+vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, vector<DAG_node*> nodes, int node_cnt) {
 	stack<int> node_stack;
 	vector<bool> in_que(nodes.size());
 	map<DAG_node*, int> index_map;
@@ -209,6 +209,7 @@ void Intermediate_code::generate(map<string, int> node_list, vector<DAG_node*> n
 	}
 	for (int i=0; i<nodes.size(); i++)
 		delete nodes[i];
+	return new_code;
 }
 
 bool Intermediate_code::all_in_que(const vector<bool> in_que, const int size) {

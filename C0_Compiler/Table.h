@@ -12,6 +12,7 @@ public:
 	static int con_enter(string name, enum kinds type, int val);	//常量登录，常量不会出现数组
 	static int val_enter(string name, enum kinds type);				//变量登录，初值为0
 	static int val_enter(string name, enum kinds type, int value);	//变量登录
+	static int val_enter_t(string name, enum kinds type, int value);//临时变量登录
 	static int array_enter(string name ,enum kinds type, int dim);	//数组登录
 	static int func_enter(string name, enum kinds type);			//函数登录
 	static int func_fill_back_value(string name);					//栈大小并恢复现场

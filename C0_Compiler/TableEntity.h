@@ -7,7 +7,7 @@ public:
 	enum _CLASS _class;	//符号所属种类
 	enum kinds type;	//符号的数据类型:int,char,string 对于函数，这是它的返回值类型
 	int		value;		//符号的值
-	int		dim;		//非数组维数为0吧，函数则是参数个数
+	int		dim;		//非数组维数为0吧，函数则是参数个数，再给它赋予一个新的意义：为-1则代表是临时变量
 	string	parent;		//父函数名
 	TableEntity(void);
 	TableEntity(string name, int addr, enum _CLASS _class,

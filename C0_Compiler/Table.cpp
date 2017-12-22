@@ -46,6 +46,15 @@ int Table::val_enter(const string name, const enum kinds type, const int value) 
 	return 0;
 }
 
+int Table::val_enter_t(string name, enum kinds type, int value){
+	if (in_this_level(name)) {//当前层有同名标识符
+		return 1;
+	}
+	table.push_back(TableEntity(name, addr, _CLASS::VAL_CLASS, type, value, -1, cur_parent));
+	addr += 4;
+	return 0;
+}
+
 int Table::array_enter(const string name, const enum kinds type, const int dim) {
 	if (in_this_level(name)) {//当前层有同名标识符
 		return 1;
