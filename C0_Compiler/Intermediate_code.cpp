@@ -32,11 +32,13 @@ void Intermediate_code::lable_combine() {
 	//lable合并
 	for (int i = 0; i < code.size() - 1; i++) {
 		if (code[i].op == "LABLE") {
-			if (code[i + 1].op == "LABLE") { //两个lable紧挨着
+			if (code[i + 1].op == "LABLE") {
+				//两个lable紧挨着
 				const string org_lable = code[i + 1].para1;
 				const string lat_lable = code[i].para1;
 				code[i + 1].op = "NOP";//删掉后面的lable
-				for (int j = 0; j < code.size(); j++) { //替换之前的lable
+				for (int j = 0; j < code.size(); j++) {
+					//替换之前的lable
 					if ((code[j].op == "BZ" || code[j].op == "BNZ") &&
 						(code[j].para2 == org_lable)) {
 						code[j].para2 = lat_lable;
@@ -63,15 +65,15 @@ void Intermediate_code::lable_combine() {
 		}
 	}
 	//删除死标签
-	for (int i=0; i<code.size(); i++) {
+	for (int i = 0; i < code.size(); i++) {
 		if (code[i].op == "LABLE") {
 			bool flag = true;
-			for (int j=0; j <code.size(); j++) {
-				if ((code[j].op == "BZ" || code[j].op == "BNZ") && 
+			for (int j = 0; j < code.size(); j++) {
+				if ((code[j].op == "BZ" || code[j].op == "BNZ") &&
 					code[j].para2 == code[i].para1) {
 					flag = false;
 					break;
-				} 
+				}
 				if (code[j].op == "GOTO" && code[j].para1 == code[i].para1) {
 					flag = false;
 					break;
@@ -84,30 +86,7 @@ void Intermediate_code::lable_combine() {
 	}
 }
 
-void Intermediate_code::divd_blk() {
-	int end;
-	for (int i = 0; i < code.size(); i++) {
-		if (code[i].op == "+" || code[i].op == "-" || code[i].op == "*" ||
-			code[i].op == "/" || code[i].op == "<" || code[i].op == "<=" ||
-			code[i].op == ">" || code[i].op == ">=" || code[i].op == "==" ||
-			code[i].op == "=" || code[i].op == "!=" ||
-			code[i].op == "=[]" || code[i].op == "[]=") {
-			const int begin = i;
-			do {
-				end = i++;
-			}
-			while (code[i].op == "+" || code[i].op == "-" || code[i].op == "*" ||
-				code[i].op == "/" || code[i].op == "<" || code[i].op == "<=" ||
-				code[i].op == ">" || code[i].op == ">=" || code[i].op == "==" ||
-				code[i].op == "=" || code[i].op == "!=" ||
-				code[i].op == "=[]" || code[i].op == "[]=");
-			basic_block bb;
-			bb.begin = begin;
-			bb.end = end;
-			blocks.push_back(bb);
-		}
-	}
-}
+
 
 vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int end) {
 	int node_cnt = 0;//节点编号从0开始计
@@ -119,6 +98,7 @@ vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int en
 		DAG_node* lnode;
 		DAG_node* rnode;
 		//左节点
+
 		if (node_list.find(q.para1) == node_list.end()) {//左节点不在节点表里，即不在DAG图中
 			//这里应该先检查一下是否是整数、字符，整数、字符的话不需要加0
 			const int lnode_cnt = node_cnt++;
@@ -133,18 +113,20 @@ vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int en
 		}
 		//判断指令是否是单目运算符
 		if (q.op == "=") {
-			const int index = in_DAG(nodes, q.op, lnode, nullptr);
-			if (-1 != index) {//存在这样的节点
-				if (node_list.count(q.result) == 1) {//这个节点已经存在于节点表
-					nodes[node_list[q.result]]->del_val(q.result);//删除原节点中对此变量的记录
-				}
-				node_list[q.result] = index;//设置当前变量对应的节点
-				nodes[index]->add_val(q.result);//在当前节点记录变量
-			} else {//不存在这样的节点，那就新建一个
-				DAG_node *node = new DAG_node(q.op, lnode, nullptr, q.result, node_cnt);//如果是赋值，val就是被赋值符号
-				node_list[q.result] = node_cnt++;
-				nodes.push_back(node);
-			}
+			//const int index = in_DAG(nodes, q.op, lnode, nullptr);
+			//if (-1 != index) {//存在这样的节点
+			//	if (node_list.count(q.result) == 1) {//这个节点已经存在于节点表
+			//		nodes[node_list[q.result]]->del_val(q.result);//删除原节点中对此变量的记录
+			//	}
+			//	node_list[q.result] = index;//设置当前变量对应的节点
+			//	nodes[index]->add_val(q.result);//在当前节点记录变量
+			//} else {//不存在这样的节点，那就新建一个
+			//	DAG_node *node = new DAG_node(q.op, lnode, nullptr, q.result, node_cnt);//如果是赋值，val就是被赋值符号
+			//	node_list[q.result] = node_cnt++;
+			//	nodes.push_back(node);
+			//}
+			lnode->add_val(q.result);
+			node_list[q.result] = node_list[q.para1];
 			continue;//单目运算符处理结束
 		}
 		//右节点
@@ -176,11 +158,40 @@ vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int en
 	return generate(node_list, nodes, node_cnt);
 }
 
+void Intermediate_code::divd_blk() {
+	int end;
+	for (int i = 0; i < code.size(); i++) {
+		if (code[i].op == "+" || code[i].op == "-" || code[i].op == "*" ||
+			code[i].op == "/" || code[i].op == "<" || code[i].op == "<=" ||
+			code[i].op == ">" || code[i].op == ">=" || code[i].op == "==" ||
+			code[i].op == "=" || code[i].op == "!=" ||
+			code[i].op == "=[]" || code[i].op == "[]=") {
+			const int begin = i;
+			do {
+				end = i++;
+			}
+			while (code[i].op == "+" || code[i].op == "-" || code[i].op == "*" ||
+				code[i].op == "/" || code[i].op == "<" || code[i].op == "<=" ||
+				code[i].op == ">" || code[i].op == ">=" || code[i].op == "==" ||
+				code[i].op == "=" || code[i].op == "!=" ||
+				code[i].op == "=[]" || code[i].op == "[]=");
+			basic_block bb;
+			bb.begin = begin;
+			bb.end = end;
+			blocks.push_back(bb);
+		}
+	}
+}
+
 int Intermediate_code::in_DAG(vector<DAG_node*> nodes, const string op, DAG_node* l, DAG_node* r) {
-	for(int i=0; i<nodes.size(); i++)
+	for(int i=0; i<nodes.size(); i++) {
+		if (nodes[i]->child_cnt == 0 && nodes[i]->op.substr(0, nodes[i]->op.size()-1) == op && nodes[i]->l == l && nodes[i]->r == r) {
+			return i;
+		}
 		if (nodes[i]->op == op && nodes[i]->l == l && nodes[i]->r == r) {
 			return i;
 		}
+	}
 	return -1;
 }
 
@@ -216,14 +227,32 @@ vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, vecto
 		DAG_node *cur_node = nodes[node_stack.top()];
 		switch (cur_node->child_cnt) {
 		case 0:
+			if (cur_node->vals.size() != 1) {
+				for (int i=1; i<cur_node->vals.size(); i++)
+				new_code.push_back(Quaternion("=", cur_node->vals[0], "", cur_node->vals[i]));
+			}
 			break;
-		case 1://=
+		case 1://=	等号直接置于原节点上，正确情况下不会走这个分支了
 			new_code.push_back(Quaternion("=", cur_node->l->vals[0], "", cur_node->vals[0]));
 			break;
 		case 2:
-			for (vector<string>::iterator iter = cur_node->vals.begin(); iter != cur_node->vals.end(); ++iter)
-				new_code.push_back(Quaternion(cur_node->op, cur_node->l->vals[0], cur_node->r->vals[0], *iter));
+		{
+			int np_val_index = 0;//优先使用非临时变量
+			for (int i=0; i<cur_node->vals.size(); i++) {
+				string val = cur_node->vals[i];
+				if (val.substr(val.size()-2, val.size()-1) != "_t") {
+					np_val_index = i;
+					break;
+				}
+			}
+			new_code.push_back(Quaternion(cur_node->op, cur_node->l->vals[0], cur_node->r->vals[0], cur_node->vals[np_val_index]));
+			for (int i=0; i<cur_node->vals.size(); i++) {
+				if (i != np_val_index) {
+					new_code.push_back(Quaternion("=", cur_node->vals[np_val_index], "", cur_node->vals[i]));
+				}
+			}
 			break;
+		}
 		default:
 			cout << "Error in Intermediate_code::generate" << endl;
 		}
@@ -253,11 +282,56 @@ void Intermediate_code::DAG_optimize() {
 	divd_blk();
 	for	(vector<basic_block>::iterator iter = blocks.begin(); iter != blocks.end(); ++iter) {
 		vector<Quaternion> new_code = generate_DAG(iter->begin, iter->end);
+		new_code = repeated_assignment_optimize(new_code);
 		const int new_code_size = new_code.size();
+		int new_code_index = 0;
 		for (int i=iter->begin; i <= iter->end; i++) {
-			if (i < new_code_size) {
-				code[i] = new_code[i];
+			if (iter->end - iter->begin < new_code_size) {
+				code[i] = new_code[new_code_index++];
 			} else {
+				code[i].op = "NOP";
+			}
+		}
+	}
+	del_nouse_val();
+}
+
+void Intermediate_code::peephole_optimize() {
+	for (int i=0; i<code.size() -1; i++) {
+		const Quaternion q_1 = code[i];
+		const Quaternion q_2 = code[i+1];
+		if (q_1.op == "=" && q_1.result[q_1.result.size()-1] == 't' && 
+			q_1.result == q_2.para1 && q_2.op == "=") {
+			code[i].result = code[i+1].result;
+			code[i+1].op = "NOP";
+		}
+	}
+}
+
+vector<Quaternion> Intermediate_code::repeated_assignment_optimize(vector<Quaternion> source_code) {
+	for (int i=0; i<source_code.size()-1; i++) {
+		if (source_code[i].result == source_code[i+1].result) {
+			source_code[i].op = "NOP";
+		}
+	}
+	return source_code;
+}
+
+void Intermediate_code::del_nouse_val() {
+	for (int i=0; i<code.size(); i++) {
+		const string op = code[i].op;
+		if (op=="+" || op=="-" || op=="*" || op=="/" ||
+		op=="<" || op=="<=" || op==">" || op==">=" || 
+		op=="==" || op=="!=" || op=="=[]" || op=="=") {
+			bool nouse = true;
+			for (int j=0; j<code.size(); j++) {
+				if (code[j].op != "NOP" && 
+					(code[j].para1 == code[i].result || 
+					code[j].para2 == code[i].result)) {
+					nouse = false;
+				}
+			}
+			if (nouse) {
 				code[i].op = "NOP";
 			}
 		}

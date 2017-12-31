@@ -972,7 +972,7 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 	type = Table::get_type(cur_fun, fun_name);//INTSY/CHARSY/VOID
 	result = new_val(type, 0);
 	Intermediate_code::push_back(Quaternion("CALL", fun_name, "", ""));
-	Intermediate_code::push_back(Quaternion("LOAD_RETURN_VALUE", "", "", result));//保存返回值
+	Intermediate_code::push_back(Quaternion("=", "$v0", "", result));//保存返回值
 	Lexer::getToken();
 	if(print_grammar_item) cout<<"有返回值函数调用语句"<<endl;
 	return 0;

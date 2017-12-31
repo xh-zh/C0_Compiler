@@ -2,7 +2,7 @@
 #include "Translator.h"
 
 /***********DEBUG*************/
-bool debug = true;//汇编代码中显示中间代码
+bool debug = false;//汇编代码中显示中间代码
 /***********DEBUG*************/
 
 ofstream Translator::out;
@@ -67,27 +67,32 @@ void Translator::proc_quat(const Quaternion q) {
 		q.op=="<" || q.op=="<=" || q.op==">" || q.op==">=" || 
 		q.op=="==" || q.op=="!=") {//op	para1	para2	result
 		//$t0, $t1中存操作数, $t2中存结果
-		load_to(q.para1, "$t0");
-		load_to(q.para2, "$t1");
+		const string para1_reg = q.para1=="$v0"?"$v0":"$t0";
+		const string para2_reg = q.para2=="$v0"?"$v0":"$t1";
+		if (para1_reg != "$v0")	load_to(q.para1, para1_reg);
+		if (para2_reg != "$v0")	load_to(q.para2, para2_reg);
 		if (q.op == "+") {
-			out << "add	$t2, $t0, $t1" <<endl;
+			out << "add	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else if (q.op == "-") {
-			out << "sub	$t2, $t0, $t1" <<endl;
+			if (q.para1 == "0")
+				out << "neg	$t2, " << para2_reg << endl;
+			else 
+				out << "sub	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else if (q.op == "*") {
-			out << "mul	$t2, $t0, $t1" <<endl;
+			out << "mul	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else if (q.op == "/") {
-			out << "div	$t0, $t1" <<endl;
+			out << "div	" << para1_reg << ", " << para2_reg <<endl;
 			out << "mflo	$t2" << endl;
 		} else if (q.op == "<") {
-			out << "slt	$t2, $t0, $t1" << endl;
+			out << "slt	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else if (q.op == "<=") {
-			out << "sle	$t2, $t0, $t1" << endl;
+			out << "sle	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else if (q.op == ">") {
-			out << "sgt	$t2, $t0, $t1" << endl;
+			out << "sgt	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else if (q.op == ">=") {
-			out << "sge	$t2, $t0, $t1" << endl;
+			out << "sge	$t2, " << para1_reg << ", " << para2_reg <<endl;
 		} else {
-			out << "seq	$t2, $t0, $t1" << endl;
+			out << "seq	$t2, " << para1_reg << ", " << para2_reg <<endl;
 			if (q.op == "!=") {
 				out << "xori	$t2, 1" << endl;
 			}
@@ -95,8 +100,12 @@ void Translator::proc_quat(const Quaternion q) {
 		store_to(q.result, "$t2");
 
 	} else if (q.op == "=") {//=	value	blank	IDSY_name
-		load_to(q.para1, "$t0");
-		store_to(q.result, "$t0");
+		if (q.para1 == "$v0") {
+			store_to(q.result, "$v0");
+		} else {
+			load_to(q.para1, "$t0");
+			store_to(q.result, "$t0");
+		}
 
 	} else if (q.op == "[]=") {//[]=, index_name, expr_name, array_name
 		if (Table::is_global(cur_fun_name, q.result)) {//全局数组
@@ -107,13 +116,15 @@ void Translator::proc_quat(const Quaternion q) {
 			out << "add	$t0, $t0, $sp" << endl;//现在是绝对地址了
 		}
 		//$t0:	数组首绝对地址
-		load_to(q.para1, "$t1");//index
-		out << "sll	$t1, $t1, 2" << endl;//offest
+		const string index_reg = q.para1=="$v0"?"$v0":"$t1";
+		if (index_reg != "$v0")	load_to(q.para1, index_reg);//index
+		out << "sll	" << index_reg << ", " << index_reg << ", 2" << endl;//offest
 		//$t1:	该元素相对于首地址的偏移
-		out << "add	$t0, $t0, $t1" << endl;
+		out << "add	$t0, $t0, " << index_reg << endl;
 		//$t0:	该元素绝对地址
-		load_to(q.para2, "$t1");
-		out << "sw	$t1, 0($t0)" << endl;
+		const string expr_reg = q.para2=="$v0"?"$v0":"$t1";
+		if (expr_reg != "$v0")	load_to(q.para2, expr_reg);
+		out << "sw	" << expr_reg << ", 0($t0)" << endl;
 
 	} else if (q.op == "=[]") {//=[], array_name, index_name, result
 		if (Table::is_global(cur_fun_name, q.para1)) {
@@ -124,21 +135,24 @@ void Translator::proc_quat(const Quaternion q) {
 			out << "add	$t0, $t0 ,$sp" << endl;//绝对地址
 		}
 		//$t0:	数组首绝对地址
-		load_to(q.para2, "$t1");//index
-		out << "sll	$t1, $t1, 2" << endl;//offest
+		const string index_reg = q.para2=="$v0"?"$v0":"$t1";
+		if (index_reg != "$v0")	load_to(q.para2, index_reg);//index
+		out << "sll	" << index_reg << ", " << index_reg << ", 2" << endl;//offest
 		//$t1:	该元素相对于首地址的偏移
-		out << "add	$t0, $t0, $t1" << endl;
+		out << "add	$t0, $t0, " << index_reg << endl;
 		//$t0:	该元素绝对地址
 		out << "lw	$t0, 0($t0)" << endl;
-		store_to(q.result, "$t0");
+		store_to(q.result, "$t0");//被赋值的应该不会是$v0吧
 
 	} else if (q.op == "BZ") {//BZ	条件		LABLE，不成立跳转
-		load_to(q.para1, "$t0");
-		out << "beq	$t0, $0, " << q.para2 << endl;
+		const string bz_reg = q.para1=="$v0"?"$v0":"$t0";
+		if (bz_reg != "$v0")	load_to(q.para1, bz_reg);
+		out << "beq	" << bz_reg << ", $0, " << q.para2 << endl;
 
 	} else if (q.op == "BNZ") {//BNZ	条件		LABLE，成立跳转
-		load_to(q.para1, "$t0");
-		out << "bne	$t0, $0, " << q.para2 << endl;
+		const string bnz_reg = q.para1=="$v0"?"$v0":"$t0";
+		if (bnz_reg != "$v0")	load_to(q.para1, bnz_reg);
+		out << "bne	" << bnz_reg << ", $0, " << q.para2 << endl;
 
 	} else if (q.op == "GOTO") {//GOTO	LABLE
 		out << "j	" << q.para1 << endl;
@@ -164,9 +178,10 @@ void Translator::proc_quat(const Quaternion q) {
 		const int fun_size = Table::get_fun_size(q.result);
 		//const int val_addr = Table::get_addr(cur_fun_name, q.para1);//这个是传入的参数的地址，不是在被调用函数中的地址
 		const int para_addr = Table::get_addr(q.result, q.para2);//参数在被调用函数中的地址
-		load_to(q.para1, "$t0");
+		const string val_reg = q.para1=="$v0"?"$v0":"$t0";
+		if (val_reg != "$v0")	load_to(q.para1, val_reg);
 		out << "subi	$sp, $sp, " << int2str(fun_size) << endl;
-		out << "sw	$t0, " << int2str(para_addr) << "($sp)" << endl;
+		out << "sw	" << val_reg << ", " << int2str(para_addr) << "($sp)" << endl;
 		out << "addi	$sp, $sp, " << int2str(fun_size) << endl;
 
 	} else if (q.op == "CALL") {//CALL	fun_name

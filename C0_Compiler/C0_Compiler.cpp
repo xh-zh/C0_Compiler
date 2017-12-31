@@ -21,8 +21,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		Table::print("../data/table.txt");
 		StringTable::print("../data/StringTable.txt");
 		Intermediate_code::print("../data/Intermediate_code.txt");
-		Intermediate_code::lable_combine();
-		Intermediate_code::print("../data/Intermediate_code_after_lable_combine.txt");
+		//Intermediate_code::lable_combine();
+		//Intermediate_code::DAG_optimize();
+		Intermediate_code::print("../data/Intermediate_code_after_DAG_optimize.txt");
+
 		////Intermediate_code::divd_blk();
 		////Intermediate_code::print_blk("../data/Intermediate_code_after_divd_blk.txt");
 		//cout << Intermediate_code::code.size() << endl;
