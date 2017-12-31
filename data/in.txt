@@ -51,11 +51,115 @@ void main(){
 	char m_c_4[300];
 	m_i_1=1;
 	M_i_1=100;
+	m_i_2=1;
+	m_i_3=2;
+	m_c_1='+';
+	m_c_2='-';
+	m_c_3='*';
+
+
+
+	if(m_i_1 == 100)
+		printf("Error!");
+
+	if(0)
+		printf("Error!");
+
+	if(m_i_3 > 1){
+		m_i_3 = -m_i_3 + 1;
+		printf(m_i_3);
+	}
+
+	if(m_i_3 != m_con_i_1)
+		printf("Test_1");
+	else
+		printf("Test_2");
 
 	for(m_i_1='a'; m_i_1<'a'+10; m_i_1=m_i_1+1){
 		m_c_4[m_i_1] = m_i_1;
 		printf(m_c_4[m_i_1]);
 	}
-	
+	printf("Test_3");
+
+	for(m_i_1=0; m_i_1<5; m_i_1=m_i_1+2)
+		for(m_i_2=0; m_i_2<3; m_i_2=m_i_2+1){
+			printf(m_i_1+m_i_2);
+		}
+	printf(m_i_4[9]);
+	printf("Test_4");
+
+	for(m_i_1=0; m_i_1==1; m_i_1=m_i_1+1)
+		printf("Test_5");
+	printf(m_i_4[8]);
+
+	printf(fun1(m_i_1, m_i_1));
+
+	fun5();
+
+	switch (m_i_1){
+		case 1:
+		{
+			switch (fun6(m_i_1)){
+				case 1:
+				printf("Test_6");
+				default:
+				;
+			}
+			switch (m_c_1){
+				case '+':
+					for(m_i_1=1; m_i_1<4; m_i_1=m_i_1+1)
+						printf(fun6(m_i_1));
+				case '-':
+					printf("Error!");
+				default:;
+			}
+		}
+		case 2:
+			printf(fun6(9));
+		default:
+			for(m_i_1=0; m_i_1==1; m_i_1=m_i_1+1)
+				printf(fun6(9));
+	}
+
+
+	m_i_1 = -m_c_1;
+	if(m_i_1 == -43)
+		printf("Test_7");
+	if(m_i_1+43)
+		printf("Test_7_ERROR");
+	switch (m_i_1){
+		case -43:
+			printf("Test_7_1");
+		default:;
+	}
+	switch (m_c_1){
+		case 43:
+			printf("Test_7_2");
+		default:;
+	}
+
+
+	m_c_2 = '+';
+	printf(m_c_2);
+	m_c_2 = '-';
+	printf(m_c_2);
+	m_c_2 = '*';
+	printf(m_c_2);
+	m_c_2 = '/';
+	printf(m_c_2);
+	m_c_2 = '_';
+	printf(m_c_2);
+	for(m_i_1='a'; m_i_1<='z'; m_i_1=m_i_1+1){
+		m_c_2 = m_i_1;
+		printf(m_c_2);
+	}
+	for(m_i_1='A'; m_i_1<='Z'; m_i_1=m_i_1+1){
+		m_c_2 = m_i_1;
+		printf(m_c_2);
+	}
+	scanf(m_i_1);
+	printf(m_i_1);
+	scanf(m_c_1);
+	printf(m_c_1);
 	printf("DONE!");
 }

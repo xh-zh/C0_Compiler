@@ -69,7 +69,9 @@ int Table::para_enter(const string name, const kinds type, const int para_dim_cu
 		return 1;
 	}
 	table.push_back(TableEntity(name, addr, _CLASS::PARA_CLASS, type, 0, para_dim_cut, cur_parent));
-	if (para_dim_cut >= 4) addr += 4;//少于四个参数就不分配栈空间了，从0开始计数
+	//if (para_dim_cut >= 4) addr += 4;//少于四个参数就不分配栈空间了，从0开始计数
+	//那样会出问题
+	addr += 4;
 	return 0;
 }
 

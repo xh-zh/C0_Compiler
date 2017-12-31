@@ -21,6 +21,15 @@ int _tmain(int argc, _TCHAR* argv[])
 		Table::print("../data/table.txt");
 		StringTable::print("../data/StringTable.txt");
 		Intermediate_code::print("../data/Intermediate_code.txt");
+		Intermediate_code::lable_combine();
+		Intermediate_code::print("../data/Intermediate_code_after_lable_combine.txt");
+		////Intermediate_code::divd_blk();
+		////Intermediate_code::print_blk("../data/Intermediate_code_after_divd_blk.txt");
+		//cout << Intermediate_code::code.size() << endl;
+		//for	(int i=0; i<Intermediate_code::blocks.size(); i++) {
+		//	cout << "begin = " << Intermediate_code::blocks[i].begin << "end = " << Intermediate_code::blocks[i].end << endl;
+		//}
+
 	}
 	Translator::init("../data/mips.asm");
 	Translator::translate();

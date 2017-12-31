@@ -1,0 +1,134 @@
+CONST	INTSY	1	con_i_1
+CONST	INTSY	1	con_i_2
+CONST	INTSY	2	con_i_3
+CONST	CHARSY	43	con_c_1
+CONST	CHARSY	45	con_c_2
+CONST	CHARSY	42	con_c_3
+VAL	INTSY		i_1
+VAL	INTSY		i_2
+VAL	INTSY		i_3
+ARRAY	INTSY	10	i_4
+VAL	CHARSY		c_1
+VAL	CHARSY		c_2
+VAL	CHARSY		c_3
+ARRAY	CHARSY	10	c_4
+FUN	BEGIN		
+FUN	INTSY	fun0	
+PARA	INTSY	a	
+===== BLOCK 0 BEGIN =====
+=	a		0_t
+===== BLOCK 0  END  =====
+RETURN	INTSY	0_t	
+END	fun0		
+FUN	INTSY	fun1	
+PARA	INTSY	a	
+PARA	INTSY	b	
+VAL	INTSY		fun
+===== BLOCK 1 BEGIN =====
+=	a		1_t
++	1_t	b	1_t
+=	1_t		fun
+=	fun		2_t
+===== BLOCK 1  END  =====
+RETURN	INTSY	2_t	
+END	fun1		
+FUN	CHARSY	fun2	
+===== BLOCK 2 BEGIN =====
+=	$65		3_t
+===== BLOCK 2  END  =====
+RETURN	CHARSY	3_t	
+END	fun2		
+FUN	VOID	fun3	
+PARA	INTSY	a	
+RETURN	NONE		
+END	fun3		
+FUN	VOID	fun4	
+PARA	INTSY	a	
+PARA	CHARSY	b	
+===== BLOCK 3 BEGIN =====
+=	a		4_t
+===== BLOCK 3  END  =====
+PRINT	INTSY	4_t	
+PRINT	STRING	string_0	
+===== BLOCK 4 BEGIN =====
+=	b		5_t
+===== BLOCK 4  END  =====
+PRINT	CHARSY	5_t	
+PRINT	STRING	string_0	
+END	fun4		
+FUN	VOID	fun5	
+PRINT	STRING	string_1	
+PRINT	STRING	string_0	
+END	fun5		
+FUN	INTSY	fun6	
+PARA	INTSY	n	
+===== BLOCK 5 BEGIN =====
+=	n		6_t
+=	1		7_t
+==	6_t	7_t	8_t
+===== BLOCK 5  END  =====
+BZ	8_t	lable_0	
+===== BLOCK 6 BEGIN =====
+=	1		9_t
+===== BLOCK 6  END  =====
+RETURN	INTSY	9_t	
+GOTO	lable_1		
+LABLE	lable_0		
+===== BLOCK 7 BEGIN =====
+=	n		10_t
+=	n		11_t
+-	11_t	1	11_t
+===== BLOCK 7  END  =====
+PUSH	11_t	n	fun6
+CALL	fun6		
+LOAD_RETURN_VALUE			12_t
+===== BLOCK 8 BEGIN =====
+*	10_t	12_t	10_t
+=	10_t		13_t
+===== BLOCK 8  END  =====
+RETURN	INTSY	13_t	
+LABLE	lable_1		
+END	fun6		
+FUN	VOID	main	
+CONST	INTSY	1	m_con_i_1
+CONST	INTSY	100	M_con_i_1
+CONST	INTSY	1	m_con_i_2
+CONST	INTSY	2	m_con_i_3
+CONST	CHARSY	43	m_con_c_1
+CONST	CHARSY	45	m_con_c_2
+CONST	CHARSY	42	m_con_c_3
+VAL	INTSY		m_i_1
+VAL	INTSY		M_i_1
+VAL	INTSY		m_i_2
+VAL	INTSY		m_i_3
+ARRAY	INTSY	10	m_i_4
+VAL	CHARSY		m_c_1
+VAL	CHARSY		m_c_2
+VAL	CHARSY		m_c_3
+ARRAY	CHARSY	300	m_c_4
+===== BLOCK 9 BEGIN =====
+=	1		14_t
+=	14_t		m_i_1
+=	100		15_t
+=	15_t		M_i_1
+=	$97		16_t
+=	16_t		m_i_1
+===== BLOCK 9  END  =====
+LABLE	lable_2		
+===== BLOCK 10 BEGIN =====
+=	m_i_1		17_t
+=	m_i_1		18_t
+[]=	17_t	18_t	m_c_4
+=	m_i_1		19_t
+=[]	m_c_4	19_t	20_t
+=	20_t		21_t
+===== BLOCK 10  END  =====
+PRINT	CHARSY	21_t	
+PRINT	STRING	string_0	
+===== BLOCK 11 BEGIN =====
++	m_i_1	1	m_i_1
+=	m_i_1		22_t
+=	$97		23_t
++	23_t	10	23_t
+<	22_t	23_t	24_t
+===== BLOCK 11  END  =====

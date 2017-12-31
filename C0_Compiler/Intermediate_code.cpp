@@ -25,9 +25,11 @@ void Intermediate_code::print(char* path) {
 		if (iter->op != "NOP")//不打印删除后的中间代码
 			out << iter->op << "\t" << iter->para1 << "\t" << iter->para2 << "\t" << iter->result << endl;
 	}
+	out.close();
 }
 
 void Intermediate_code::lable_combine() {
+	//lable合并
 	for (int i = 0; i < code.size() - 1; i++) {
 		if (code[i].op == "LABLE") {
 			if (code[i + 1].op == "LABLE") { //两个lable紧挨着
@@ -46,18 +48,37 @@ void Intermediate_code::lable_combine() {
 			}
 		}
 	}
+	//消除无效跳转
 	for (int i = 0; i < code.size() - 1; i++) {
 		if ((code[i].op == "BZ" || code[i].op == "BNZ") &&
 			code[i + 1].op == "LABLE") {
 			if (code[i].para2 == code[i + 1].para1) {
 				code[i].op = "NOP";
-				code[i + 1].op = "NOP";
 			}
 		}
 		else if (code[i].op == "GOTO" && code[i + 1].op == "LABLE") {
 			if (code[i].para1 == code[i + 1].para1) {
 				code[i].op = "NOP";
-				code[i + 1].op = "NOP";
+			}
+		}
+	}
+	//删除死标签
+	for (int i=0; i<code.size(); i++) {
+		if (code[i].op == "LABLE") {
+			bool flag = true;
+			for (int j=0; j <code.size(); j++) {
+				if ((code[j].op == "BZ" || code[j].op == "BNZ") && 
+					code[j].para2 == code[i].para1) {
+					flag = false;
+					break;
+				} 
+				if (code[j].op == "GOTO" && code[j].para1 == code[i].para1) {
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				code[i].op = "NOP";
 			}
 		}
 	}
@@ -88,7 +109,7 @@ void Intermediate_code::divd_blk() {
 	}
 }
 
-void Intermediate_code::generate_DAG(const int begin, const int end) {
+vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int end) {
 	int node_cnt = 0;//节点编号从0开始计
 	map<string, int> node_list;//由变量名找到节点号
 	vector<DAG_node*> nodes;//由节点号找到节点
@@ -152,6 +173,7 @@ void Intermediate_code::generate_DAG(const int begin, const int end) {
 			nodes.push_back(node);
 		}
 	}
+	return generate(node_list, nodes, node_cnt);
 }
 
 int Intermediate_code::in_DAG(vector<DAG_node*> nodes, const string op, DAG_node* l, DAG_node* r) {
@@ -210,6 +232,36 @@ vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, vecto
 	for (int i=0; i<nodes.size(); i++)
 		delete nodes[i];
 	return new_code;
+}
+
+void Intermediate_code::print_blk(char* path) {
+	for (vector<basic_block>::iterator iter = blocks.end()-1; iter >= blocks.begin(); --iter) {
+		code.insert(code.begin()+iter->end, Quaternion("===== BLOCK", "   END  =====", "", ""));
+		code.insert(code.begin()+iter->begin, Quaternion("===== BLOCK", "  BEGIN =====", "", ""));
+	}
+	ofstream out(path);
+	for (vector<Quaternion>::iterator iter = code.begin(); iter != code.end(); ++iter) {
+		if (iter->op == "===== BLOCK")
+			out << iter->op << iter->para1 << endl;
+		else if (iter->op != "NOP")//不打印删除后的中间代码
+			out << iter->op << "\t" << iter->para1 << "\t" << iter->para2 << "\t" << iter->result << endl;
+	}
+	out.close();
+}
+
+void Intermediate_code::DAG_optimize() {
+	divd_blk();
+	for	(vector<basic_block>::iterator iter = blocks.begin(); iter != blocks.end(); ++iter) {
+		vector<Quaternion> new_code = generate_DAG(iter->begin, iter->end);
+		const int new_code_size = new_code.size();
+		for (int i=iter->begin; i <= iter->end; i++) {
+			if (i < new_code_size) {
+				code[i] = new_code[i];
+			} else {
+				code[i].op = "NOP";
+			}
+		}
+	}
 }
 
 bool Intermediate_code::all_in_que(const vector<bool> in_que, const int size) {
