@@ -4,6 +4,7 @@ class Translator
 private:
 	static bool global;
 	static string cur_fun_name;
+	static vector<string> register_descriptor[10];//$t0-$t9µÄ¼Ä´æÆ÷ÃèÊö·û
 public:
 	static ofstream out;
 	Translator(void);

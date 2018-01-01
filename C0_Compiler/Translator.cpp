@@ -8,11 +8,11 @@ bool debug = false;//汇编代码中显示中间代码
 ofstream Translator::out;
 bool Translator::global = true;
 string Translator::cur_fun_name = "top";
+vector<string> Translator::register_descriptor[10];
 
 Translator::Translator()
 {
 }
-
 
 Translator::~Translator()
 {
