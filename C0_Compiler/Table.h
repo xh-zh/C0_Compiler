@@ -42,5 +42,10 @@ public:
 	static bool set_type(string name, enum kinds type);			//函数不安全，行为正确与否与Table::cur_level_pointer有关，只能在语法分析时用
 
 	static void print(char *path);		//打印符号表
+	
+	static void add_addr(string fun_name, string name, string addr);//向某变量的地址描述符中添加地址
+	static void add_addr_and_del_other(string fun_name, string name, string addr);//向某变量的地址描述符中添加地址并删除其他地址
+	static void del_addr(string fun_name, string name, string addr);//向某变量的地址描述符中删除地址
+	static bool have_addr(string fun_name, string name, string addr);//某变量的地址描述符中包含addr
 };
 
