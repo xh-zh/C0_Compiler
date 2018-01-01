@@ -310,11 +310,27 @@ void Intermediate_code::peephole_optimize() {
 
 vector<Quaternion> Intermediate_code::repeated_assignment_optimize(vector<Quaternion> source_code) {
 	for (int i=0; i<source_code.size()-1; i++) {
-		if (source_code[i].result == source_code[i+1].result) {
+		if (source_code[i].op == source_code[i+1].op &&
+			source_code[i].op == "=" &&
+			source_code[i].result == source_code[i+1].result) {
 			source_code[i].op = "NOP";
+		}
+		if (source_code[i].op == "=") {
+			if (source_code[i].result != "" &&
+				source_code[i].result == source_code[i+1].para1) {
+				source_code[i+1].para1 = source_code[i].para1;
+			}
+			if (source_code[i].result != "" &&
+				source_code[i].result == source_code[i+1].para2) {
+				source_code[i+1].para2 = source_code[i].para1;
+			}
 		}
 	}
 	return source_code;
+}
+
+void Intermediate_code::repeated_assignment_optimize() {
+	code = repeated_assignment_optimize(code);
 }
 
 void Intermediate_code::del_nouse_val() {

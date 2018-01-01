@@ -29,6 +29,7 @@ public:
 	static void DAG_optimize();
 	static void peephole_optimize();
 	static vector<Quaternion> repeated_assignment_optimize(vector<Quaternion> source_code);//删除相邻的重复赋值（result相同）
+	static void repeated_assignment_optimize();//删除相邻的重复赋值（result相同）
 	static void del_nouse_val();//删除从未使用的变量
 };
 

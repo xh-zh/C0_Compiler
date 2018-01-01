@@ -18,20 +18,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	Lexer::getToken();
 	Parse::proc_program();
 	if (debug_in_main) {
-		Table::print("../data/table.txt");
-		StringTable::print("../data/StringTable.txt");
+		//Table::print("../data/table.txt");
+		//StringTable::print("../data/StringTable.txt");
 		Intermediate_code::print("../data/Intermediate_code.txt");
-		//Intermediate_code::lable_combine();
-		//Intermediate_code::DAG_optimize();
+		Intermediate_code::lable_combine();
+		Intermediate_code::DAG_optimize();
+		Intermediate_code::repeated_assignment_optimize();
+		Intermediate_code::del_nouse_val();
 		Intermediate_code::print("../data/Intermediate_code_after_DAG_optimize.txt");
-
-		////Intermediate_code::divd_blk();
-		////Intermediate_code::print_blk("../data/Intermediate_code_after_divd_blk.txt");
-		//cout << Intermediate_code::code.size() << endl;
-		//for	(int i=0; i<Intermediate_code::blocks.size(); i++) {
-		//	cout << "begin = " << Intermediate_code::blocks[i].begin << "end = " << Intermediate_code::blocks[i].end << endl;
-		//}
-
 	}
 	Translator::init("../data/mips.asm");
 	Translator::translate();

@@ -1,14 +1,2 @@
 string_0	\n
-string_1	Funtion_5
-string_2	Error!
-string_3	Test_1
-string_4	Test_2
-string_5	Test_3
-string_6	Test_4
-string_7	Test_5
-string_8	Test_6
-string_9	Test_7
-string_10	Test_7_ERROR
-string_11	Test_7_1
-string_12	Test_7_2
-string_13	DONE!
+string_1	fun_1

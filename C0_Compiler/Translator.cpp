@@ -215,10 +215,12 @@ void Translator::proc_quat(const Quaternion q) {
 	}
 	else if (q.op == "PRINT") {//PRINT	type	name£¬type = INTSY/CHARSY/STRING
 		if (q.para1 == "INTSY") {
-			load_to(q.para2, "$a0");
+			if (q.para2 != "$v0")	load_to(q.para2, "$a0");
+			else out << "move	$a0, $v0" << endl;
 			out << "li	$v0, 1" << endl;
 		} else if (q.para1 == "CHARSY") {
-			load_to(q.para2, "$a0");
+			if (q.para2 != "$v0")	load_to(q.para2, "$a0");
+			else out << "move	$a0, $v0" << endl;
 			out << "li	$v0, 11" << endl;
 		} else {//String
 			out << "la	$a0, " << q.para2 << endl;
