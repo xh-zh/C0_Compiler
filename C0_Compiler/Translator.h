@@ -15,5 +15,5 @@ public:
 	static void translate();
 	static void load_to(string name, string register_name);//把name加载到寄存器register_name, name可以是纯数字、字符、标识符（全局和局部）
 	static void store_to(string name, string register_name);
-
+	static string tmp_reg_alloc();
 };

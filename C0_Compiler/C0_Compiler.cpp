@@ -21,10 +21,16 @@ int _tmain(int argc, _TCHAR* argv[])
 		//Table::print("../data/table.txt");
 		//StringTable::print("../data/StringTable.txt");
 		Intermediate_code::print("../data/Intermediate_code.txt");
+		Translator::init("../data/mips_before_optimize.asm");
+		Translator::translate();
 		Intermediate_code::lable_combine();
+		Intermediate_code::peephole_optimize();
+		Intermediate_code::print("../data/Intermediate_code_before_DAG_optimize.txt");
+		Translator::init("../data/mips_before_DAG_optimize.asm");
 		Intermediate_code::DAG_optimize();
-		Intermediate_code::repeated_assignment_optimize();
-		Intermediate_code::del_nouse_val();
+		Intermediate_code::lable_combine();
+		Intermediate_code::peephole_optimize();
+		Intermediate_code::lable_combine();
 		Intermediate_code::print("../data/Intermediate_code_after_DAG_optimize.txt");
 	}
 	Translator::init("../data/mips.asm");

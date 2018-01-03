@@ -22,7 +22,7 @@ void Intermediate_code::push_back(const Quaternion q) {
 void Intermediate_code::print(char* path) {
 	ofstream out(path);
 	for (vector<Quaternion>::iterator iter = code.begin(); iter != code.end(); ++iter) {
-		if (iter->op != "NOP")//不打印删除后的中间代码
+		//if (iter->op != "NOP")//不打印删除后的中间代码
 			out << iter->op << "\t" << iter->para1 << "\t" << iter->para2 << "\t" << iter->result << endl;
 	}
 	out.close();
@@ -92,6 +92,7 @@ vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int en
 	int node_cnt = 0;//节点编号从0开始计
 	map<string, int> node_list;//由变量名找到节点号
 	vector<DAG_node*> nodes;//由节点号找到节点
+	map<int, int> code_line_to_node;//由代码行号找到节点号
 	for (int i=begin; i<=end; i++) {
 		//左右节点都在节点表里找，符号节点在DAG图中找
 		const Quaternion q = code[i];
@@ -127,6 +128,7 @@ vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int en
 			//}
 			lnode->add_val(q.result);
 			node_list[q.result] = node_list[q.para1];
+			code_line_to_node[i] = node_list[q.result];
 			continue;//单目运算符处理结束
 		}
 		//右节点
@@ -154,8 +156,9 @@ vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int en
 			node_list[q.result] = node_cnt++;
 			nodes.push_back(node);
 		}
+		code_line_to_node[i] = node_list[q.result];
 	}
-	return generate(node_list, nodes, node_cnt);
+	return generate(node_list, code_line_to_node, nodes, node_cnt, begin, end);
 }
 
 void Intermediate_code::divd_blk() {
@@ -195,72 +198,110 @@ int Intermediate_code::in_DAG(vector<DAG_node*> nodes, const string op, DAG_node
 	return -1;
 }
 
-vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, vector<DAG_node*> nodes, int node_cnt) {
-	stack<int> node_stack;
-	vector<bool> in_que(nodes.size());
-	map<DAG_node*, int> index_map;
-	for (int i=0; i<nodes.size(); i++) {
-		index_map[nodes[i]] = i;//初始化index_map
-		in_que[i] = false;//初始化in_que数组
-	}
-		
-	while (!all_in_que(in_que, nodes.size())) {//因为对节点的一次遍历不能保证所有的节点都被加入队列，因此要循环多次，直到所有节点都被加入队列
-		for (int i=0; i<nodes.size(); i++) {
-			if (!in_que[i] && all_parents_in_que(in_que, nodes[i]->parents, index_map)) {//选取一个尚未进入队列，但其所有父节点均已进入队列或没有父节点的中间节点
-				node_stack.push(i);//入队
-				in_que[i] = true;
-				DAG_node *cur_node = nodes[i]->l;
-				while (cur_node != nullptr ) {//沿着左子节点向下走
-					int cur_index = index_map[cur_node];
-					if (!in_que[cur_index] && all_parents_in_que(in_que, cur_node->parents, index_map)) {
-						node_stack.push(cur_index);
-						in_que[cur_index] = true;
-						cur_node = cur_node->l;
-					} else 
-						break;
-				}
-			}
-		}
-	}
+//vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, vector<DAG_node*> nodes, int node_cnt) {
+//	stack<int> node_stack;
+//	vector<bool> in_que(nodes.size());
+//	map<DAG_node*, int> index_map;
+//	for (int i=0; i<nodes.size(); i++) {
+//		index_map[nodes[i]] = i;//初始化index_map
+//		in_que[i] = false;//初始化in_que数组
+//	}
+//		
+//	while (!all_in_que(in_que, nodes.size())) {//因为对节点的一次遍历不能保证所有的节点都被加入队列，因此要循环多次，直到所有节点都被加入队列
+//		for (int i=0; i<nodes.size(); i++) {
+//			if (!in_que[i] && all_parents_in_que(in_que, nodes[i]->parents, index_map)) {//选取一个尚未进入队列，但其所有父节点均已进入队列或没有父节点的中间节点
+//				node_stack.push(i);//入队
+//				in_que[i] = true;
+//				DAG_node *cur_node = nodes[i]->l;
+//				while (cur_node != nullptr ) {//沿着左子节点向下走
+//					int cur_index = index_map[cur_node];
+//					if (!in_que[cur_index] && all_parents_in_que(in_que, cur_node->parents, index_map)) {
+//						node_stack.push(cur_index);
+//						in_que[cur_index] = true;
+//						cur_node = cur_node->l;
+//					} else 
+//						break;
+//				}
+//			}
+//		}
+//	}
+//	vector<Quaternion> new_code;
+//	while (!node_stack.empty()) {
+//		DAG_node *cur_node = nodes[node_stack.top()];
+//		switch (cur_node->child_cnt) {
+//		case 0:
+//			if (cur_node->vals.size() != 1) {
+//				for (int i=1; i<cur_node->vals.size(); i++)
+//				new_code.push_back(Quaternion("=", cur_node->vals[0], "", cur_node->vals[i]));
+//			}
+//			break;
+//		case 1://=	等号直接置于原节点上，正确情况下不会走这个分支了
+//			new_code.push_back(Quaternion("=", cur_node->l->vals[0], "", cur_node->vals[0]));
+//			break;
+//		case 2:
+//		{
+//			int np_val_index = 0;//优先使用非临时变量
+//			for (int i=0; i<cur_node->vals.size(); i++) {
+//				string val = cur_node->vals[i];
+//				if (val.size()>2 && val.substr(val.size()-2, val.size()-1) != "_t") {
+//					np_val_index = i;
+//					break;
+//				}
+//			}
+//			new_code.push_back(Quaternion(cur_node->op, cur_node->l->vals[0], cur_node->r->vals[0], cur_node->vals[np_val_index]));
+//			for (int i=0; i<cur_node->vals.size(); i++) {
+//				if (i != np_val_index) {
+//					new_code.push_back(Quaternion("=", cur_node->vals[np_val_index], "", cur_node->vals[i]));
+//				}
+//			}
+//			break;
+//		}
+//		default:
+//			cout << "Error in Intermediate_code::generate" << endl;
+//		}
+//		node_stack.pop();
+//	}
+//	for (int i=0; i<nodes.size(); i++)
+//		delete nodes[i];
+//	return new_code;
+//}
+
+vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, map<int, int> code_line_to_node,
+	vector<DAG_node*> nodes, int node_cnt, const int begin, const int end) {
 	vector<Quaternion> new_code;
-	while (!node_stack.empty()) {
-		DAG_node *cur_node = nodes[node_stack.top()];
+	vector<string> hav_gen;//索引是node编号，因此从0开始计，故使用数组
+	for (int i=0; i<node_cnt; i++)	hav_gen.push_back("");
+	for (int i = begin; i <= end; i++) {
+		const int node_index = code_line_to_node[i];
+		DAG_node *cur_node = nodes[node_index];
 		switch (cur_node->child_cnt) {
 		case 0:
-			if (cur_node->vals.size() != 1) {
-				for (int i=1; i<cur_node->vals.size(); i++)
-				new_code.push_back(Quaternion("=", cur_node->vals[0], "", cur_node->vals[i]));
-			}
+		{
+			new_code.push_back(Quaternion("=", cur_node->vals[0], "", code[i].result));
 			break;
-		case 1://=	等号直接置于原节点上，正确情况下不会走这个分支了
-			new_code.push_back(Quaternion("=", cur_node->l->vals[0], "", cur_node->vals[0]));
-			break;
+		}
 		case 2:
 		{
-			int np_val_index = 0;//优先使用非临时变量
-			for (int i=0; i<cur_node->vals.size(); i++) {
-				string val = cur_node->vals[i];
-				if (val.substr(val.size()-2, val.size()-1) != "_t") {
-					np_val_index = i;
-					break;
-				}
+			if (hav_gen[node_index]=="") {
+				new_code.push_back(Quaternion(cur_node->op, cur_node->l->vals[0], cur_node->r->vals[0], code[i].result));
+				hav_gen[node_index] = code[i].result;
 			}
-			new_code.push_back(Quaternion(cur_node->op, cur_node->l->vals[0], cur_node->r->vals[0], cur_node->vals[np_val_index]));
-			for (int i=0; i<cur_node->vals.size(); i++) {
-				if (i != np_val_index) {
-					new_code.push_back(Quaternion("=", cur_node->vals[np_val_index], "", cur_node->vals[i]));
-				}
-			}
+			else 
+				new_code.push_back(Quaternion("=", hav_gen[node_index], "", code[i].result));
 			break;
 		}
-		default:
-			cout << "Error in Intermediate_code::generate" << endl;
+		default:;
 		}
-		node_stack.pop();
 	}
-	for (int i=0; i<nodes.size(); i++)
-		delete nodes[i];
 	return new_code;
+}
+
+void Intermediate_code::del_nop() {
+	for (vector<Quaternion>::iterator iter = code.begin(); iter != code.end(); ++iter) {
+		if (iter->op == "NOP") {
+			iter = code.erase(iter);
+		}
+	}
 }
 
 void Intermediate_code::print_blk(char* path) {
@@ -293,26 +334,27 @@ void Intermediate_code::DAG_optimize() {
 			}
 		}
 	}
+	del_nop();
 	del_nouse_val();
 }
 
 void Intermediate_code::peephole_optimize() {
-	for (int i=0; i<code.size() -1; i++) {
-		const Quaternion q_1 = code[i];
-		const Quaternion q_2 = code[i+1];
-		if (q_1.op == "=" && q_1.result[q_1.result.size()-1] == 't' && 
-			q_1.result == q_2.para1 && q_2.op == "=") {
-			code[i].result = code[i+1].result;
-			code[i+1].op = "NOP";
-		}
+	for (int i=0; i<5; i++) {
+		repeated_assignment_optimize();
+		del_nouse_val();
 	}
 }
 
 vector<Quaternion> Intermediate_code::repeated_assignment_optimize(vector<Quaternion> source_code) {
 	for (int i=0; i<source_code.size()-1; i++) {
-		if (source_code[i].op == source_code[i+1].op &&
-			source_code[i].op == "=" &&
-			source_code[i].result == source_code[i+1].result) {
+		string op = source_code[i+1].op;
+		if (source_code[i].op == "=" && 
+			(op=="+" || op=="-" || op=="*" || op=="/" ||
+			op=="<" || op=="<=" || op==">" || op==">=" || 
+			op=="==" || op=="!=" || op=="=[]" || op=="=") &&
+			source_code[i].result == source_code[i+1].result &&
+			source_code[i].result != source_code[i+1].para1 &&
+			source_code[i].result != source_code[i+1].para2) {
 			source_code[i].op = "NOP";
 		}
 		if (source_code[i].op == "=") {
@@ -324,6 +366,16 @@ vector<Quaternion> Intermediate_code::repeated_assignment_optimize(vector<Quater
 				source_code[i].result == source_code[i+1].para2) {
 				source_code[i+1].para2 = source_code[i].para1;
 			}
+		}
+		op = source_code[i].op;
+		if ((op=="+" || op=="-" || op=="*" || op=="/" ||
+			op=="<" || op=="<=" || op==">" || op==">=" || 
+			op=="==" || op=="!=" || op=="=[]" || op=="=") &&
+			source_code[i+1].op=="=" &&
+			source_code[i].result==source_code[i+1].para1) {
+			source_code[i].result = source_code[i+1].result;
+			source_code[i+1].result = source_code[i+1].para1;
+			source_code[i+1].para1 = source_code[i].result;
 		}
 	}
 	return source_code;
@@ -352,6 +404,7 @@ void Intermediate_code::del_nouse_val() {
 			}
 		}
 	}
+	del_nop();
 }
 
 bool Intermediate_code::all_in_que(const vector<bool> in_que, const int size) {

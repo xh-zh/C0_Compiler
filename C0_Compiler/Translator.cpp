@@ -8,7 +8,7 @@ bool debug = false;//汇编代码中显示中间代码
 ofstream Translator::out;
 bool Translator::global = true;
 string Translator::cur_fun_name = "top";
-vector<string> Translator::register_descriptor[10];
+vector<string> Translator::register_descriptor[10];//$t0-$t9的寄存器描述符
 
 Translator::Translator()
 {
@@ -31,6 +31,7 @@ bool Translator::isnum(const string s) {
 }
 
 void Translator::init(char* path) {
+	global = true;
 	out = ofstream(path);
 	out << ".data" << endl;//开头就是数据区
 	for (unsigned i=0; i<StringTable::names.size(); i++)//字符串表
@@ -279,4 +280,8 @@ void Translator::store_to(const string name, const string register_name) {
 		const int addr = Table::get_addr(cur_fun_name, name);
 		out << "sw	" << register_name << ", " << int2str(addr) << "($sp)" << endl;
 	}
+}
+
+string Translator::tmp_reg_alloc() {
+	return "";
 }

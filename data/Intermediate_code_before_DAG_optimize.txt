@@ -36,12 +36,24 @@ ARRAY	INTSY	10	abc
 =[]	abc	32_t	34_t
 =[]	str	34_t	36_t
 =[]	abc	36_t	38_t
-=[]	str	38_t	55_t
-=	55_t		40_t
-+	55_t	38_t	55_t
+=[]	str	38_t	40_t
+=[]	str	num_0	43_t
+=[]	abc	43_t	45_t
+=[]	str	45_t	47_t
+=[]	abc	47_t	49_t
+=[]	str	49_t	51_t
+=[]	abc	51_t	53_t
+=[]	str	53_t	55_t
+=[]	str	num_0	58_t
+=[]	abc	58_t	60_t
+=[]	str	60_t	62_t
+=[]	abc	62_t	64_t
+=[]	str	64_t	66_t
+=[]	abc	66_t	67_t
++	55_t	67_t	55_t
 []=	40_t	55_t	abc
 =	4		68_t
-=	28_t		71_t
+=[]	str	num_0	71_t
 =	6		72_t
 =	5		73_t
 -	0	1	74_t
@@ -49,16 +61,16 @@ ARRAY	INTSY	10	abc
 +	74_t	76_t	74_t
 +	74_t	1	74_t
 =[]	abc	74_t	77_t
-+	5	77_t	73_t
++	73_t	77_t	73_t
 -	73_t	5	73_t
 =[]	str	73_t	78_t
-*	6	78_t	72_t
+*	72_t	78_t	72_t
 /	72_t	2	72_t
 /	72_t	3	72_t
 =[]	abc	72_t	80_t
-*	28_t	80_t	71_t
+*	71_t	80_t	71_t
 =[]	str	71_t	82_t
-+	4	82_t	68_t
++	68_t	82_t	68_t
 =[]	str	2	85_t
 =[]	abc	85_t	86_t
 -	68_t	86_t	68_t
@@ -143,7 +155,7 @@ VAL	CHARSY		c
 =	1		m_i_2
 =	2		m_i_3
 =	$43		m_c_1
-==	1	100	121_t
+==	m_i_1	100	121_t
 BZ	121_t	lable_2	
 PRINT	STRING	string_2	
 PRINT	STRING	string_0	
@@ -266,8 +278,9 @@ PRINT	STRING	string_0
 BNZ	190_t	lable_23	
 LABLE	lable_14		
 -	0	m_c_1	m_i_1
+=	m_i_1		192_t
 -	0	43	193_t
-==	m_i_1	193_t	194_t
+==	192_t	193_t	194_t
 BZ	194_t	lable_24	
 PRINT	STRING	string_9	
 PRINT	STRING	string_0	
