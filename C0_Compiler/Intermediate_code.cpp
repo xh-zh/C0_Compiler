@@ -2,7 +2,7 @@
 #include "Intermediate_code.h"
 #include "DAG_node.h"
 #include <queue>
-#include <stack>
+//#include <stack>
 
 vector<Quaternion> Intermediate_code::code;
 vector<basic_block> Intermediate_code::blocks;
@@ -85,8 +85,6 @@ void Intermediate_code::lable_combine() {
 		}
 	}
 }
-
-
 
 vector<Quaternion> Intermediate_code::generate_DAG(const int begin, const int end) {
 	int node_cnt = 0;//节点编号从0开始计
@@ -267,7 +265,7 @@ int Intermediate_code::in_DAG(vector<DAG_node*> nodes, const string op, DAG_node
 //}
 
 vector<Quaternion> Intermediate_code::generate(map<string, int> node_list, map<int, int> code_line_to_node,
-	vector<DAG_node*> nodes, int node_cnt, const int begin, const int end) {
+	vector<DAG_node*> nodes, const int node_cnt, const int begin, const int end) {
 	vector<Quaternion> new_code;
 	vector<string> hav_gen;//索引是node编号，因此从0开始计，故使用数组
 	for (int i=0; i<node_cnt; i++)	hav_gen.push_back("");
@@ -406,7 +404,7 @@ void Intermediate_code::del_nouse_val() {
 	}
 	del_nop();
 }
-
+/*
 bool Intermediate_code::all_in_que(const vector<bool> in_que, const int size) {
 	for (int i=0; i<size; i++)
 		if (!in_que[i]) 
@@ -420,3 +418,4 @@ bool Intermediate_code::all_parents_in_que(const vector<bool> in_que, const vect
 		if (!in_que[index_map[parents[i]]]) return false;
 	return true;
 }
+*/
