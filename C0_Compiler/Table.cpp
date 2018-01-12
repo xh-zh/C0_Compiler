@@ -46,7 +46,7 @@ int Table::val_enter(const string name, const enum kinds type, const int value) 
 	return 0;
 }
 
-int Table::val_enter_t(string name, enum kinds type, int value){
+int Table::val_enter_t(const string name, const enum kinds type, const int value){
 	if (in_this_level(name)) {//当前层有同名标识符
 		return 1;
 	}
@@ -359,6 +359,54 @@ bool Table::have_addr(const string fun_name, const string name, const string add
 		}
 	}
 	return false;
+}
+
+void Table::clear_description(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			table[i].address_descriptor.clear();
+			return;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			table[i].address_descriptor.clear();
+			return;
+		}
+	}
+}
+
+void Table::add_description(const string fun_name, const string name, const string description) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			table[i].address_descriptor.push_back(description);
+			return;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			table[i].address_descriptor.push_back(description);
+			return;
+		}
+	}
+}
+
+void Table::add_stack_description(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			table[i].address_descriptor.push_back(int2str(table[i].addr));
+			return;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			table[i].address_descriptor.push_back(int2str(table[i].addr));
+			return;
+		}
+	}
 }
 
 bool Table::set_type(const string name, const enum kinds type) {
