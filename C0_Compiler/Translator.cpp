@@ -40,7 +40,7 @@ void Translator::init(char* path) {
 
 void Translator::proc_quat(const Quaternion q) {
 	if (debug) out<< "#" << q.op << "\t" << q.para1 << "\t" << q.para2 << "\t" << q.result << endl;
-	if (q.op == "CONST") {//CONST	type	value	name
+	if (q.op == "~CONST") {//CONST	type	value	name
 		if (global) {//全局数据区
 			out << q.result << ": .word\t" << q.para2 <<endl;	
 		} else {//运行栈
@@ -49,14 +49,14 @@ void Translator::proc_quat(const Quaternion q) {
 			out << "sw	$t0, " << int2str(addr) << "($sp)" << endl;
 		}
 
-	} else if (q.op == "VAL") {//VAL	type	blank	name
+	} else if (q.op == "~VAL") {//VAL	type	blank	name
 		if (global) {//全局数据区
 			out << q.result << ": .word\t0" <<endl;	
 		} else {//运行栈
 			//相当于初始化成0
 		}
 
-	} else if (q.op == "ARRAY") {//ARRAY	type	dim	name
+	} else if (q.op == "~ARRAY") {//ARRAY	type	dim	name
 		if (global) {//全局数据区
 			out << q.result << ": .word\t1 : " << q.para2 << endl;//初始化成1
 		} else {//运行栈
@@ -145,35 +145,35 @@ void Translator::proc_quat(const Quaternion q) {
 		out << "lw	$t0, 0($t0)" << endl;
 		store_to(q.result, "$t0");//被赋值的应该不会是$v0吧
 
-	} else if (q.op == "BZ") {//BZ	条件		LABLE，不成立跳转
+	} else if (q.op == "~BZ") {//BZ	条件		LABLE，不成立跳转
 		const string bz_reg = q.para1=="$v0"?"$v0":"$t0";
 		if (bz_reg != "$v0")	load_to(q.para1, bz_reg);
 		out << "beq	" << bz_reg << ", $0, " << q.para2 << endl;
 
-	} else if (q.op == "BNZ") {//BNZ	条件		LABLE，成立跳转
+	} else if (q.op == "~BNZ") {//BNZ	条件		LABLE，成立跳转
 		const string bnz_reg = q.para1=="$v0"?"$v0":"$t0";
 		if (bnz_reg != "$v0")	load_to(q.para1, bnz_reg);
 		out << "bne	" << bnz_reg << ", $0, " << q.para2 << endl;
 
-	} else if (q.op == "GOTO") {//GOTO	LABLE
+	} else if (q.op == "~GOTO") {//GOTO	LABLE
 		out << "j	" << q.para1 << endl;
 
-	} else if (q.op == "LABLE") {//LABLE	lable_name
+	} else if (q.op == "~LABLE") {//LABLE	lable_name
 		out << q.para1 << ":" << endl;
 
-	} else if (q.op == "FUN" && q.para1 == "BEGIN") {//全局变量声明结束
+	} else if (q.op == "~FUN" && q.para1 == "~BEGIN") {//全局变量声明结束
 		out << ".text" << endl;
 		out << "j	main" << endl;
 		global = false;
 
-	} else if (q.op == "FUN") {//FUN	INTSY	fun_name
+	} else if (q.op == "~FUN") {//FUN	INTSY	fun_name
 		cur_fun_name = q.para2;
 		const int size = Table::get_fun_size(cur_fun_name);
 		out << cur_fun_name << ":" << endl;
 		out << "subi	$sp, $sp, " << int2str(size) << endl;
 		out << "sw	$ra, 0($sp)" << endl;
 
-	} else if (q.op == "PUSH") {//PUSH	val_name	para_name	fun_name
+	} else if (q.op == "~PUSH") {//PUSH	val_name	para_name	fun_name
 		//最后还是决定不用寄存器传参了，因为当一个函数调用作为另一个函数参数传入的时候，会发生严重错误
 		//para_name一定是函数参数名，因此这里没必要用stroe_to()
 		const int fun_size = Table::get_fun_size(q.result);
@@ -185,10 +185,10 @@ void Translator::proc_quat(const Quaternion q) {
 		out << "sw	" << val_reg << ", " << int2str(para_addr) << "($sp)" << endl;
 		out << "addi	$sp, $sp, " << int2str(fun_size) << endl;
 
-	} else if (q.op == "CALL") {//CALL	fun_name
+	} else if (q.op == "~CALL") {//CALL	fun_name
 		out << "jal	" << q.para1 << endl;
 
-	} else if (q.op == "RETURN") {//RETURN	val_type	val_name
+	} else if (q.op == "~RETURN") {//RETURN	val_type	val_name
 		if (cur_fun_name == "main") {
 			out << "li	$v0, 10" << endl;
 			out << "syscall" << endl;
@@ -201,7 +201,7 @@ void Translator::proc_quat(const Quaternion q) {
 		out << "addi	$sp, $sp, " << int2str(size) << endl;
 		out << "jr	$ra" <<endl;
 
-	} else if (q.op == "END") {//END	fun_name//有返回语句的话不会执行到这
+	} else if (q.op == "~END") {//END	fun_name//有返回语句的话不会执行到这
 		//主函数只有TERMINATE，没有END
 		if (!Table::is_void_func(cur_fun_name)) {
 			load_to(q.para2, "$v0");//返回值
@@ -211,15 +211,13 @@ void Translator::proc_quat(const Quaternion q) {
 		out << "addi	$sp, $sp, " << int2str(size) << endl;
 		out << "jr	$ra" <<endl;
 
-	} else if (q.op == "LOAD_RETURN_VALUE") {//LOAD_RETURN_VALUE	blank	blank	name
-		store_to(q.result, "$v0");
 	}
-	else if (q.op == "PRINT") {//PRINT	type	name，type = INTSY/CHARSY/STRING
-		if (q.para1 == "INTSY") {
+	else if (q.op == "~PRINT") {//PRINT	type	name，type = INTSY/CHARSY/STRING
+		if (q.para1 == "!INTSY") {
 			if (q.para2 != "$v0")	load_to(q.para2, "$a0");
 			else out << "move	$a0, $v0" << endl;
 			out << "li	$v0, 1" << endl;
-		} else if (q.para1 == "CHARSY") {
+		} else if (q.para1 == "!CHARSY") {
 			if (q.para2 != "$v0")	load_to(q.para2, "$a0");
 			else out << "move	$a0, $v0" << endl;
 			out << "li	$v0, 11" << endl;
@@ -229,15 +227,15 @@ void Translator::proc_quat(const Quaternion q) {
 		}
 		out << "syscall" << endl;
 
-	} else if (q.op == "SCANF") {//SCANF	type	name
-		if (q.para1 == "INTSY") {
+	} else if (q.op == "~SCANF") {//SCANF	type	name
+		if (q.para1 == "!INTSY") {
 			out << "li	$v0, 5" << endl;
 		} else {
 			out << "li	$v0, 12" << endl;
 		}
 		out << "syscall" << endl;
 		store_to(q.para2, "$v0");
-	} else if (q.op == "TERMINATE") {
+	} else if (q.op == "~TERMINATE") {
 		out << "li	$v0, 10" << endl;
 		out << "syscall" << endl;
 	}
