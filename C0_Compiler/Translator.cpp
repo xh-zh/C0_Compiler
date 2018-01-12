@@ -280,6 +280,51 @@ void Translator::store_to(const string name, const string register_name) {
 	}
 }
 
-string Translator::tmp_reg_alloc() {
-	return "";
+//这个方法只对未分配寄存器的变量申请寄存器
+string Translator::tmp_reg_alloc(const string val_name) {
+	for	(int i=0; i<10; i++) {//有空寄存器直接分配
+		if (register_descriptor[i].empty()) {
+			const string reg = "$t" + int2str(i);
+			//更新变量的地址描述符
+			Table::add_addr(cur_fun_name, val_name, reg);
+			//更新寄存器的变量描述符
+			register_descriptor[i].push_back(val_name);
+			return reg;
+		}
+	}
+	/********************无空寄存器，搜索一个淘汰代价较小的寄存器，淘汰之*********************/
+	int index = 0;
+	for (int i=1; i<10; i++)
+		if (register_descriptor[i].size() < register_descriptor[index].size()) {
+			index = i;
+		}
+	//$t_index中保存的变量最少，将这个寄存器淘汰
+	const string reg = "$t" + int2str(index);
+	//淘汰原有变量
+	for (vector<string>::iterator iter = register_descriptor[index].begin(); iter != register_descriptor[index].end(); ++iter) {
+		if (Table::only_here(cur_fun_name, *iter, reg)) {//变量只存在于这个寄存器中
+			store_to(*iter, reg);
+			Table::clear_addr(cur_fun_name, *iter);
+			Table::add_stack_addr(cur_fun_name, *iter);
+		} else {//变量在别处有备份
+			Table::del_addr(cur_fun_name, *iter, reg);
+		}
+	}
+	//分配给当前变量
+	Table::add_addr(cur_fun_name, val_name, reg);
+	//更新寄存器描述符
+	register_descriptor[index].clear();
+	register_descriptor[index].push_back(val_name);
+	return reg;
 }
+
+void Translator::save_all_val() {
+	for (int i=0; i<10; i++) {
+		for (vector<string>::iterator iter=register_descriptor[i].begin(); iter!=register_descriptor[i].end(); ++iter) {
+			if (!Table::in_stack(cur_fun_name, *iter)) {//保存所有不在栈中的变量
+				store_to(*iter, "$t"+int2str(i));
+			}
+		}
+	}
+}
+
