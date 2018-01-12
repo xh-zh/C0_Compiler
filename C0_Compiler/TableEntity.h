@@ -2,7 +2,7 @@
 class TableEntity
 {
 public:
-	string	name;		//符号的唯一标识，字符串是没有名字的，由name保存其内容
+	string	name;		//符号名
 	int		addr;		//符号在运行中的相对地址
 	enum _CLASS _class;	//符号所属种类
 	enum kinds type;	//符号的数据类型:int,char,string 对于函数，这是它的返回值类型
