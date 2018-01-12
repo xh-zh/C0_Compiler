@@ -36,7 +36,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	Translator::init("../data/mips.asm");
 	Translator::translate();
 	cout << "Done!" << endl;
-
+	system("pause");
 
 	return 0;
 }
