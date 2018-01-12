@@ -41,15 +41,19 @@ public:
 
 	static bool set_type(string name, enum kinds type);			//函数不安全，行为正确与否与Table::cur_level_pointer有关，只能在语法分析时用
 
-	static void print(char *path);		//打印符号表
+	static void print(char *path);								//打印符号表
 	
-	static void add_addr(string fun_name, string name, string addr);//向某变量的地址描述符中添加地址
-	static void add_addr_and_del_other(string fun_name, string name, string addr);//向某变量的地址描述符中添加地址并删除其他地址
-	static void del_addr(string fun_name, string name, string addr);//向某变量的地址描述符中删除地址
-	static bool have_addr(string fun_name, string name, string addr);//某变量的地址描述符中包含addr
+	static void add_addr(string fun_name, string name, string addr);				//向某变量的地址描述符中添加地址	
+	static void add_stack_addr(string fun_name, string name);						//添加变量在运行栈中的地址描述符
+	static void add_addr_and_del_other(string fun_name, string name, string addr);	//向某变量的地址描述符中添加地址并删除其他地址
+	static void del_addr(string fun_name, string name, string addr);				//向某变量的地址描述符中删除地址
+	static bool have_addr(string fun_name, string name, string addr);				//某变量的地址描述符中包含addr
+	static void clear_addr(string fun_name, string name);							//清除变量的所有地址描述符
 
-	static void clear_description(string fun_name, string name);//清除变量的所有地址描述符
-	static void add_description(string fun_name, string name, string description);//添加地址描述符
-	static void add_stack_description(string fun_name, string name);//添加变量在运行栈中的地址描述符
+	static bool only_in_stack(string fun_name, string name);						//地址描述符中只有运行栈
+	static bool only_here(string fun_name, string name, string reg_name);			//地址描述符中只有reg_name
+	static bool in_stack(string fun_name, string name);								//地址描述符中有运行栈
+	static string get_reg(string fun_name, string name);							//从地址描述符中找一个寄存器
+	static vector<string> get_address_descriptor(string fun_name, string name);		//获取地址描述符
 };
 
