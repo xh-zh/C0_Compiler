@@ -1324,7 +1324,9 @@ int Parse::proc_read_stat() {
 		return 1;
 	}
 	string para_name = Lexer::token;
-	if (Table::get_CLASS(cur_fun, para_name) != _CLASS::VAL_CLASS) {
+	if (!Table::contain(cur_fun, para_name)) {//未定义标识符
+		Error::addError(Lexer::line, UNDEFINED_IDSY);
+	} else if (Table::get_CLASS(cur_fun, para_name) != _CLASS::VAL_CLASS) {
 		Error::addError(Lexer::line, ERROR_SCANF);	
 	}
 	enum kinds type = Table::get_type(cur_fun, para_name);
