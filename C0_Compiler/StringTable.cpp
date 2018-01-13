@@ -5,12 +5,12 @@ int StringTable::i = 1;//0Œª÷√ «"\\n"
 vector<string> StringTable::names;
 vector<string> StringTable::contents;
 
-StringTable::StringTable(void)
+StringTable::StringTable()
 {
 }
 
 
-StringTable::~StringTable(void)
+StringTable::~StringTable()
 {
 }
 
