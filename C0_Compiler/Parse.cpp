@@ -943,7 +943,6 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 					Error::addError(Lexer::line, CAL_FUN_UNMATCHING);
 				}
 				dim++;
-				string typ = para_type==kinds::INTSY?"INTSY":"CHARSY";
 				Intermediate_code::push_back(Quaternion("~PUSH", para_name, fun_para[0].name, fun_name));
 				while (Lexer::symbol == kinds::COMMASY ) {//读到逗号说明还有参数
 					Lexer::getToken();
@@ -952,7 +951,7 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 					{	
 						Error::addError(Lexer::line, CAL_FUN_UNMATCHING);
 					}
-					typ = para_type==kinds::INTSY?"INTSY":"CHARSY";
+					string typ = para_type==kinds::INTSY?"INTSY":"CHARSY";
 					Intermediate_code::push_back(Quaternion("~PUSH", para_name, fun_para[dim].name, fun_name));
 					dim++;
 				}
@@ -982,7 +981,7 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 int Parse::proc_for_stat() {
 	const int save1 = save_ptr++;
 	const int save2 = save_ptr++;
-	Intermediate_code::push_back(Quaternion("~LOOP", "~BEDIN", "", ""));
+	//Intermediate_code::push_back(Quaternion("~LOOP", "~BEDIN", "", ""));
 	if (Lexer::symbol != kinds::FOR) {
 		return 1;
 	}
@@ -1104,7 +1103,7 @@ int Parse::proc_for_stat() {
 													proc_cond(cond_name, cond_type);//中间条件
 													Lexer::recover(save2);
 													Intermediate_code::push_back(Quaternion("~BNZ", cond_name, lable, ""));
-													Intermediate_code::push_back(Quaternion("~LOOP", "~END"	, "", ""));
+													//Intermediate_code::push_back(Quaternion("~LOOP", "~END"	, "", ""));
 													return 0;
 												}
 												//不是语句的开头符号，正常情况不会到此分支
@@ -1374,7 +1373,7 @@ int Parse::proc_writ_stat() {
 	Lexer::getToken();
 	if (Lexer::symbol == kinds::STRSY) {
 		//现在读到了字符串，后面可能还有逗号，标识符
-		Intermediate_code::push_back(Quaternion("~PRINT", "!STRING", StringTable::add(Lexer::token), ""));
+		const string token_lable = StringTable::add(Lexer::token);
 		Lexer::getToken();
 		if (Lexer::symbol == kinds::COMMASY) {
 			//有读到了逗号，期望后面有表达式
@@ -1389,10 +1388,12 @@ int Parse::proc_writ_stat() {
 				}
 				return 1;
 			}
+			Intermediate_code::push_back(Quaternion("~PRINT", "!STRING", token_lable, ""));
 			const string typ = expr_type==kinds::INTSY?"INTSY":"CHARSY";
 			Intermediate_code::push_back(Quaternion("~PRINT", "!"+typ, expr_name, ""));
 			//达到了期望，即print字符串和表达式，并且有了预读入
-		}
+		} else 
+			Intermediate_code::push_back(Quaternion("~PRINT", "!STRING", token_lable, ""));
 	} else {//只有表达式
 		string expr_name;
 		enum kinds expr_type;
