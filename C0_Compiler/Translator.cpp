@@ -2,8 +2,8 @@
 #include "Translator.h"
 
 /***********DEBUG*************/
-bool debug = true;//汇编代码中显示中间代码
-bool show_regisiter_descriptor = true;//汇编代码中显示寄存器描述符
+bool debug = false;//汇编代码中显示中间代码
+bool show_regisiter_descriptor = false;//汇编代码中显示寄存器描述符
 /***********DEBUG*************/
 
 ofstream Translator::out;
@@ -40,14 +40,6 @@ void Translator::init(char* path) {
 }
 
 void Translator::proc_quat(const Quaternion q) {
-	/************************************************************************/
-	/*if (q.op=="-" && q.para1=="m" && q.para2=="1" && q.result=="m") {
-		cout << "=================================================" << endl;
-		for (int i=0; i<Table::get_address_descriptor(cur_fun_name, "m").size(); i++)
-			cout << Table::get_address_descriptor(cur_fun_name, "m")[i] << endl;
-		cout << "=================================================" << endl;
-	}*/
-	/************************************************************************/
 	if (debug) out<< "#" << q.op << "\t" << q.para1 << "\t" << q.para2 << "\t" << q.result << endl;
 	if (show_regisiter_descriptor) 
 		for (int i=0; i<10; i++) {
@@ -83,21 +75,6 @@ void Translator::proc_quat(const Quaternion q) {
 	} else if (q.op=="+" || q.op=="-" || q.op=="*" || q.op=="/" ||
 		q.op=="<" || q.op=="<=" || q.op==">" || q.op==">=" || 
 		q.op=="==" || q.op=="!=") {//op	para1	para2	result
-		/************************************************************************************/
-		/*if (q.op=="-" && q.para1=="m" && q.para2=="1" && q.result=="m") {
-			cout << "=================================================" << endl;
-			for (int i=0; i<Table::get_address_descriptor(cur_fun_name, "m").size(); i++)
-				cout << Table::get_address_descriptor(cur_fun_name, "m")[i] << endl;
-			cout << "=================================================" << endl;
-		}*/
-		/*out << "# para1\t";
-		for (int i = 0; i < Table::get_address_descriptor(cur_fun_name, q.para1).size(); i++)
-			out << Table::get_address_descriptor(cur_fun_name, q.para1)[i] << "\t";
-		out << "\n# para2\t";
-		for (int i = 0; i < Table::get_address_descriptor(cur_fun_name, q.para2).size(); i++)
-			out << Table::get_address_descriptor(cur_fun_name, q.para2)[i] << "\t";
-		out << endl;*/
-		/************************************************************************************/
 
 		string result_reg;
 		const string para1_reg = get_read_reg(q.para1, "$a2", "", "");
@@ -391,6 +368,9 @@ void Translator::store_to(const string name, const string register_name) {
 
 //这个方法只对未分配寄存器的变量申请寄存器
 string Translator::tmp_reg_alloc(const string name, const string ban_reg1, const string ban_reg2) {
+	if (!Table::contain(cur_fun_name, name)) {
+		return "";
+	}
 	for	(int i=0; i<10; i++) {//有空寄存器直接分配
 		if (register_descriptor[i].empty()) {
 			const string reg = "$t" + int2str(i);
@@ -439,6 +419,9 @@ string Translator::tmp_reg_alloc(const string name, const string ban_reg1, const
 //这个方法只对已分配寄存器的变量申请代价最小的寄存器，为写入做准备
 //因为如果是只读的话，已分配寄存器的变量是不需要再次分配的
 string Translator::tmp_reg_alloc_for_alloced_val(const string name, const string ban_reg1, string ban_reg2) {
+	if (!Table::contain(cur_fun_name, name)) {
+		return "";
+	}
 	vector<string> v = Table::get_address_descriptor(cur_fun_name, name);
 	const string tmp_reg = Table::get_reg(cur_fun_name, name);//先随便找一个寄存器作为最小引用寄存器
 	int min_pay_reg_index = tmp_reg[tmp_reg.size()-1] - '0';//当前最小寄存器号
