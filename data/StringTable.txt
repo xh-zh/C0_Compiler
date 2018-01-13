@@ -1,2 +1,6 @@
 string_0	\n
-string_1	fun_1
+string_1	The mode is illegal.
+string_2	The number is too large.
+string_3	The number should not be negative or zero.
+string_4	mode:
+string_5	result:

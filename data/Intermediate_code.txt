@@ -1,650 +1,250 @@
-CONST	INTSY	1	con_i_1
-CONST	INTSY	1	con_i_2
-CONST	INTSY	2	con_i_3
-CONST	CHARSY	43	con_c_1
-CONST	CHARSY	45	con_c_2
-CONST	CHARSY	42	con_c_3
-VAL	INTSY		i_1
-VAL	INTSY		i_2
-VAL	INTSY		i_3
-ARRAY	INTSY	10	i_4
-ARRAY	INTSY	10	str
-VAL	CHARSY		c_1
-VAL	CHARSY		c_2
-VAL	CHARSY		c_3
-ARRAY	CHARSY	10	c_4
-FUN	BEGIN		
-FUN	INTSY	testArray	
-CONST	INTSY	0	num_0
-ARRAY	INTSY	10	abc
+~CONST	!INTSY	32768	M
+~CONST	!INTSY	2	a
+~CONST	!CHARSY	102	MODE
+~VAL	!INTSY		pra
+~ARRAY	!INTSY	10	factors
+~VAL	!INTSY		number
+~VAL	!CHARSY		mode
+~FUN	~BEGIN		
+~FUN	!VOID	init	
+~VAL	!INTSY		i
 =	0		0_t
-=	1		1_t
-[]=	0_t	1_t	str
-=	1		2_t
-=	2		3_t
-[]=	2_t	3_t	abc
-=	2		4_t
-=	3		5_t
-[]=	4_t	5_t	str
-=	3		6_t
-=	4		7_t
-[]=	6_t	7_t	abc
-=	4		8_t
-=	5		9_t
-[]=	8_t	9_t	str
-=	5		10_t
-=	6		11_t
-[]=	10_t	11_t	abc
-=	num_0		12_t
-=[]	str	12_t	13_t
-=	13_t		14_t
-=[]	abc	14_t	15_t
-=	15_t		16_t
-=[]	str	16_t	17_t
-=	17_t		18_t
-=[]	abc	18_t	19_t
-=	19_t		20_t
-=[]	str	20_t	21_t
+=	0_t		pra
+=	$97		1_t
+=	1_t		mode
+=	1024		2_t
+-	2_t	1	2_t
+=	2_t		i
+~LABLE	lable_0		
+=	i		3_t
+=	0		4_t
+[]=	3_t	4_t	factors
+-	i	1	i
+=	i		5_t
+=	0		6_t
+>=	5_t	6_t	7_t
+~BNZ	7_t	lable_0	
+~RETURN	~NONE		
+~END	init		
+~FUN	!VOID	getmode	
+~SCANF	!CHARSY	mode	
+~RETURN	~NONE		
+~END	getmode		
+~FUN	!VOID	getnumber	
+~SCANF	!INTSY	number	
+~RETURN	~NONE		
+~END	getnumber		
+~FUN	!INTSY	getResult	
+~PARA	!INTSY	i	
+~PARA	!INTSY	r	
+=	i		8_t
+=	number		9_t
++	9_t	-1	9_t
+<	8_t	9_t	10_t
+~BZ	10_t	lable_1	
+=	i		11_t
+=	i		12_t
++	12_t	1	12_t
+~PUSH	12_t	i	getResult
+=	r		13_t
+~PUSH	13_t	r	getResult
+~CALL	getResult		
+=	$v0		14_t
+*	11_t	14_t	11_t
+=	11_t		15_t
+=	15_t		r
+~GOTO	lable_2		
+~LABLE	lable_1		
+~LABLE	lable_2		
+=	r		16_t
+~RETURN	!INTSY	16_t	
+~END	getResult		
+~FUN	!VOID	error	
+~PARA	!INTSY	num	
+=	num		17_t
+-	17_t	1	18_t
+~BNZ	18_t	lable_4	
+~PRINT	!STRING	string_1	
+~PRINT	!STRING	string_0	
+~GOTO	lable_3		
+~LABLE	lable_4		
+-	17_t	2	19_t
+~BNZ	19_t	lable_5	
+~PRINT	!STRING	string_2	
+~PRINT	!STRING	string_0	
+~GOTO	lable_3		
+~LABLE	lable_5		
+-	17_t	3	20_t
+~BNZ	20_t	lable_6	
+~PRINT	!STRING	string_3	
+~PRINT	!STRING	string_0	
+~GOTO	lable_3		
+~LABLE	lable_6		
+~LABLE	lable_3		
+~RETURN	~NONE		
+~END	error		
+~FUN	!CHARSY	check	
+~PARA	!INTSY	preFactor	
+=	number		21_t
+/	21_t	preFactor	21_t
+*	21_t	preFactor	21_t
 =	21_t		22_t
-=[]	abc	22_t	23_t
-=	23_t		24_t
-=	7		25_t
-[]=	24_t	25_t	str
-=	num_0		26_t
-=[]	str	26_t	27_t
-=	27_t		28_t
-=[]	abc	28_t	29_t
+=	number		23_t
+!=	22_t	23_t	24_t
+~BZ	24_t	lable_7	
+=	$110		25_t
+~RETURN	!CHARSY	25_t	
+~GOTO	lable_8		
+~LABLE	lable_7		
+=	$121		26_t
+~RETURN	!CHARSY	26_t	
+~LABLE	lable_8		
+~END	check		
+~FUN	!VOID	getFactors	
+~VAL	!INTSY		i
+~VAL	!CHARSY		isFactor
+=	1		27_t
+=	27_t		i
+~LABLE	lable_9		
+=	i		28_t
+~PUSH	28_t	preFactor	check
+~CALL	check		
+=	$v0		29_t
 =	29_t		30_t
-=[]	str	30_t	31_t
-=	31_t		32_t
-=[]	abc	32_t	33_t
-=	33_t		34_t
-=[]	str	34_t	35_t
-=	35_t		36_t
-=[]	abc	36_t	37_t
-=	37_t		38_t
-=[]	str	38_t	39_t
-=	39_t		40_t
-=	num_0		41_t
-=[]	str	41_t	42_t
-=	42_t		43_t
-=[]	abc	43_t	44_t
-=	44_t		45_t
-=[]	str	45_t	46_t
-=	46_t		47_t
-=[]	abc	47_t	48_t
-=	48_t		49_t
-=[]	str	49_t	50_t
-=	50_t		51_t
-=[]	abc	51_t	52_t
-=	52_t		53_t
-=[]	str	53_t	54_t
-=	54_t		55_t
-=	num_0		56_t
-=[]	str	56_t	57_t
-=	57_t		58_t
-=[]	abc	58_t	59_t
-=	59_t		60_t
-=[]	str	60_t	61_t
-=	61_t		62_t
-=[]	abc	62_t	63_t
-=	63_t		64_t
-=[]	str	64_t	65_t
-=	65_t		66_t
-=[]	abc	66_t	67_t
-+	55_t	67_t	55_t
-[]=	40_t	55_t	abc
-=	4		68_t
-=	num_0		69_t
-=[]	str	69_t	70_t
-=	70_t		71_t
-=	6		72_t
-=	5		73_t
--	0	1	74_t
-=	0		75_t
-=[]	str	75_t	76_t
-+	74_t	76_t	74_t
-+	74_t	1	74_t
-=[]	abc	74_t	77_t
-+	73_t	77_t	73_t
--	73_t	5	73_t
-=[]	str	73_t	78_t
-*	72_t	78_t	72_t
-/	72_t	2	72_t
-/	72_t	3	72_t
-=	72_t		79_t
-=[]	abc	79_t	80_t
-*	71_t	80_t	71_t
-=	71_t		81_t
-=[]	str	81_t	82_t
-+	68_t	82_t	68_t
-=	2		83_t
-=[]	str	83_t	84_t
-=	84_t		85_t
-=[]	abc	85_t	86_t
--	68_t	86_t	68_t
-=[]	abc	68_t	87_t
-=	87_t		88_t
-=[]	str	88_t	89_t
-=	89_t		90_t
-=[]	abc	90_t	91_t
-=	91_t		92_t
-RETURN	INTSY	92_t	
-END	testArray		
-FUN	INTSY	fun0	
-PARA	INTSY	a	
-=	a		93_t
-RETURN	INTSY	93_t	
-END	fun0		
-FUN	INTSY	fun1	
-PARA	INTSY	a	
-PARA	INTSY	b	
-VAL	INTSY		fun
-=	a		94_t
-+	94_t	b	94_t
-=	94_t		fun
-=	fun		95_t
-RETURN	INTSY	95_t	
-END	fun1		
-FUN	CHARSY	fun2	
-=	$65		96_t
-RETURN	CHARSY	96_t	
-END	fun2		
-FUN	VOID	fun3	
-PARA	INTSY	a	
-RETURN	NONE		
-END	fun3		
-FUN	VOID	fun4	
-PARA	INTSY	a	
-PARA	CHARSY	b	
-=	a		97_t
-PRINT	INTSY	97_t	
-PRINT	STRING	string_0	
-=	b		98_t
-PRINT	CHARSY	98_t	
-PRINT	STRING	string_0	
-END	fun4		
-FUN	VOID	fun5	
-PRINT	STRING	string_1	
-PRINT	STRING	string_0	
-END	fun5		
-FUN	INTSY	fun6	
-PARA	INTSY	n	
-=	n		99_t
-=	1		100_t
-==	99_t	100_t	101_t
-BZ	101_t	lable_0	
-=	1		102_t
-RETURN	INTSY	102_t	
-GOTO	lable_1		
-LABLE	lable_0		
-=	n		103_t
-=	n		104_t
--	104_t	1	104_t
-PUSH	104_t	n	fun6
-CALL	fun6		
-=	$v0		105_t
-*	103_t	105_t	103_t
-=	103_t		106_t
-RETURN	INTSY	106_t	
-LABLE	lable_1		
-END	fun6		
-FUN	VOID	main	
-CONST	INTSY	1	m_con_i_1
-CONST	INTSY	100	M_con_i_1
-CONST	INTSY	1	m_con_i_2
-CONST	INTSY	2	m_con_i_3
-CONST	CHARSY	43	m_con_c_1
-CONST	CHARSY	45	m_con_c_2
-CONST	CHARSY	42	m_con_c_3
-VAL	INTSY		m_i_1
-VAL	INTSY		M_i_1
-VAL	INTSY		m_i_2
-VAL	INTSY		m_i_3
-ARRAY	INTSY	10	m_i_4
-VAL	CHARSY		m_c_1
-VAL	CHARSY		m_c_2
-VAL	CHARSY		m_c_3
-ARRAY	CHARSY	10	m_c_4
-VAL	INTSY		i
-VAL	INTSY		j
-VAL	INTSY		k
-VAL	INTSY		m
-VAL	CHARSY		c
-=	$97		107_t
-=	107_t		c
-=	97		108_t
-=	108_t		m
-=	1		109_t
-=	109_t		i
-=	2		110_t
-=	110_t		j
-=	3		111_t
-=	111_t		k
-=	1		112_t
-=	112_t		m_i_1
-=	100		113_t
-=	113_t		M_i_1
-=	1		114_t
-=	114_t		m_i_2
-=	2		115_t
-=	115_t		m_i_3
-=	$43		116_t
-=	116_t		m_c_1
-=	$45		117_t
-=	117_t		m_c_2
-=	$42		118_t
-=	118_t		m_c_3
-=	m_i_1		119_t
-=	100		120_t
-==	119_t	120_t	121_t
-BZ	121_t	lable_2	
-PRINT	STRING	string_2	
-PRINT	STRING	string_0	
-GOTO	lable_3		
-LABLE	lable_2		
-LABLE	lable_3		
-=	0		122_t
-BZ	122_t	lable_4	
-PRINT	STRING	string_2	
-PRINT	STRING	string_0	
-GOTO	lable_5		
-LABLE	lable_4		
-LABLE	lable_5		
-=	m_i_3		123_t
-=	1		124_t
->	123_t	124_t	125_t
-BZ	125_t	lable_6	
--	0	m_i_3	126_t
-+	126_t	1	126_t
-=	126_t		m_i_3
-=	m_i_3		127_t
-PRINT	INTSY	127_t	
-PRINT	STRING	string_0	
-GOTO	lable_7		
-LABLE	lable_6		
-LABLE	lable_7		
-=	m_i_3		128_t
-=	m_con_i_1		129_t
-!=	128_t	129_t	130_t
-BZ	130_t	lable_8	
-PRINT	STRING	string_3	
-PRINT	STRING	string_0	
-GOTO	lable_9		
-LABLE	lable_8		
-PRINT	STRING	string_4	
-PRINT	STRING	string_0	
-LABLE	lable_9		
-=	$97		131_t
-=	131_t		m_i_1
-LABLE	lable_10		
-=	m_i_1		132_t
-=	m_i_1		133_t
-[]=	132_t	133_t	m_c_4
-=	m_i_1		134_t
-=[]	m_c_4	134_t	135_t
-=	135_t		136_t
-PRINT	CHARSY	136_t	
-PRINT	STRING	string_0	
-+	m_i_1	1	m_i_1
-=	m_i_1		137_t
-=	$97		138_t
-+	138_t	10	138_t
-<	137_t	138_t	139_t
-BNZ	139_t	lable_10	
-PRINT	STRING	string_5	
-PRINT	STRING	string_0	
-=	0		140_t
-=	140_t		m_i_1
-LABLE	lable_11		
-=	0		141_t
-=	141_t		m_i_2
-LABLE	lable_12		
-=	m_i_1		142_t
-+	142_t	m_i_2	142_t
-PRINT	INTSY	142_t	
-PRINT	STRING	string_0	
-+	m_i_2	1	m_i_2
-=	m_i_2		143_t
-=	3		144_t
-<	143_t	144_t	145_t
-BNZ	145_t	lable_12	
-+	m_i_1	2	m_i_1
-=	m_i_1		146_t
-=	5		147_t
-<	146_t	147_t	148_t
-BNZ	148_t	lable_11	
-=	9		149_t
-=[]	m_i_4	149_t	150_t
-=	150_t		151_t
-PRINT	INTSY	151_t	
-PRINT	STRING	string_0	
-PRINT	STRING	string_6	
-PRINT	STRING	string_0	
-=	0		152_t
-=	152_t		m_i_1
-LABLE	lable_13		
-PRINT	STRING	string_7	
-PRINT	STRING	string_0	
-+	m_i_1	1	m_i_1
-=	m_i_1		153_t
-=	1		154_t
-==	153_t	154_t	155_t
-BNZ	155_t	lable_13	
-=	8		156_t
-=[]	m_i_4	156_t	157_t
-=	157_t		158_t
-PRINT	INTSY	158_t	
-PRINT	STRING	string_0	
-=	m_i_1		159_t
-PUSH	159_t	a	fun1
-=	m_i_1		160_t
-PUSH	160_t	b	fun1
-CALL	fun1		
-=	$v0		161_t
-=	161_t		162_t
-PRINT	INTSY	162_t	
-PRINT	STRING	string_0	
-CALL	fun5		
-=	$v0		163_t
-=	m_i_1		164_t
--	164_t	1	164_t
--	164_t	1	165_t
-BNZ	165_t	lable_15	
-=	m_i_1		166_t
-PUSH	166_t	n	fun6
-CALL	fun6		
-=	$v0		167_t
-=	167_t		168_t
--	168_t	1	169_t
-BNZ	169_t	lable_17	
-PRINT	STRING	string_8	
-PRINT	STRING	string_0	
-GOTO	lable_16		
-LABLE	lable_17		
-LABLE	lable_16		
-=	m_c_1		170_t
--	170_t	43	171_t
-BNZ	171_t	lable_19	
-=	1		172_t
-=	172_t		m_i_1
-LABLE	lable_20		
-=	m_i_1		173_t
-PUSH	173_t	n	fun6
-CALL	fun6		
-=	$v0		174_t
-=	174_t		175_t
-PRINT	INTSY	175_t	
-PRINT	STRING	string_0	
-+	m_i_1	1	m_i_1
-=	m_i_1		176_t
-=	4		177_t
-<	176_t	177_t	178_t
-BNZ	178_t	lable_20	
-GOTO	lable_18		
-LABLE	lable_19		
--	170_t	45	179_t
-BNZ	179_t	lable_21	
-PRINT	STRING	string_2	
-PRINT	STRING	string_0	
-GOTO	lable_18		
-LABLE	lable_21		
-LABLE	lable_18		
-GOTO	lable_14		
-LABLE	lable_15		
--	164_t	2	180_t
-BNZ	180_t	lable_22	
-=	9		181_t
-PUSH	181_t	n	fun6
-CALL	fun6		
-=	$v0		182_t
-=	182_t		183_t
-PRINT	INTSY	183_t	
-PRINT	STRING	string_0	
-GOTO	lable_14		
-LABLE	lable_22		
-=	0		184_t
-=	184_t		m_i_1
-LABLE	lable_23		
-=	9		185_t
-PUSH	185_t	n	fun6
-CALL	fun6		
-=	$v0		186_t
-=	186_t		187_t
-PRINT	INTSY	187_t	
-PRINT	STRING	string_0	
-+	m_i_1	1	m_i_1
-=	m_i_1		188_t
-=	1		189_t
-==	188_t	189_t	190_t
-BNZ	190_t	lable_23	
-LABLE	lable_14		
--	0	m_c_1	191_t
-=	191_t		m_i_1
-=	m_i_1		192_t
--	0	43	193_t
-==	192_t	193_t	194_t
-BZ	194_t	lable_24	
-PRINT	STRING	string_9	
-PRINT	STRING	string_0	
-GOTO	lable_25		
-LABLE	lable_24		
-LABLE	lable_25		
-=	m_i_1		195_t
-+	195_t	43	195_t
-BZ	195_t	lable_26	
-PRINT	STRING	string_10	
-PRINT	STRING	string_0	
-GOTO	lable_27		
-LABLE	lable_26		
-LABLE	lable_27		
-=	m_i_1		196_t
--	196_t	-43	197_t
-BNZ	197_t	lable_29	
-PRINT	STRING	string_11	
-PRINT	STRING	string_0	
-GOTO	lable_28		
-LABLE	lable_29		
-LABLE	lable_28		
-=	m_c_1		198_t
--	198_t	43	199_t
-BNZ	199_t	lable_31	
-PRINT	STRING	string_12	
-PRINT	STRING	string_0	
-GOTO	lable_30		
-LABLE	lable_31		
-LABLE	lable_30		
-=	$43		200_t
-=	200_t		m_c_2
-=	m_c_2		201_t
-PRINT	CHARSY	201_t	
-PRINT	STRING	string_0	
-=	$45		202_t
-=	202_t		m_c_2
-=	m_c_2		203_t
-PRINT	CHARSY	203_t	
-PRINT	STRING	string_0	
-=	$42		204_t
-=	204_t		m_c_2
-=	m_c_2		205_t
-PRINT	CHARSY	205_t	
-PRINT	STRING	string_0	
-=	$47		206_t
-=	206_t		m_c_2
-=	m_c_2		207_t
-PRINT	CHARSY	207_t	
-PRINT	STRING	string_0	
-=	$95		208_t
-=	208_t		m_c_2
-=	m_c_2		209_t
-PRINT	CHARSY	209_t	
-PRINT	STRING	string_0	
-=	$97		210_t
-=	210_t		m_i_1
-LABLE	lable_32		
-=	m_i_1		211_t
-=	211_t		m_c_2
-=	m_c_2		212_t
-PRINT	CHARSY	212_t	
-PRINT	STRING	string_0	
-+	m_i_1	1	m_i_1
-=	m_i_1		213_t
-=	$122		214_t
-<=	213_t	214_t	215_t
-BNZ	215_t	lable_32	
-=	$65		216_t
-=	216_t		m_i_1
-LABLE	lable_33		
-=	m_i_1		217_t
-=	217_t		m_c_2
-=	m_c_2		218_t
-PRINT	CHARSY	218_t	
-PRINT	STRING	string_0	
-+	m_i_1	1	m_i_1
-=	m_i_1		219_t
-=	$90		220_t
-<=	219_t	220_t	221_t
-BNZ	221_t	lable_33	
-=	i		222_t
-=	j		223_t
->	222_t	223_t	224_t
-BZ	224_t	lable_34	
-PRINT	STRING	string_13	
-PRINT	STRING	string_0	
-GOTO	lable_35		
-LABLE	lable_34		
-LABLE	lable_35		
-=	j		225_t
-=	i		226_t
->	225_t	226_t	227_t
-BZ	227_t	lable_36	
-PRINT	STRING	string_14	
-PRINT	STRING	string_0	
-GOTO	lable_37		
-LABLE	lable_36		
-LABLE	lable_37		
-=	k		228_t
-=	j		229_t
-<	228_t	229_t	230_t
-BZ	230_t	lable_38	
-PRINT	STRING	string_15	
-PRINT	STRING	string_0	
-GOTO	lable_39		
-LABLE	lable_38		
-LABLE	lable_39		
-=	j		231_t
-=	k		232_t
-<	231_t	232_t	233_t
-BZ	233_t	lable_40	
-PRINT	STRING	string_16	
-PRINT	STRING	string_0	
-GOTO	lable_41		
-LABLE	lable_40		
-LABLE	lable_41		
-=	k		234_t
-=	j		235_t
-<=	234_t	235_t	236_t
-BZ	236_t	lable_42	
-PRINT	STRING	string_17	
-PRINT	STRING	string_0	
-GOTO	lable_43		
-LABLE	lable_42		
-LABLE	lable_43		
-=	j		237_t
-=	k		238_t
-<=	237_t	238_t	239_t
-BZ	239_t	lable_44	
-PRINT	STRING	string_18	
-PRINT	STRING	string_0	
-GOTO	lable_45		
-LABLE	lable_44		
-LABLE	lable_45		
-=	j		240_t
-=	j		241_t
-<=	240_t	241_t	242_t
-BZ	242_t	lable_46	
-PRINT	STRING	string_18	
-PRINT	STRING	string_0	
-GOTO	lable_47		
-LABLE	lable_46		
-LABLE	lable_47		
-=	j		243_t
-=	k		244_t
->=	243_t	244_t	245_t
-BZ	245_t	lable_48	
-PRINT	STRING	string_19	
-PRINT	STRING	string_0	
-GOTO	lable_49		
-LABLE	lable_48		
-LABLE	lable_49		
-=	k		246_t
-=	j		247_t
->=	246_t	247_t	248_t
-BZ	248_t	lable_50	
-PRINT	STRING	string_20	
-PRINT	STRING	string_0	
-GOTO	lable_51		
-LABLE	lable_50		
-LABLE	lable_51		
-=	k		249_t
-=	k		250_t
->=	249_t	250_t	251_t
-BZ	251_t	lable_52	
-PRINT	STRING	string_20	
-PRINT	STRING	string_0	
-GOTO	lable_53		
-LABLE	lable_52		
-LABLE	lable_53		
-=	i		252_t
-=	j		253_t
-==	252_t	253_t	254_t
-BZ	254_t	lable_54	
-PRINT	STRING	string_21	
-PRINT	STRING	string_0	
-GOTO	lable_55		
-LABLE	lable_54		
-LABLE	lable_55		
-=	c		255_t
-=	m		256_t
-==	255_t	256_t	257_t
-BZ	257_t	lable_56	
-PRINT	STRING	string_22	
-PRINT	STRING	string_0	
-GOTO	lable_57		
-LABLE	lable_56		
-LABLE	lable_57		
-=	c		258_t
-=	m		259_t
-!=	258_t	259_t	260_t
-BZ	260_t	lable_58	
-PRINT	STRING	string_23	
-PRINT	STRING	string_0	
-GOTO	lable_59		
-LABLE	lable_58		
-LABLE	lable_59		
-=	i		261_t
-=	j		262_t
-!=	261_t	262_t	263_t
-BZ	263_t	lable_60	
-PRINT	STRING	string_24	
-PRINT	STRING	string_0	
-GOTO	lable_61		
-LABLE	lable_60		
-LABLE	lable_61		
-PRINT	STRING	string_25	
-CALL	testArray		
-=	$v0		264_t
-=	264_t		265_t
-PRINT	INTSY	265_t	
-PRINT	STRING	string_0	
-SCANF	INTSY	m_i_1	
-=	m_i_1		266_t
-PRINT	INTSY	266_t	
-PRINT	STRING	string_0	
-SCANF	CHARSY	m_c_1	
-=	m_c_1		267_t
-PRINT	CHARSY	267_t	
-PRINT	STRING	string_0	
-PRINT	STRING	string_26	
-PRINT	STRING	string_0	
-TERMINATE			
+=	30_t		isFactor
+=	isFactor		31_t
+=	$121		32_t
+==	31_t	32_t	33_t
+~BZ	33_t	lable_10	
+=	pra		34_t
+=	i		35_t
+[]=	34_t	35_t	factors
+=	pra		36_t
++	36_t	1	36_t
+=	36_t		pra
+~GOTO	lable_11		
+~LABLE	lable_10		
+~LABLE	lable_11		
++	i	1	i
+=	i		37_t
+=	number		38_t
+<=	37_t	38_t	39_t
+~BNZ	39_t	lable_9	
+~RETURN	~NONE		
+~END	getFactors		
+~FUN	!VOID	output	
+~PARA	!CHARSY	mode	
+~PARA	!INTSY	result	
+~VAL	!INTSY		i
+=	mode		40_t
+~PRINT	!STRING	string_4	
+~PRINT	!CHARSY	40_t	
+~PRINT	!STRING	string_0	
+~PRINT	!STRING	string_5	
+~PRINT	!STRING	string_0	
+=	mode		41_t
+-	41_t	102	42_t
+~BNZ	42_t	lable_13	
+=	0		43_t
+=	43_t		i
+~LABLE	lable_14		
+=	i		44_t
+=[]	factors	44_t	45_t
+=	45_t		46_t
+~PRINT	!INTSY	46_t	
+~PRINT	!STRING	string_0	
++	i	1	i
+=	i		47_t
+=	pra		48_t
+<	47_t	48_t	49_t
+~BNZ	49_t	lable_14	
+~GOTO	lable_12		
+~LABLE	lable_13		
+-	41_t	115	50_t
+~BNZ	50_t	lable_15	
+=	result		51_t
+~PRINT	!INTSY	51_t	
+~PRINT	!STRING	string_0	
+~GOTO	lable_12		
+~LABLE	lable_15		
+~LABLE	lable_12		
+~RETURN	~NONE		
+~END	output		
+~FUN	!VOID	main	
+~VAL	!INTSY		result
+~CALL	init		
+=	$v0		52_t
+~CALL	getmode		
+=	$v0		53_t
+~CALL	getnumber		
+=	$v0		54_t
+~SCANF	!INTSY	result	
+=	number		55_t
+=	0		56_t
+<=	55_t	56_t	57_t
+~BZ	57_t	lable_16	
+=	3		58_t
+~PUSH	58_t	num	error
+~CALL	error		
+=	$v0		59_t
+~RETURN	~NONE		
+~GOTO	lable_17		
+~LABLE	lable_16		
+~LABLE	lable_17		
+=	mode		60_t
+-	60_t	102	61_t
+~BNZ	61_t	lable_19	
+=	number		62_t
+=	M		63_t
+>	62_t	63_t	64_t
+~BZ	64_t	lable_20	
+=	2		65_t
+~PUSH	65_t	num	error
+~CALL	error		
+=	$v0		66_t
+~RETURN	~NONE		
+~GOTO	lable_21		
+~LABLE	lable_20		
+~CALL	getFactors		
+=	$v0		67_t
+~LABLE	lable_21		
+~GOTO	lable_18		
+~LABLE	lable_19		
+-	60_t	115	68_t
+~BNZ	68_t	lable_22	
+=	number		69_t
+=	32		70_t
+>	69_t	70_t	71_t
+~BZ	71_t	lable_23	
+=	2		72_t
+~PUSH	72_t	num	error
+~CALL	error		
+=	$v0		73_t
+~RETURN	~NONE		
+~GOTO	lable_24		
+~LABLE	lable_23		
+=	1		74_t
+~PUSH	74_t	i	getResult
+=	1		75_t
+~PUSH	75_t	r	getResult
+~CALL	getResult		
+=	$v0		76_t
+=	76_t		77_t
+=	77_t		result
+~LABLE	lable_24		
+~GOTO	lable_18		
+~LABLE	lable_22		
+=	1		78_t
+~PUSH	78_t	num	error
+~CALL	error		
+=	$v0		79_t
+~RETURN	~NONE		
+~LABLE	lable_18		
+=	mode		80_t
+~PUSH	80_t	mode	output
+=	result		81_t
+~PUSH	81_t	result	output
+~CALL	output		
+=	$v0		82_t
+~RETURN	~NONE		
+~TERMINATE			

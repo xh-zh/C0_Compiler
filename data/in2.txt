@@ -1,214 +1,121 @@
-const int con_i_1=1;
-const int con_i_2=1, con_i_3=2;
-const char con_c_1='+';
-const char con_c_2='-', con_c_3='*';
-int i_1;
-int i_2, i_3;
-int i_4[10];
-int str[10];
-char c_1;
-char c_2, c_3;
-char c_4[10];
-int testArray(){
-	const int num_0 = 0;
-    int abc[10];
-    str[0] = 1;
-    abc[1] = 2;
-    str[2] = 3;
-    abc[3] = 4;
-    str[4] = 5;
-    abc[5] = 6;
-    str[abc[str[abc[str[abc[str[num_0]]]]]]] = 7;
-    abc[str[abc[str[abc[str[abc[str[num_0]]]]]]]] = str[abc[str[abc[str[abc[str[num_0]]]]]]] + abc[str[abc[str[abc[str[num_0]]]]]];
-    return(abc[str[abc[4+str[str[num_0]*abc[6*str[5+abc[-1+str[0]+1]-5]/2/3]]-abc[str[2]]]]]);
-} 
-int fun0(int a){
-	return (a);
-}
-int fun1(int a, int b){
-	int fun;
-	fun = a + b;
-	return (fun);
-}
-char fun2(){
-	return ('A');
-}
-void fun3(int a){
+const int  M = 32768, a = 2;
+const char MODE = 'f';
+
+int pra, factors [10], number;
+char mode;
+
+void init(){
+	int i;
+	pra = 0;
+	mode = 'a';
+	for(i = 1024 - 1; i >= 0; i = i - 1){
+		factors[i] = 0;
+	}
+	return;
+}  
+
+void getmode(){
+    scanf(mode);
 	return;
 }
-void fun4(int a, char b){
-	printf(a);
-	printf(b);
+
+void getnumber(){
+	scanf(number);
+	return;	
 }
-void fun5(){
-	printf("Funtion_5");
-}
-int fun6(int n){
-	if (n == 1)
-		return (1);
-	else
-		return (n * fun6(n-1));
-}
-void main(){
-	const int m_con_i_1=1;
-	const int M_con_i_1=100;
-	const int m_con_i_2=1, m_con_i_3=2;
-	const char m_con_c_1='+';
-	const char m_con_c_2='-', m_con_c_3='*';
-	int m_i_1;
-	int M_i_1;
-	int m_i_2, m_i_3;
-	int m_i_4[10];
-	char m_c_1;
-	char m_c_2, m_c_3;
-	char m_c_4[10];
-	int i,j,k,m;
-	char c;
-	c = 'a';
-	m=97;
-	i=1;
-	j=2;
-	k=3;
-	m_i_1=1;
-	M_i_1=100;
-	m_i_2=1;
-	m_i_3=2;
-	m_c_1='+';
-	m_c_2='-';
-	m_c_3='*';
 
-
-
-	if(m_i_1 == 100)
-		printf("Error!");
-
-	if(0)
-		printf("Error!");
-
-	if(m_i_3 > 1){
-		m_i_3 = -m_i_3 + 1;
-		printf(m_i_3);
+int getResult(int i, int r){
+	if(i < number + -1){
+		r = i * getResult(i + 1, r);
 	}
+	return (r);
+}
 
-	if(m_i_3 != m_con_i_1)
-		printf("Test_1");
-	else
-		printf("Test_2");
-
-	for(m_i_1='a'; m_i_1<'a'+10; m_i_1=m_i_1+1){
-		m_c_4[m_i_1] = m_i_1;
-		printf(m_c_4[m_i_1]);
-	}
-	printf("Test_3");
-
-	for(m_i_1=0; m_i_1<5; m_i_1=m_i_1+2)
-		for(m_i_2=0; m_i_2<3; m_i_2=m_i_2+1){
-			printf(m_i_1+m_i_2);
-		}
-	printf(m_i_4[9]);
-	printf("Test_4");
-
-	for(m_i_1=0; m_i_1==1; m_i_1=m_i_1+1)
-		printf("Test_5");
-	printf(m_i_4[8]);
-
-	printf(fun1(m_i_1, m_i_1));
-
-	fun5();
-
-	switch (m_i_1-1){
+void error(int num){
+	switch(num){
 		case 1:
-		{
-			switch (fun6(m_i_1)){
-				case 1:
-				printf("Test_6");
-				default:
-				;
-			}
-			switch (m_c_1){
-				case '+':
-					for(m_i_1=1; m_i_1<4; m_i_1=m_i_1+1)
-						printf(fun6(m_i_1));
-				case '-':
-					printf("Error!");
-				default:;
-			}
-		}
+			printf("The mode is illegal.");			
 		case 2:
-			printf(fun6(9));
-		default:
-			for(m_i_1=0; m_i_1==1; m_i_1=m_i_1+1)
-				printf(fun6(9));
+			printf("The number is too large.");
+		case 3:
+			printf("The number should not be negative or zero.");
+		default: 
+			;
 	}
-
-
-	m_i_1 = -m_c_1;
-	if(m_i_1 == -43)
-		printf("Test_7");
-	if(m_i_1+43)
-		printf("Test_7_ERROR");
-	switch (m_i_1){
-		case -43:
-			printf("Test_7_1");
-		default:;
-	}
-	switch (m_c_1){
-		case 43:
-			printf("Test_7_2");
-		default:;
-	}
-
-
-	m_c_2 = '+';
-	printf(m_c_2);
-	m_c_2 = '-';
-	printf(m_c_2);
-	m_c_2 = '*';
-	printf(m_c_2);
-	m_c_2 = '/';
-	printf(m_c_2);
-	m_c_2 = '_';
-	printf(m_c_2);
-	for(m_i_1='a'; m_i_1<='z'; m_i_1=m_i_1+1){
-		m_c_2 = m_i_1;
-		printf(m_c_2);
-	}
-	for(m_i_1='A'; m_i_1<='Z'; m_i_1=m_i_1+1){
-		m_c_2 = m_i_1;
-		printf(m_c_2);
-	}
-	if(i>j)
-		printf("Test_1_Error");
-	if(j>i)
-		printf("Test_1_Correct");
-	if(k<j)
-		printf("Test_2_Error");
-	if(j<k)
-		printf("Test_2_Correct");
-	if(k<=j)
-		printf("Test_3_Error");
-	if(j<=k)
-		printf("Test_3_Correct");
-	if(j<=j)
-		printf("Test_3_Correct");
-	if(j>=k)
-		printf("Test_4_Error");
-	if(k>=j)
-		printf("Test_4_Correct");
-	if(k>=k)
-		printf("Test_4_Correct");
-	if(i==j)
-		printf("Test_5_Error");
-	if(c==m)
-		printf("Test_5_Correct");
-	if(c!=m)
-		printf("Test_6_Error");
-	if(i!=j)
-		printf("Test_6_Correct");
-	printf("test array ", testArray());
-	scanf(m_i_1);
-	printf(m_i_1);
-	scanf(m_c_1);
-	printf(m_c_1);
-	printf("DONE!");
+	return;
 }
+
+char check(int preFactor){ 
+	if(number / preFactor * preFactor!= number){
+		return ('n');
+	}
+	else{
+		return ('y'); 
+	}
+}
+
+void getFactors(){
+	int i;
+	char isFactor;
+	for(i = 1; i <= number; i = i + 1){
+		isFactor = check(i);
+		if(isFactor == 'y'){
+			factors[pra] = i;
+			pra = pra + 1;
+		}
+	}
+	return;
+} 
+
+void output(char mode, int result){
+	int i;
+	printf("mode:",mode);
+	printf("result:");
+	switch(mode){
+		case 'f':
+			for(i = 0; i < pra; i = i + 1){
+				printf(factors[i]);
+			}
+		case 's':
+			printf(result);
+		default:
+			;
+	}
+	return;
+}
+
+void main(){
+	int result;
+	init();
+	getmode();
+	getnumber();
+	scanf(result);
+	if(number <= 0){
+	    error(3);
+		return;
+	}
+	switch(mode){
+		case 'f':
+			if(number > M){
+				error(2);
+				return;
+			}else{
+				getFactors();
+			}
+		case 's':
+			if(number > 32){
+				error(2);
+				return;
+			}
+			else{
+				result = getResult(1, 1);
+		    	}
+		default:
+		    	{
+				error(1);
+				return;
+				}
+	}
+	output(mode,result);
+	return;
+}  

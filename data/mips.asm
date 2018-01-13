@@ -1,1151 +1,2652 @@
 .data
 string_0:	.asciiz	"\n"
-string_1:	.asciiz	"Funtion_5"
-string_2:	.asciiz	"Error!"
-string_3:	.asciiz	"Test_1"
-string_4:	.asciiz	"Test_2"
-string_5:	.asciiz	"Test_3"
-string_6:	.asciiz	"Test_4"
-string_7:	.asciiz	"Test_5"
-string_8:	.asciiz	"Test_6"
-string_9:	.asciiz	"Test_7"
-string_10:	.asciiz	"Test_7_ERROR"
-string_11:	.asciiz	"Test_7_1"
-string_12:	.asciiz	"Test_7_2"
-string_13:	.asciiz	"Test_1_Error"
-string_14:	.asciiz	"Test_1_Correct"
-string_15:	.asciiz	"Test_2_Error"
-string_16:	.asciiz	"Test_2_Correct"
-string_17:	.asciiz	"Test_3_Error"
-string_18:	.asciiz	"Test_3_Correct"
-string_19:	.asciiz	"Test_4_Error"
-string_20:	.asciiz	"Test_4_Correct"
-string_21:	.asciiz	"Test_5_Error"
-string_22:	.asciiz	"Test_5_Correct"
-string_23:	.asciiz	"Test_6_Error"
-string_24:	.asciiz	"Test_6_Correct"
-string_25:	.asciiz	"test array "
-string_26:	.asciiz	"DONE!"
-con_i_1: .word	1
-con_i_2: .word	1
-con_i_3: .word	2
-con_c_1: .word	43
-con_c_2: .word	45
-con_c_3: .word	42
-i_1: .word	0
-i_2: .word	0
-i_3: .word	0
-i_4: .word	1 : 10
-str: .word	1 : 10
-c_1: .word	0
-c_2: .word	0
-c_3: .word	0
-c_4: .word	1 : 10
+string_1:	.asciiz	"The mode is illegal."
+string_2:	.asciiz	"The number is too large."
+string_3:	.asciiz	"The number should not be negative or zero."
+string_4:	.asciiz	"mode:"
+string_5:	.asciiz	"result:"
+#~CONST	!INTSY	32768	M
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+M: .word	32768
+
+#~CONST	!INTSY	2	a
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+a: .word	2
+
+#~CONST	!CHARSY	102	MODE
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+MODE: .word	102
+
+#~VAL	!INTSY		pra
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+pra: .word	0
+
+#~ARRAY	!INTSY	10	factors
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+factors: .word	1 : 10
+
+#~VAL	!INTSY		number
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+number: .word	0
+
+#~VAL	!CHARSY		mode
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+mode: .word	0
+
+#~FUN	~BEGIN		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 .text
 j	main
-testArray:
-subi	$sp, $sp, 452
+
+#~FUN	!VOID	init	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+init:
+subi	$sp, $sp, 72
 sw	$ra, 0($sp)
+
+#~VAL	!INTSY		i
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#=	0		pra
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 li	$t0, 0
-sw	$t0, 36($sp)
-la	$t0, str
-li	$t1, 0
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 1
-sw	$t1, 0($t0)
-li	$t0, 40
-add	$t0, $t0, $sp
-li	$t1, 1
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 2
-sw	$t1, 0($t0)
-la	$t0, str
-li	$t1, 2
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 3
-sw	$t1, 0($t0)
-li	$t0, 40
-add	$t0, $t0, $sp
-li	$t1, 3
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 4
-sw	$t1, 0($t0)
-la	$t0, str
-li	$t1, 4
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 5
-sw	$t1, 0($t0)
-li	$t0, 40
-add	$t0, $t0, $sp
-li	$t1, 5
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 6
-sw	$t1, 0($t0)
-la	$t0, str
-lw	$t1, 36($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 136($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 136($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 144($sp)
-la	$t0, str
-lw	$t1, 144($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 152($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 152($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 160($sp)
-la	$t0, str
-lw	$t1, 160($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 168($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 168($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 176($sp)
-la	$t0, str
-lw	$t1, 176($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-li	$t1, 7
-sw	$t1, 0($t0)
-la	$t0, str
-lw	$t1, 36($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 192($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 192($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 200($sp)
-la	$t0, str
-lw	$t1, 200($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 208($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 208($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 216($sp)
-la	$t0, str
-lw	$t1, 216($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 224($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 224($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 232($sp)
-la	$t0, str
-lw	$t1, 232($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 300($sp)
-lw	$t0, 300($sp)
-sw	$t0, 240($sp)
-lw	$t0, 300($sp)
-lw	$t1, 232($sp)
-add	$t2, $t0, $t1
-sw	$t2, 300($sp)
-li	$t0, 40
-add	$t0, $t0, $sp
-lw	$t1, 240($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t1, 300($sp)
-sw	$t1, 0($t0)
-li	$t0, 4
-sw	$t0, 352($sp)
-lw	$t0, 192($sp)
-sw	$t0, 364($sp)
-li	$t0, 6
-sw	$t0, 368($sp)
-li	$t0, 5
-sw	$t0, 372($sp)
-li	$t0, 0
-li	$t1, 1
-neg	$t2, $t1
-sw	$t2, 376($sp)
-la	$t0, str
-li	$t1, 0
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 384($sp)
-lw	$t0, 376($sp)
-lw	$t1, 384($sp)
-add	$t2, $t0, $t1
-sw	$t2, 376($sp)
-lw	$t0, 376($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 376($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 376($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 388($sp)
-li	$t0, 5
-lw	$t1, 388($sp)
-add	$t2, $t0, $t1
-sw	$t2, 372($sp)
-lw	$t0, 372($sp)
-li	$t1, 5
-sub	$t2, $t0, $t1
-sw	$t2, 372($sp)
-la	$t0, str
-lw	$t1, 372($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 392($sp)
-li	$t0, 6
-lw	$t1, 392($sp)
-mul	$t2, $t0, $t1
-sw	$t2, 368($sp)
-lw	$t0, 368($sp)
-li	$t1, 2
-div	$t0, $t1
-mflo	$t2
-sw	$t2, 368($sp)
-lw	$t0, 368($sp)
-li	$t1, 3
-div	$t0, $t1
-mflo	$t2
-sw	$t2, 368($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 368($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 400($sp)
-lw	$t0, 192($sp)
-lw	$t1, 400($sp)
-mul	$t2, $t0, $t1
-sw	$t2, 364($sp)
-la	$t0, str
-lw	$t1, 364($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 408($sp)
-li	$t0, 4
-lw	$t1, 408($sp)
-add	$t2, $t0, $t1
-sw	$t2, 352($sp)
-la	$t0, str
-li	$t1, 2
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 420($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 420($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 424($sp)
-lw	$t0, 352($sp)
-lw	$t1, 424($sp)
-sub	$t2, $t0, $t1
-sw	$t2, 352($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 352($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 432($sp)
-la	$t0, str
-lw	$t1, 432($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 440($sp)
-la	$t0, 40
-add	$t0, $t0 ,$sp
-lw	$t1, 440($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 448($sp)
-lw	$v0, 448($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 452
-jr	$ra
-lw	$v0, 0($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 452
-jr	$ra
-fun0:
-subi	$sp, $sp, 44
-sw	$ra, 0($sp)
-lw	$v0, 36($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 44
-jr	$ra
-lw	$v0, 0($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 44
-jr	$ra
-fun1:
-subi	$sp, $sp, 56
-sw	$ra, 0($sp)
+
+#=	$97		mode
+# $t0	pra	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$t1, 97
+
+#-	1024	1	i
+# $t0	pra	
+# $t1	mode	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a2, 1024
+li	$a3, 1
+sub	$t2, $a2, $a3
+
+#~LABLE	lable_0		
+# $t0	pra	
+# $t1	mode	
+# $t2	i	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, pra
+sw	$t1, mode
+sw	$t2, 36($sp)
+lable_0:
+
+#[]=	i	0	factors
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+la	$a2, factors
 lw	$t0, 36($sp)
-lw	$t1, 40($sp)
-add	$t2, $t0, $t1
-sw	$t2, 44($sp)
-lw	$v0, 44($sp)
+sll	$a3, $t0, 2
+add	$a2, $a2, $a3
+li	$a3, 0
+sw	$a3, 0($a2)
+
+#-	i	1	i
+# $t0	i	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+sub	$t0, $t0, $a3
+
+#>=	i	0	7_t
+# $t0	i	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 0
+sge	$t1, $t0, $a3
+
+#~BNZ	7_t	lable_0	
+# $t0	i	
+# $t1	7_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 36($sp)
+sw	$t1, 68($sp)
+lw	$a3, 68($sp)
+bne	$a3, $0, lable_0
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lw	$ra, 0($sp)
-addi	$sp, $sp, 56
+addi	$sp, $sp, 72
 jr	$ra
-lw	$v0, 0($sp)
+
+#~END	init		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lw	$ra, 0($sp)
-addi	$sp, $sp, 56
+addi	$sp, $sp, 72
 jr	$ra
-fun2:
-subi	$sp, $sp, 40
-sw	$ra, 0($sp)
-li	$v0, 65
-lw	$ra, 0($sp)
-addi	$sp, $sp, 40
-jr	$ra
-lw	$v0, 0($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 40
-jr	$ra
-fun3:
-subi	$sp, $sp, 40
-sw	$ra, 0($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 40
-jr	$ra
-lw	$ra, 0($sp)
-addi	$sp, $sp, 40
-jr	$ra
-fun4:
-subi	$sp, $sp, 52
-sw	$ra, 0($sp)
-lw	$a0, 36($sp)
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$a0, 40($sp)
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$ra, 0($sp)
-addi	$sp, $sp, 52
-jr	$ra
-fun5:
+
+#~FUN	!VOID	getmode	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+getmode:
 subi	$sp, $sp, 36
 sw	$ra, 0($sp)
-la	$a0, string_1
-li	$v0, 4
+
+#~SCANF	!CHARSY	mode	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 12
 syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
+move	$t0, $v0
+
+#~RETURN	~NONE		
+# $t0	mode	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, mode
 lw	$ra, 0($sp)
 addi	$sp, $sp, 36
 jr	$ra
-fun6:
-subi	$sp, $sp, 72
+
+#~END	getmode		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 36
+jr	$ra
+
+#~FUN	!VOID	getnumber	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+getnumber:
+subi	$sp, $sp, 36
 sw	$ra, 0($sp)
-lw	$t0, 36($sp)
-li	$t1, 1
-seq	$t2, $t0, $t1
-sw	$t2, 48($sp)
-lw	$t0, 48($sp)
-beq	$t0, $0, lable_0
-li	$v0, 1
+
+#~SCANF	!INTSY	number	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 5
+syscall
+move	$t0, $v0
+
+#~RETURN	~NONE		
+# $t0	number	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, number
 lw	$ra, 0($sp)
-addi	$sp, $sp, 72
+addi	$sp, $sp, 36
 jr	$ra
-j	lable_1
-lable_0:
+
+#~END	getnumber		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 36
+jr	$ra
+
+#~FUN	!INTSY	getResult	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+getResult:
+subi	$sp, $sp, 80
+sw	$ra, 0($sp)
+
+#~PARA	!INTSY	i	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#~PARA	!INTSY	r	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#+	number	-1	9_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, number
+li	$a3, -1
+add	$t1, $t0, $a3
+
+#<	i	9_t	10_t
+# $t0	number	
+# $t1	9_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t2, 36($sp)
+slt	$t3, $t2, $t1
+
+#~BZ	10_t	lable_1	
+# $t0	number	
+# $t1	9_t	
+# $t2	i	
+# $t3	10_t	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 48($sp)
+sw	$t3, 52($sp)
+lw	$a3, 52($sp)
+beq	$a3, $0, lable_1
+
+#=	i		11_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lw	$t0, 36($sp)
+
+#+	i	1	12_t
+# $t0	i	11_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+add	$t1, $t0, $a3
+
+#~PUSH	12_t	i	getResult
+# $t0	i	11_t	
+# $t1	12_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+subi	$sp, $sp, 80
+sw	$t1, 36($sp)
+addi	$sp, $sp, 80
+
+#~PUSH	r	r	getResult
+# $t0	i	11_t	
+# $t1	12_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t2, 40($sp)
+subi	$sp, $sp, 80
+sw	$t2, 40($sp)
+addi	$sp, $sp, 80
+
+#~CALL	getResult		
+# $t0	i	11_t	
+# $t1	12_t	
+# $t2	r	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 sw	$t0, 56($sp)
-lw	$t0, 36($sp)
-li	$t1, 1
-sub	$t2, $t0, $t1
-sw	$t2, 60($sp)
-lw	$t0, 60($sp)
-subi	$sp, $sp, 72
-sw	$t0, 36($sp)
-addi	$sp, $sp, 72
-jal	fun6
+sw	$t1, 60($sp)
+jal	getResult
+
+#*	11_t	$v0	r
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lw	$t0, 56($sp)
-mul	$t2, $t0, $v0
-sw	$t2, 56($sp)
-lw	$v0, 56($sp)
-lw	$ra, 0($sp)
-addi	$sp, $sp, 72
-jr	$ra
+mul	$t1, $t0, $v0
+
+#=	r		11_t
+# $t0	11_t	
+# $t1	r	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#~GOTO	lable_2		
+# $t0	
+# $t1	r	11_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 40($sp)
+sw	$t1, 56($sp)
+j	lable_2
+
+#~LABLE	lable_1		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lable_1:
+
+#~LABLE	lable_2		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_2:
+
+#~RETURN	!INTSY	r	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$v0, 40($sp)
+lw	$ra, 0($sp)
+addi	$sp, $sp, 80
+jr	$ra
+
+#~END	getResult		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lw	$v0, 0($sp)
 lw	$ra, 0($sp)
-addi	$sp, $sp, 72
+addi	$sp, $sp, 80
 jr	$ra
-main:
-subi	$sp, $sp, 836
+
+#~FUN	!VOID	error	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+error:
+subi	$sp, $sp, 56
 sw	$ra, 0($sp)
-li	$t0, 1
-sw	$t0, 36($sp)
-li	$t0, 100
+
+#~PARA	!INTSY	num	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#=	num		17_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 36($sp)
+
+#-	num	1	18_t
+# $t0	num	17_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+sub	$t1, $t0, $a3
+
+#~BNZ	18_t	lable_4	
+# $t0	num	17_t	
+# $t1	18_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 sw	$t0, 40($sp)
-li	$t0, 1
-sw	$t0, 44($sp)
-li	$t0, 2
-sw	$t0, 48($sp)
-li	$t0, 43
-sw	$t0, 52($sp)
-li	$t0, 45
-sw	$t0, 56($sp)
-li	$t0, 42
-sw	$t0, 60($sp)
-li	$t0, 97
-sw	$t0, 188($sp)
-li	$t0, 97
-sw	$t0, 184($sp)
-li	$t0, 1
-sw	$t0, 172($sp)
-li	$t0, 2
-sw	$t0, 176($sp)
-li	$t0, 3
-sw	$t0, 180($sp)
-li	$t0, 1
-sw	$t0, 64($sp)
-li	$t0, 1
-sw	$t0, 72($sp)
-li	$t0, 2
-sw	$t0, 76($sp)
-li	$t0, 43
-sw	$t0, 120($sp)
-li	$t0, 1
-li	$t1, 100
-seq	$t2, $t0, $t1
-sw	$t2, 248($sp)
-lw	$t0, 248($sp)
-beq	$t0, $0, lable_2
-la	$a0, string_2
+sw	$t1, 44($sp)
+lw	$a3, 44($sp)
+bne	$a3, $0, lable_4
+
+#~PRINT	!STRING	string_1	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+la	$a0, string_1
 li	$v0, 4
 syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_0
 li	$v0, 4
 syscall
-lable_2:
-li	$t0, 0
-beq	$t0, $0, lable_4
-la	$a0, string_2
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
+
+#~GOTO	lable_3		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_3
+
+#~LABLE	lable_4		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lable_4:
-lw	$t0, 76($sp)
-li	$t1, 1
-sgt	$t2, $t0, $t1
-sw	$t2, 264($sp)
-lw	$t0, 264($sp)
-beq	$t0, $0, lable_6
-li	$t0, 0
-lw	$t1, 76($sp)
-neg	$t2, $t1
-sw	$t2, 268($sp)
-lw	$t0, 268($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 76($sp)
-lw	$t0, 76($sp)
-sw	$t0, 268($sp)
-lw	$a0, 76($sp)
-li	$v0, 1
+
+#-	17_t	2	19_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 40($sp)
+li	$a3, 2
+sub	$t1, $t0, $a3
+
+#~BNZ	19_t	lable_5	
+# $t0	17_t	
+# $t1	19_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 48($sp)
+lw	$a3, 48($sp)
+bne	$a3, $0, lable_5
+
+#~PRINT	!STRING	string_2	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+la	$a0, string_2
+li	$v0, 4
 syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_0
 li	$v0, 4
 syscall
-lable_6:
-lw	$t0, 76($sp)
-lw	$t1, 36($sp)
-seq	$t2, $t0, $t1
-xori	$t2, 1
-sw	$t2, 284($sp)
-lw	$t0, 284($sp)
-beq	$t0, $0, lable_8
+
+#~GOTO	lable_3		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_3
+
+#~LABLE	lable_5		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_5:
+
+#-	17_t	3	20_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 40($sp)
+li	$a3, 3
+sub	$t1, $t0, $a3
+
+#~BNZ	20_t	lable_6	
+# $t0	17_t	
+# $t1	20_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 52($sp)
+lw	$a3, 52($sp)
+bne	$a3, $0, lable_6
+
+#~PRINT	!STRING	string_3	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_3
 li	$v0, 4
 syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_0
 li	$v0, 4
 syscall
-j	lable_9
+
+#~GOTO	lable_3		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_3
+
+#~LABLE	lable_6		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_6:
+
+#~LABLE	lable_3		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_3:
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 56
+jr	$ra
+
+#~END	error		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 56
+jr	$ra
+
+#~FUN	!CHARSY	check	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+check:
+subi	$sp, $sp, 64
+sw	$ra, 0($sp)
+
+#~PARA	!INTSY	preFactor	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#/	number	preFactor	21_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, number
+lw	$t1, 36($sp)
+div	$t0, $t1
+mflo	$t2
+
+#*	21_t	preFactor	21_t
+# $t0	number	
+# $t1	preFactor	
+# $t2	21_t	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+mul	$t2, $t2, $t1
+
+#!=	21_t	number	24_t
+# $t0	number	
+# $t1	preFactor	
+# $t2	21_t	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+seq	$t3, $t2, $t0
+xori	$t3, 1
+
+#~BZ	24_t	lable_7	
+# $t0	number	
+# $t1	preFactor	
+# $t2	21_t	
+# $t3	24_t	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t2, 40($sp)
+sw	$t3, 52($sp)
+lw	$a3, 52($sp)
+beq	$a3, $0, lable_7
+
+#~RETURN	!CHARSY	$110	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 110
+lw	$ra, 0($sp)
+addi	$sp, $sp, 64
+jr	$ra
+
+#~GOTO	lable_8		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_8
+
+#~LABLE	lable_7		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_7:
+
+#~RETURN	!CHARSY	$121	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 121
+lw	$ra, 0($sp)
+addi	$sp, $sp, 64
+jr	$ra
+
+#~LABLE	lable_8		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 lable_8:
+
+#~END	check		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$v0, 0($sp)
+lw	$ra, 0($sp)
+addi	$sp, $sp, 64
+jr	$ra
+
+#~FUN	!VOID	getFactors	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+getFactors:
+subi	$sp, $sp, 96
+sw	$ra, 0($sp)
+
+#~VAL	!INTSY		i
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#~VAL	!CHARSY		isFactor
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#=	1		i
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$t0, 1
+
+#~LABLE	lable_9		
+# $t0	i	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 36($sp)
+lable_9:
+
+#~PUSH	i	preFactor	check
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 36($sp)
+subi	$sp, $sp, 64
+sw	$t0, 36($sp)
+addi	$sp, $sp, 64
+
+#~CALL	check		
+# $t0	i	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	check
+
+#==	$v0	$121	33_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 121
+seq	$t0, $v0, $a3
+
+#~BZ	33_t	lable_10	
+# $t0	33_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 68($sp)
+lw	$a3, 68($sp)
+beq	$a3, $0, lable_10
+
+#[]=	pra	i	factors
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+la	$a2, factors
+lw	$t0, pra
+sll	$a3, $t0, 2
+add	$a2, $a2, $a3
+lw	$t1, 36($sp)
+sw	$t1, 0($a2)
+
+#+	pra	1	pra
+# $t0	pra	
+# $t1	i	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+add	$t0, $t0, $a3
+
+#~GOTO	lable_11		
+# $t0	pra	
+# $t1	i	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, pra
+j	lable_11
+
+#~LABLE	lable_10		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_10:
+
+#~LABLE	lable_11		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_11:
+
+#+	i	1	i
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 36($sp)
+li	$a3, 1
+add	$t0, $t0, $a3
+
+#<=	i	number	39_t
+# $t0	i	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t1, number
+sle	$t2, $t0, $t1
+
+#~BNZ	39_t	lable_9	
+# $t0	i	
+# $t1	number	
+# $t2	39_t	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 36($sp)
+sw	$t2, 92($sp)
+lw	$a3, 92($sp)
+bne	$a3, $0, lable_9
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 96
+jr	$ra
+
+#~END	getFactors		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 96
+jr	$ra
+
+#~FUN	!VOID	output	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+output:
+subi	$sp, $sp, 96
+sw	$ra, 0($sp)
+
+#~PARA	!CHARSY	mode	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#~PARA	!INTSY	result	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#~VAL	!INTSY		i
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#=	mode		40_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 36($sp)
+
+#~PRINT	!STRING	string_4	
+# $t0	mode	40_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_4
 li	$v0, 4
 syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_9:
-li	$t0, 97
-sw	$t0, 64($sp)
-lable_10:
-li	$t0, 132
-add	$t0, $t0, $sp
-lw	$t1, 64($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t1, 64($sp)
-sw	$t1, 0($t0)
-la	$t0, 132
-add	$t0, $t0 ,$sp
-lw	$t1, 64($sp)
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 308($sp)
-lw	$a0, 308($sp)
+
+#~PRINT	!CHARSY	40_t	
+# $t0	mode	40_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+move	$a0, $t0
 li	$v0, 11
 syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	mode	40_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_0
 li	$v0, 4
 syscall
-lw	$t0, 64($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 312($sp)
-lw	$t0, 312($sp)
-sw	$t0, 64($sp)
-li	$t0, 97
-li	$t1, 10
-add	$t2, $t0, $t1
-sw	$t2, 316($sp)
-lw	$t0, 312($sp)
-lw	$t1, 316($sp)
-slt	$t2, $t0, $t1
-sw	$t2, 320($sp)
-lw	$t0, 320($sp)
-bne	$t0, $0, lable_10
+
+#~PRINT	!STRING	string_5	
+# $t0	mode	40_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_5
 li	$v0, 4
 syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	mode	40_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_0
 li	$v0, 4
 syscall
+
+#=	mode		41_t
+# $t0	mode	40_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#-	mode	102	42_t
+# $t0	mode	40_t	41_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 102
+sub	$t1, $t0, $a3
+
+#~BNZ	42_t	lable_13	
+# $t0	mode	40_t	41_t	
+# $t1	42_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 48($sp)
+sw	$t0, 52($sp)
+sw	$t1, 56($sp)
+lw	$a3, 56($sp)
+bne	$a3, $0, lable_13
+
+#=	0		i
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 li	$t0, 0
-sw	$t0, 64($sp)
-lable_11:
-li	$t0, 0
-sw	$t0, 72($sp)
-lable_12:
-lw	$t0, 64($sp)
-lw	$t1, 72($sp)
-add	$t2, $t0, $t1
-sw	$t2, 332($sp)
-lw	$a0, 332($sp)
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 72($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 72($sp)
-lw	$t0, 72($sp)
-li	$t1, 3
-slt	$t2, $t0, $t1
-sw	$t2, 344($sp)
-lw	$t0, 344($sp)
-bne	$t0, $0, lable_12
-lw	$t0, 64($sp)
-li	$t1, 2
-add	$t2, $t0, $t1
-sw	$t2, 64($sp)
-lw	$t0, 64($sp)
-li	$t1, 5
-slt	$t2, $t0, $t1
-sw	$t2, 356($sp)
-lw	$t0, 356($sp)
-bne	$t0, $0, lable_11
-la	$t0, 80
-add	$t0, $t0 ,$sp
-li	$t1, 9
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 368($sp)
-lw	$a0, 368($sp)
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-la	$a0, string_6
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$t0, 0
-sw	$t0, 64($sp)
-lable_13:
-la	$a0, string_7
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 64($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 64($sp)
-lw	$t0, 64($sp)
-li	$t1, 1
-seq	$t2, $t0, $t1
-sw	$t2, 384($sp)
-lw	$t0, 384($sp)
-bne	$t0, $0, lable_13
-la	$t0, 80
-add	$t0, $t0 ,$sp
-li	$t1, 8
-sll	$t1, $t1, 2
-add	$t0, $t0, $t1
-lw	$t0, 0($t0)
-sw	$t0, 396($sp)
-lw	$a0, 396($sp)
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 64($sp)
-subi	$sp, $sp, 56
-sw	$t0, 36($sp)
-addi	$sp, $sp, 56
-lw	$t0, 64($sp)
-subi	$sp, $sp, 56
-sw	$t0, 40($sp)
-addi	$sp, $sp, 56
-jal	fun1
-move	$a0, $v0
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-jal	fun5
-lw	$t0, 64($sp)
-li	$t1, 1
-sub	$t2, $t0, $t1
-sw	$t2, 420($sp)
-lw	$t0, 420($sp)
-li	$t1, 1
-sub	$t2, $t0, $t1
-sw	$t2, 424($sp)
-lw	$t0, 424($sp)
-bne	$t0, $0, lable_15
-lw	$t0, 64($sp)
-subi	$sp, $sp, 72
-sw	$t0, 36($sp)
-addi	$sp, $sp, 72
-jal	fun6
-li	$t1, 1
-sub	$t2, $v0, $t1
-sw	$t2, 440($sp)
-lw	$t0, 440($sp)
-bne	$t0, $0, lable_17
-la	$a0, string_8
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_17:
-lw	$t0, 120($sp)
-sw	$t0, 444($sp)
-lw	$t0, 120($sp)
-li	$t1, 43
-sub	$t2, $t0, $t1
-sw	$t2, 448($sp)
-lw	$t0, 448($sp)
-bne	$t0, $0, lable_19
-li	$t0, 1
-sw	$t0, 64($sp)
-lable_20:
-lw	$t0, 64($sp)
-subi	$sp, $sp, 72
-sw	$t0, 36($sp)
-addi	$sp, $sp, 72
-jal	fun6
-move	$a0, $v0
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 64($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 64($sp)
-lw	$t0, 64($sp)
-li	$t1, 4
-slt	$t2, $t0, $t1
-sw	$t2, 476($sp)
-lw	$t0, 476($sp)
-bne	$t0, $0, lable_20
-j	lable_21
-lable_19:
-lw	$t0, 444($sp)
-li	$t1, 45
-sub	$t2, $t0, $t1
-sw	$t2, 480($sp)
-lw	$t0, 480($sp)
-bne	$t0, $0, lable_21
-la	$a0, string_2
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_21:
-j	lable_14
-lable_15:
-lw	$t0, 420($sp)
-li	$t1, 2
-sub	$t2, $t0, $t1
-sw	$t2, 484($sp)
-lw	$t0, 484($sp)
-bne	$t0, $0, lable_22
-li	$t0, 9
-subi	$sp, $sp, 72
-sw	$t0, 36($sp)
-addi	$sp, $sp, 72
-jal	fun6
-move	$a0, $v0
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-j	lable_14
-lable_22:
-li	$t0, 0
-sw	$t0, 64($sp)
-lable_23:
-li	$t0, 9
-subi	$sp, $sp, 72
-sw	$t0, 36($sp)
-addi	$sp, $sp, 72
-jal	fun6
-move	$a0, $v0
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 64($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 64($sp)
-lw	$t0, 64($sp)
-li	$t1, 1
-seq	$t2, $t0, $t1
-sw	$t2, 524($sp)
-lw	$t0, 524($sp)
-bne	$t0, $0, lable_23
+
+#~LABLE	lable_14		
+# $t0	i	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 44($sp)
 lable_14:
-li	$t0, 0
-lw	$t1, 120($sp)
-neg	$t2, $t1
-sw	$t2, 64($sp)
-li	$t0, 0
-li	$t1, 43
-neg	$t2, $t1
-sw	$t2, 536($sp)
-lw	$t0, 64($sp)
-lw	$t1, 536($sp)
-seq	$t2, $t0, $t1
-sw	$t2, 540($sp)
-lw	$t0, 540($sp)
-beq	$t0, $0, lable_24
-la	$a0, string_9
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_24:
-lw	$t0, 64($sp)
-li	$t1, 43
-add	$t2, $t0, $t1
-sw	$t2, 544($sp)
-lw	$t0, 544($sp)
-beq	$t0, $0, lable_26
-la	$a0, string_10
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_26:
-lw	$t0, 64($sp)
-li	$t1, -43
-sub	$t2, $t0, $t1
-sw	$t2, 552($sp)
-lw	$t0, 552($sp)
-bne	$t0, $0, lable_29
-la	$a0, string_11
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_29:
-lw	$t0, 120($sp)
-li	$t1, 43
-sub	$t2, $t0, $t1
-sw	$t2, 560($sp)
-lw	$t0, 560($sp)
-bne	$t0, $0, lable_31
-la	$a0, string_12
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_31:
-li	$a0, 43
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$a0, 45
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$a0, 42
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$a0, 47
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$a0, 95
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$t0, 97
-sw	$t0, 64($sp)
-lable_32:
-lw	$a0, 64($sp)
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 64($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 64($sp)
-lw	$t0, 64($sp)
-li	$t1, 122
-sle	$t2, $t0, $t1
-sw	$t2, 624($sp)
-lw	$t0, 624($sp)
-bne	$t0, $0, lable_32
-li	$t0, 65
-sw	$t0, 64($sp)
-lable_33:
-lw	$a0, 64($sp)
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lw	$t0, 64($sp)
-li	$t1, 1
-add	$t2, $t0, $t1
-sw	$t2, 64($sp)
-lw	$t0, 64($sp)
-li	$t1, 90
-sle	$t2, $t0, $t1
-sw	$t2, 648($sp)
-lw	$t0, 648($sp)
-bne	$t0, $0, lable_33
-lw	$t0, 172($sp)
-lw	$t1, 176($sp)
-sgt	$t2, $t0, $t1
-sw	$t2, 660($sp)
-lw	$t0, 660($sp)
-beq	$t0, $0, lable_34
-la	$a0, string_13
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_34:
-lw	$t0, 176($sp)
-lw	$t1, 172($sp)
-sgt	$t2, $t0, $t1
-sw	$t2, 672($sp)
-lw	$t0, 672($sp)
-beq	$t0, $0, lable_36
-la	$a0, string_14
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_36:
-lw	$t0, 180($sp)
-lw	$t1, 176($sp)
-slt	$t2, $t0, $t1
-sw	$t2, 684($sp)
-lw	$t0, 684($sp)
-beq	$t0, $0, lable_38
-la	$a0, string_15
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_38:
-lw	$t0, 176($sp)
-lw	$t1, 180($sp)
-slt	$t2, $t0, $t1
-sw	$t2, 696($sp)
-lw	$t0, 696($sp)
-beq	$t0, $0, lable_40
-la	$a0, string_16
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_40:
-lw	$t0, 180($sp)
-lw	$t1, 176($sp)
-sle	$t2, $t0, $t1
-sw	$t2, 708($sp)
-lw	$t0, 708($sp)
-beq	$t0, $0, lable_42
-la	$a0, string_17
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_42:
-lw	$t0, 176($sp)
-lw	$t1, 180($sp)
-sle	$t2, $t0, $t1
-sw	$t2, 720($sp)
-lw	$t0, 720($sp)
-beq	$t0, $0, lable_44
-la	$a0, string_18
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_44:
-lw	$t0, 176($sp)
-lw	$t1, 176($sp)
-sle	$t2, $t0, $t1
-sw	$t2, 732($sp)
-lw	$t0, 732($sp)
-beq	$t0, $0, lable_46
-la	$a0, string_18
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_46:
-lw	$t0, 176($sp)
-lw	$t1, 180($sp)
-sge	$t2, $t0, $t1
-sw	$t2, 744($sp)
-lw	$t0, 744($sp)
-beq	$t0, $0, lable_48
-la	$a0, string_19
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_48:
-lw	$t0, 180($sp)
-lw	$t1, 176($sp)
-sge	$t2, $t0, $t1
-sw	$t2, 756($sp)
-lw	$t0, 756($sp)
-beq	$t0, $0, lable_50
-la	$a0, string_20
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_50:
-lw	$t0, 180($sp)
-lw	$t1, 180($sp)
-sge	$t2, $t0, $t1
-sw	$t2, 768($sp)
-lw	$t0, 768($sp)
-beq	$t0, $0, lable_52
-la	$a0, string_20
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_52:
-lw	$t0, 172($sp)
-lw	$t1, 176($sp)
-seq	$t2, $t0, $t1
-sw	$t2, 780($sp)
-lw	$t0, 780($sp)
-beq	$t0, $0, lable_54
-la	$a0, string_21
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_54:
-lw	$t0, 188($sp)
-lw	$t1, 184($sp)
-seq	$t2, $t0, $t1
-sw	$t2, 792($sp)
-lw	$t0, 792($sp)
-beq	$t0, $0, lable_56
-la	$a0, string_22
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_56:
-lw	$t0, 188($sp)
-lw	$t1, 184($sp)
-seq	$t2, $t0, $t1
-xori	$t2, 1
-sw	$t2, 804($sp)
-lw	$t0, 804($sp)
-beq	$t0, $0, lable_58
-la	$a0, string_23
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_58:
-lw	$t0, 172($sp)
-lw	$t1, 176($sp)
-seq	$t2, $t0, $t1
-xori	$t2, 1
-sw	$t2, 816($sp)
-lw	$t0, 816($sp)
-beq	$t0, $0, lable_60
-la	$a0, string_24
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-lable_60:
-la	$a0, string_25
-li	$v0, 4
-syscall
-jal	testArray
-move	$a0, $v0
+
+#=[]	factors	i	46_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+la	$a2, factors
+lw	$t0, 44($sp)
+sll	$a3, $t0, 2
+add	$a2, $a2, $a3
+lw	$t1, 0($a2)
+
+#~PRINT	!INTSY	46_t	
+# $t0	i	
+# $t1	46_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+move	$a0, $t1
 li	$v0, 1
 syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	i	
+# $t1	46_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 la	$a0, string_0
 li	$v0, 4
 syscall
+
+#+	i	1	i
+# $t0	i	
+# $t1	46_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+add	$t0, $t0, $a3
+
+#<	i	pra	49_t
+# $t0	i	
+# $t1	46_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t2, pra
+slt	$t3, $t0, $t2
+
+#~BNZ	49_t	lable_14	
+# $t0	i	
+# $t1	46_t	
+# $t2	pra	
+# $t3	49_t	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 44($sp)
+sw	$t1, 72($sp)
+sw	$t3, 84($sp)
+lw	$a3, 84($sp)
+bne	$a3, $0, lable_14
+
+#~GOTO	lable_12		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_12
+
+#~LABLE	lable_13		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_13:
+
+#-	41_t	115	50_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 52($sp)
+li	$a3, 115
+sub	$t1, $t0, $a3
+
+#~BNZ	50_t	lable_15	
+# $t0	41_t	
+# $t1	50_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 88($sp)
+lw	$a3, 88($sp)
+bne	$a3, $0, lable_15
+
+#~PRINT	!INTSY	result	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 40($sp)
+move	$a0, $t0
+li	$v0, 1
+syscall
+
+#~PRINT	!STRING	string_0	
+# $t0	result	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+la	$a0, string_0
+li	$v0, 4
+syscall
+
+#~GOTO	lable_12		
+# $t0	result	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_12
+
+#~LABLE	lable_15		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_15:
+
+#~LABLE	lable_12		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_12:
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 96
+jr	$ra
+
+#~END	output		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$ra, 0($sp)
+addi	$sp, $sp, 96
+jr	$ra
+
+#~FUN	!VOID	main	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+main:
+subi	$sp, $sp, 164
+sw	$ra, 0($sp)
+
+#~VAL	!INTSY		result
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+
+#~CALL	init		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	init
+
+#~CALL	getmode		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	getmode
+
+#~CALL	getnumber		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	getnumber
+
+#~SCANF	!INTSY	result	
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 li	$v0, 5
 syscall
-sw	$v0, 64($sp)
-lw	$a0, 64($sp)
-li	$v0, 1
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-li	$v0, 12
-syscall
-sw	$v0, 120($sp)
-lw	$a0, 120($sp)
-li	$v0, 11
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
-la	$a0, string_26
-li	$v0, 4
-syscall
-la	$a0, string_0
-li	$v0, 4
-syscall
+move	$t0, $v0
+
+#<=	number	0	57_t
+# $t0	result	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t1, number
+li	$a3, 0
+sle	$t2, $t1, $a3
+
+#~BZ	57_t	lable_16	
+# $t0	result	
+# $t1	number	
+# $t2	57_t	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 36($sp)
+sw	$t2, 60($sp)
+lw	$a3, 60($sp)
+beq	$a3, $0, lable_16
+
+#~PUSH	3	num	error
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 3
+subi	$sp, $sp, 56
+sw	$a3, 36($sp)
+addi	$sp, $sp, 56
+
+#~CALL	error		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	error
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
 li	$v0, 10
 syscall
+
+#~GOTO	lable_17		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_17
+
+#~LABLE	lable_16		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_16:
+
+#~LABLE	lable_17		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_17:
+
+#=	mode		60_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, mode
+
+#-	mode	102	61_t
+# $t0	mode	60_t	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 102
+sub	$t1, $t0, $a3
+
+#~BNZ	61_t	lable_19	
+# $t0	mode	60_t	
+# $t1	61_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 72($sp)
+sw	$t1, 76($sp)
+lw	$a3, 76($sp)
+bne	$a3, $0, lable_19
+
+#>	number	M	64_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, number
+lw	$t1, M
+sgt	$t2, $t0, $t1
+
+#~BZ	64_t	lable_20	
+# $t0	number	
+# $t1	M	
+# $t2	64_t	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t2, 88($sp)
+lw	$a3, 88($sp)
+beq	$a3, $0, lable_20
+
+#~PUSH	2	num	error
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 2
+subi	$sp, $sp, 56
+sw	$a3, 36($sp)
+addi	$sp, $sp, 56
+
+#~CALL	error		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	error
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 10
+syscall
+
+#~GOTO	lable_21		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_21
+
+#~LABLE	lable_20		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_20:
+
+#~CALL	getFactors		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	getFactors
+
+#~LABLE	lable_21		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_21:
+
+#~GOTO	lable_18		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_18
+
+#~LABLE	lable_19		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_19:
+
+#-	60_t	115	68_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, 72($sp)
+li	$a3, 115
+sub	$t1, $t0, $a3
+
+#~BNZ	68_t	lable_22	
+# $t0	60_t	
+# $t1	68_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 104($sp)
+lw	$a3, 104($sp)
+bne	$a3, $0, lable_22
+
+#>	number	32	71_t
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, number
+li	$a3, 32
+sgt	$t1, $t0, $a3
+
+#~BZ	71_t	lable_23	
+# $t0	number	
+# $t1	71_t	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t1, 116($sp)
+lw	$a3, 116($sp)
+beq	$a3, $0, lable_23
+
+#~PUSH	2	num	error
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 2
+subi	$sp, $sp, 56
+sw	$a3, 36($sp)
+addi	$sp, $sp, 56
+
+#~CALL	error		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	error
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 10
+syscall
+
+#~GOTO	lable_24		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_24
+
+#~LABLE	lable_23		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_23:
+
+#~PUSH	1	i	getResult
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+subi	$sp, $sp, 80
+sw	$a3, 36($sp)
+addi	$sp, $sp, 80
+
+#~PUSH	1	r	getResult
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+subi	$sp, $sp, 80
+sw	$a3, 40($sp)
+addi	$sp, $sp, 80
+
+#~CALL	getResult		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	getResult
+
+#=	$v0		result
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+move	$t0, $v0
+
+#~LABLE	lable_24		
+# $t0	result	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+sw	$t0, 36($sp)
+lable_24:
+
+#~GOTO	lable_18		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+j	lable_18
+
+#~LABLE	lable_22		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_22:
+
+#~PUSH	1	num	error
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$a3, 1
+subi	$sp, $sp, 56
+sw	$a3, 36($sp)
+addi	$sp, $sp, 56
+
+#~CALL	error		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	error
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 10
+syscall
+
+#~LABLE	lable_18		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lable_18:
+
+#~PUSH	mode	mode	output
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t0, mode
+subi	$sp, $sp, 96
+sw	$t0, 36($sp)
+addi	$sp, $sp, 96
+
+#~PUSH	result	result	output
+# $t0	mode	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+lw	$t1, 36($sp)
+subi	$sp, $sp, 96
+sw	$t1, 40($sp)
+addi	$sp, $sp, 96
+
+#~CALL	output		
+# $t0	mode	
+# $t1	result	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+jal	output
+
+#~RETURN	~NONE		
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 10
+syscall
+
+#~TERMINATE			
+# $t0	
+# $t1	
+# $t2	
+# $t3	
+# $t4	
+# $t5	
+# $t6	
+# $t7	
+# $t8	
+# $t9	
+li	$v0, 10
+syscall
+
