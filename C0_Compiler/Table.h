@@ -45,7 +45,6 @@ public:
 	
 	static void add_addr(string fun_name, string name, string addr);				//向某变量的地址描述符中添加地址	
 	static void add_stack_addr(string fun_name, string name);						//添加变量在运行栈中的地址描述符
-	static void add_addr_and_del_other(string fun_name, string name, string addr);	//向某变量的地址描述符中添加地址并删除其他地址
 	static void del_addr(string fun_name, string name, string addr);				//向某变量的地址描述符中删除地址
 	static bool have_addr(string fun_name, string name, string addr);				//某变量的地址描述符中包含addr
 	static void clear_addr(string fun_name, string name);							//清除变量的所有地址描述符
