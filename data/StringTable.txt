@@ -1,6 +1,27 @@
 string_0	\n
-string_1	The mode is illegal.
-string_2	The number is too large.
-string_3	The number should not be negative or zero.
-string_4	mode:
-string_5	result:
+string_1	Funtion_5
+string_2	Error!
+string_3	Test_1
+string_4	Test_2
+string_5	Test_3
+string_6	Test_4
+string_7	Test_5
+string_8	Test_6
+string_9	Test_7
+string_10	Test_7_ERROR
+string_11	Test_7_1
+string_12	Test_7_2
+string_13	Test_1_Error
+string_14	Test_1_Correct
+string_15	Test_2_Error
+string_16	Test_2_Correct
+string_17	Test_3_Error
+string_18	Test_3_Correct
+string_19	Test_4_Error
+string_20	Test_4_Correct
+string_21	Test_5_Error
+string_22	Test_5_Correct
+string_23	Test_6_Error
+string_24	Test_6_Correct
+string_25	test array 
+string_26	DONE!

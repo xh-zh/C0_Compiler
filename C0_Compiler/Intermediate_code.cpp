@@ -22,8 +22,58 @@ void Intermediate_code::push_back(const Quaternion q) {
 void Intermediate_code::print(char* path) {
 	ofstream out(path);
 	for (vector<Quaternion>::iterator iter = code.begin(); iter != code.end(); ++iter) {
-		//if (iter->op != "NOP")//不打印删除后的中间代码
-			out << iter->op << "\t" << iter->para1 << "\t" << iter->para2 << "\t" << iter->result << endl;
+		if (iter->op != "NOP"){//不打印删除后的中间代码
+			string field[4];
+			field[0] = iter->op;
+			field[1] = iter->para1;
+			field[2] = iter->para2;
+			field[3] = iter->result;
+			for (int i=0; i<4; i++) {
+				if (field[i].size()>1 && (field[i][0] == '~' || field[i][0] == '!')) {
+					field[i] = field[i].substr(1);
+				}
+				if (field[i].size() > 1 && field[i] != "$v0" && field[i][0] == '$') {
+					field[i] = field[i].substr(1);
+				}
+			}
+			if (field[0] == "PARA") {
+				out << "PARA\t" << field[1].substr(0, field[1].size()-2) << "\t" << field[2] << endl;
+			} else if (field[0] == "FUN" && field[1] != "BEGIN") {
+				if (field[1] == "VOID") {
+					out << "VOID\t" << field[2] << "()" << endl;
+				} else
+					out << field[1].substr(0, field[1].size()-2) << "\t" << field[2] << "()" << endl;
+			} else if (field[0] == "PUSH") {
+				out << "PUSH\t" << field[2] << endl;
+			} else if (field[0] == "RETURN") {
+				out << "RETURN\t" << field[2] << endl;
+			} else if (field[0] == "VAL") {
+				out <<"VAR\t" << field[1].substr(0, field[1].size()-2) << "\t" << field[3] << endl;
+			} else if (field[0] == "CONST") {
+				out <<"CONST\t" << field[1].substr(0, field[1].size()-2) << "\t" << field[3] << "=" << field[2] << endl;
+			} else if (field[0] == "ARRAY") {
+				out << field[1].substr(0, field[1].size()-2) << "\t" << field[3] << "[" << field[2] << "]" << endl;
+			} else if (field[0]=="+" || field[0]=="-" || field[0]=="*" || field[0]=="/" ||
+		field[0]=="<" || field[0]=="<=" || field[0]==">" || field[0]==">=" || 
+		field[0]=="==" || field[0]=="!=") {
+				out << field[3] << " = " << field[1] << " " << field[0] << " " << field[2] << endl;
+			} else if (field[0] == "=") {
+				out << field[3] << " = " << field[1] << endl;
+			} else if (field[0] == "[]=") {
+				out << field[3] << "[" << field[1] << "] = " << field[2] << endl;
+			} else if (field[0] == "=[]") {
+				out << field[3] << " = " << field[1] << "[" << field[2] << "]" << endl;
+			} else if (field[0] == "PRINT" && field[1] != "STRING") {
+				out << "PRINT\t" << field[1].substr(0, field[1].size()-2) << "\t" << field[2] <<endl;
+			} else if (field[0] == "PRINT") {
+				out << "PRINT\t\"" << StringTable::look_up(field[2]) << "\"" << endl;
+			} else if (field[0] == "SCANF") {
+				out << "SCANF\t" << field[1].substr(0, field[1].size()-2) << "\t" << field[2] <<endl;
+			} else if (field[0] == "END") {
+				out << "END\t" << field[1] << endl;
+			}
+		
+		}
 	}
 	out.close();
 }
@@ -404,6 +454,16 @@ void Intermediate_code::del_nouse_val() {
 	}
 	del_nop();
 }
+
+void Intermediate_code::optimize() {
+	lable_combine();
+	peephole_optimize();
+	DAG_optimize();
+	lable_combine();
+	peephole_optimize();
+	lable_combine();
+}
+
 /*
 bool Intermediate_code::all_in_que(const vector<bool> in_que, const int size) {
 	for (int i=0; i<size; i++)
