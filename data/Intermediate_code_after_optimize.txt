@@ -1,0 +1,307 @@
+CONST	INT	con_i_1=1
+CONST	INT	con_i_2=1
+CONST	INT	con_i_3=2
+CONST	CHAR	con_c_1=43
+CONST	CHAR	con_c_2=45
+CONST	CHAR	con_c_3=42
+VAR	INT	i_1
+VAR	INT	i_2
+VAR	INT	i_3
+INT	i_4[10]
+INT	str[10]
+VAR	CHAR	c_1
+VAR	CHAR	c_2
+VAR	CHAR	c_3
+CHAR	c_4[10]
+INT	testArray()
+CONST	INT	num_0=0
+INT	abc[10]
+str[0] = 1
+abc[1] = 2
+str[2] = 3
+abc[3] = 4
+str[4] = 5
+abc[5] = 6
+14_t = str[num_0]
+16_t = abc[14_t]
+18_t = str[16_t]
+20_t = abc[18_t]
+22_t = str[20_t]
+24_t = abc[22_t]
+str[24_t] = 7
+28_t = str[num_0]
+30_t = abc[28_t]
+32_t = str[30_t]
+34_t = abc[32_t]
+36_t = str[34_t]
+38_t = abc[36_t]
+55_t = str[38_t]
+40_t = 55_t
+55_t = 55_t + 38_t
+abc[40_t] = 55_t
+68_t = 4
+71_t = 28_t
+72_t = 6
+73_t = 5
+74_t = 0 - 1
+76_t = str[0]
+74_t = 74_t + 76_t
+74_t = 74_t + 1
+77_t = abc[74_t]
+73_t = 5 + 77_t
+73_t = 73_t - 5
+78_t = str[73_t]
+72_t = 6 * 78_t
+72_t = 72_t / 2
+72_t = 72_t / 3
+80_t = abc[72_t]
+71_t = 28_t * 80_t
+82_t = str[71_t]
+68_t = 4 + 82_t
+85_t = str[2]
+86_t = abc[85_t]
+68_t = 68_t - 86_t
+88_t = abc[68_t]
+90_t = str[88_t]
+92_t = abc[90_t]
+RETURN	92_t
+END	testArray
+INT	fun0()
+PARA	INT	a
+RETURN	a
+END	fun0
+INT	fun1()
+PARA	INT	a
+PARA	INT	b
+VAR	INT	fun
+fun = a + b
+RETURN	fun
+END	fun1
+CHAR	fun2()
+RETURN	65
+END	fun2
+VOID	fun3()
+PARA	INT	a
+RETURN	
+END	fun3
+VOID	fun4()
+PARA	INT	a
+PARA	CHAR	b
+PRINT	INT	a
+PRINT	"\n"
+PRINT	CHAR	b
+PRINT	"\n"
+END	fun4
+VOID	fun5()
+PRINT	"Funtion_5"
+PRINT	"\n"
+END	fun5
+INT	fun6()
+PARA	INT	n
+101_t = n == 1
+RETURN	1
+103_t = n
+104_t = n - 1
+PUSH	n
+103_t = 103_t * $v0
+RETURN	103_t
+END	fun6
+VOID	main()
+CONST	INT	m_con_i_1=1
+CONST	INT	M_con_i_1=100
+CONST	INT	m_con_i_2=1
+CONST	INT	m_con_i_3=2
+CONST	CHAR	m_con_c_1=43
+CONST	CHAR	m_con_c_2=45
+CONST	CHAR	m_con_c_3=42
+VAR	INT	m_i_1
+VAR	INT	M_i_1
+VAR	INT	m_i_2
+VAR	INT	m_i_3
+INT	m_i_4[10]
+VAR	CHAR	m_c_1
+VAR	CHAR	m_c_2
+VAR	CHAR	m_c_3
+CHAR	m_c_4[10]
+VAR	INT	i
+VAR	INT	j
+VAR	INT	k
+VAR	INT	m
+VAR	CHAR	c
+c = 97
+m = 97
+i = 1
+j = 2
+k = 3
+m_i_1 = 1
+m_i_2 = 1
+m_i_3 = 2
+m_c_1 = 43
+121_t = 1 == 100
+PRINT	"Error!"
+PRINT	"\n"
+PRINT	"Error!"
+PRINT	"\n"
+125_t = m_i_3 > 1
+126_t = 0 - m_i_3
+m_i_3 = 126_t + 1
+126_t = m_i_3
+PRINT	INT	m_i_3
+PRINT	"\n"
+130_t = m_i_3
+PRINT	"Test_1"
+PRINT	"\n"
+PRINT	"Test_2"
+PRINT	"\n"
+m_i_1 = 97
+m_c_4[m_i_1] = m_i_1
+136_t = m_c_4[m_i_1]
+PRINT	CHAR	136_t
+PRINT	"\n"
+137_t = m_i_1 + 1
+m_i_1 = 137_t
+138_t = 97 + 10
+139_t = 137_t < 138_t
+PRINT	"Test_3"
+PRINT	"\n"
+m_i_1 = 0
+m_i_2 = 0
+142_t = m_i_1 + m_i_2
+PRINT	INT	142_t
+PRINT	"\n"
+m_i_2 = m_i_2 + 1
+145_t = m_i_2 < 3
+m_i_1 = m_i_1 + 2
+148_t = m_i_1 < 5
+151_t = m_i_4[9]
+PRINT	INT	151_t
+PRINT	"\n"
+PRINT	"Test_4"
+PRINT	"\n"
+m_i_1 = 0
+PRINT	"Test_5"
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+155_t = m_i_1 == 1
+158_t = m_i_4[8]
+PRINT	INT	158_t
+PRINT	"\n"
+PUSH	a
+PUSH	b
+PRINT	INT	$v0
+PRINT	"\n"
+164_t = m_i_1 - 1
+165_t = 164_t - 1
+PUSH	n
+169_t = $v0 - 1
+PRINT	"Test_6"
+PRINT	"\n"
+170_t = m_c_1
+171_t = m_c_1 - 43
+m_i_1 = 1
+PUSH	n
+PRINT	INT	$v0
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+178_t = m_i_1 < 4
+179_t = 170_t - 45
+PRINT	"Error!"
+PRINT	"\n"
+180_t = 164_t - 2
+PUSH	n
+PRINT	INT	$v0
+PRINT	"\n"
+m_i_1 = 0
+PUSH	n
+PRINT	INT	$v0
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+190_t = m_i_1 == 1
+m_i_1 = 0 - m_c_1
+193_t = 0 - 43
+194_t = m_i_1 == 193_t
+PRINT	"Test_7"
+PRINT	"\n"
+195_t = m_i_1 + 43
+PRINT	"Test_7_ERROR"
+PRINT	"\n"
+197_t = m_i_1 - -43
+PRINT	"Test_7_1"
+PRINT	"\n"
+199_t = m_c_1 - 43
+PRINT	"Test_7_2"
+PRINT	"\n"
+PRINT	CHAR	43
+PRINT	"\n"
+PRINT	CHAR	45
+PRINT	"\n"
+PRINT	CHAR	42
+PRINT	"\n"
+PRINT	CHAR	47
+PRINT	"\n"
+PRINT	CHAR	95
+PRINT	"\n"
+m_i_1 = 97
+PRINT	CHAR	m_i_1
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+215_t = m_i_1 <= 122
+m_i_1 = 65
+PRINT	CHAR	m_i_1
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+221_t = m_i_1 <= 90
+224_t = i > j
+PRINT	"Test_1_Error"
+PRINT	"\n"
+227_t = j > i
+PRINT	"Test_1_Correct"
+PRINT	"\n"
+230_t = k < j
+PRINT	"Test_2_Error"
+PRINT	"\n"
+233_t = j < k
+PRINT	"Test_2_Correct"
+PRINT	"\n"
+236_t = k <= j
+PRINT	"Test_3_Error"
+PRINT	"\n"
+239_t = j <= k
+PRINT	"Test_3_Correct"
+PRINT	"\n"
+242_t = j <= j
+PRINT	"Test_3_Correct"
+PRINT	"\n"
+245_t = j >= k
+PRINT	"Test_4_Error"
+PRINT	"\n"
+248_t = k >= j
+PRINT	"Test_4_Correct"
+PRINT	"\n"
+251_t = k >= k
+PRINT	"Test_4_Correct"
+PRINT	"\n"
+254_t = i == j
+PRINT	"Test_5_Error"
+PRINT	"\n"
+257_t = c == m
+PRINT	"Test_5_Correct"
+PRINT	"\n"
+260_t = c
+PRINT	"Test_6_Error"
+PRINT	"\n"
+263_t = i
+PRINT	"Test_6_Correct"
+PRINT	"\n"
+265_t = $v0
+PRINT	"test array "
+PRINT	INT	265_t
+PRINT	"\n"
+SCANF	INT	m_i_1
+PRINT	INT	m_i_1
+PRINT	"\n"
+SCANF	CHAR	m_c_1
+PRINT	CHAR	m_c_1
+PRINT	"\n"
+PRINT	"DONE!"
+PRINT	"\n"

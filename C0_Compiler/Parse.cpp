@@ -76,7 +76,7 @@ int Parse::proc_program() {
 			Lexer::recover(save_p);
 		}
 	}
-	Intermediate_code::push_back(Quaternion("FUN", "BEGIN", "", ""));
+	Intermediate_code::push_back(Quaternion("~FUN", "~BEGIN", "", ""));
 	//º¯ÊıËµÃ÷
 	while (Lexer::symbol == kinds::INT || Lexer::symbol == kinds::CHAR || Lexer::symbol == kinds::VOID) {
 		save_p = save_ptr++;
@@ -178,7 +178,7 @@ int Parse::proc_const_defi() {
 				//ÖØ¸´¶¨Òå£¬ºóÕß²»Èë±í
 				Error::addError(Lexer::line, ANOTHER_DEF);
 			} else {
-				Intermediate_code::push_back(Quaternion("CONST", "INTSY", int2str(value), name));
+				Intermediate_code::push_back(Quaternion("~CONST", "!INTSY", int2str(value), name));
 			}
 			if (Lexer::symbol != kinds::COMMASY) {
 				break;
@@ -220,7 +220,7 @@ int Parse::proc_const_defi() {
 					//ÖØ¸´¶¨Òå
 					Error::addError(Lexer::line, ANOTHER_DEF);
 				} else {
-					Intermediate_code::push_back(Quaternion("CONST", "CHARSY", int2str(value), name));
+					Intermediate_code::push_back(Quaternion("~CONST", "!CHARSY", int2str(value), name));
 				}
 			}
 			Lexer::getToken();
@@ -308,12 +308,12 @@ int Parse::proc_var_defi() {
 				}
 				//´Ë´¦¿ÉÒÔÈ·¶¨Êı×éÉùÃ÷ÕıÈ·£¨ÇÒ²»ÂÛºóÃæµÄ¶ººÅ»ò·ÖºÅ£©
 				Table::array_enter(name, type, dim);//Ìî±í
-				Intermediate_code::push_back(Quaternion("ARRAY", typ, int2str(dim), name));
+				Intermediate_code::push_back(Quaternion("~ARRAY", "!"+typ, int2str(dim), name));
 				Lexer::getToken();
 			} else {
 				//´Ë´¦¿ÉÒÔÈ·¶¨±äÁ¿ÉùÃ÷ÕıÈ·£¨ÇÒ²»ÂÛºóÃæµÄ¶ººÅ»ò·ÖºÅ£©
 				Table::val_enter(name, type);//Ìî±í
-				Intermediate_code::push_back(Quaternion("VAL", typ, "", name));
+				Intermediate_code::push_back(Quaternion("~VAL", "!"+typ, "", name));
 			}
 			if (Lexer::symbol != kinds::COMMASY) {
 				break;
@@ -349,7 +349,7 @@ int Parse::proc_void_fun_decl() {
 		//ÉùÃ÷¹ıÍ¬Ãû¡£¡£¡£
 		Error::addError(Lexer::line, ANOTHER_DEF);
 	} else {
-		Intermediate_code::push_back(Quaternion("FUN", "VOID", name, ""));//Éú³ÉÖĞ¼ä´úÂë
+		Intermediate_code::push_back(Quaternion("~FUN", "!VOID", name, ""));//Éú³ÉÖĞ¼ä´úÂë
 	}
 	Lexer::getToken();
 	if (Lexer::symbol != kinds::LPARSY) {//ÕâÀïÈÏÎªÈ±ÉÙ×óÀ¨ºÅºó¾ÍÖ±½ÓÊÇ²ÎÊıÁĞ±íÁË
@@ -387,7 +387,7 @@ int Parse::proc_void_fun_decl() {
 	//×óÓÒ»¨À¨ºÅÆëÈ«£¬²ÎÊı±íÕıÈ·
 	//º¯ÊıÉùÃ÷Íê±Ï
 	//Ìî±í
-	Intermediate_code::push_back(Quaternion("END", name, "", ""));//ËÄÔªÊ½ÖĞ²åÈëº¯ÊıÉùÃ÷½áÊø±êÖ¾
+	Intermediate_code::push_back(Quaternion("~END", name, "", ""));//ËÄÔªÊ½ÖĞ²åÈëº¯ÊıÉùÃ÷½áÊø±êÖ¾
 	Table::func_fill_back_value(name);//»ØÌîÕ»¿Õ¼ä´óĞ¡
 	cur_fun = "top";
 	Lexer::getToken();
@@ -415,7 +415,7 @@ int Parse::proc_ioc_fun_decl() {
 		Error::addError(Lexer::line, ANOTHER_DEF);
 	} else {
 		const string typ = type==kinds::INTSY?"INTSY":"CHARSY";
-		Intermediate_code::push_back(Quaternion("FUN", typ, name, ""));//Éú³ÉÖĞ¼ä´úÂë
+		Intermediate_code::push_back(Quaternion("~FUN", "!"+typ, name, ""));//Éú³ÉÖĞ¼ä´úÂë
 	}
 	Lexer::getToken();
 	if (Lexer::symbol != kinds::LPARSY) {//ÕâÀïÈÏÎªÈ±ÉÙ×óÀ¨ºÅºó¾ÍÖ±½ÓÊÇ²ÎÊıÁĞ±íÁË
@@ -453,7 +453,7 @@ int Parse::proc_ioc_fun_decl() {
 	//×óÓÒ»¨À¨ºÅÆëÈ«£¬²ÎÊı±íÕıÈ·
 	//º¯ÊıÉùÃ÷Íê±Ï
 	//Ìî±í
-	Intermediate_code::push_back(Quaternion("END", name, "", ""));//ËÄÔªÊ½ÖĞ²åÈëº¯ÊıÉùÃ÷½áÊø±êÖ¾
+	Intermediate_code::push_back(Quaternion("~END", name, "", ""));//ËÄÔªÊ½ÖĞ²åÈëº¯ÊıÉùÃ÷½áÊø±êÖ¾
 	Table::func_fill_back_value(name);//ÕâÀïÆäÊµÊÇ»ØÌîÕ»¿Õ¼ä´óĞ¡
 	cur_fun = "top";
 	Lexer::getToken();
@@ -477,7 +477,7 @@ int Parse::proc_main_fun() {
 		//±¨´í£¬mainÒÑ¾­±»ÉùÃ÷¹ıÁË
 		return 1;
 	}
-	Intermediate_code::push_back(Quaternion("FUN", "VOID", "main", ""));//Éú³ÉÖĞ¼ä´úÂë
+	Intermediate_code::push_back(Quaternion("~FUN", "!VOID", "main", ""));//Éú³ÉÖĞ¼ä´úÂë
 	Lexer::getToken();
 	if (Lexer::symbol != kinds::LPARSY) {
 		//±¨´í
@@ -506,7 +506,7 @@ int Parse::proc_main_fun() {
 	Table::func_fill_back_dim("main", 0);//ÆäÊµÕâÀï²»»ØÌîÒ²Ã»ÊÂ£¬ÒòÎªdimÄ¬ÈÏÎª0
 	Table::func_fill_back_value("main");
 	cur_fun = "top";//ÊµÔò¿ÉÓĞ¿ÉÎŞ
-	Intermediate_code::push_back(Quaternion("TERMINATE", "" ,"" ,""));
+	Intermediate_code::push_back(Quaternion("~TERMINATE", "" ,"" ,""));
 	if(print_grammar_item) cout <<"Ö÷º¯Êı"<<endl;
 	return 0;
 }
@@ -525,12 +525,12 @@ int Parse::proc_para(int &dim) {
 			}
 		}
 		const string name = Lexer::token;
-		if (0 != Table::para_enter(name, type)) {//Ìî·ûºÅ±í
+		if (0 != Table::para_enter(name, type, d)) {//Ìî·ûºÅ±í
 			//±¾²ãÓĞÍ¬Ãû±êÊ¶·û£¬±¨´í
 			Error::addError(Lexer::line, ANOTHER_DEF);
 		}
 		const string typ = type==kinds::INTSY?"INTSY":"CHARSY";
-		Intermediate_code::push_back(Quaternion("PARA", typ, name, ""));//Éú³ÉÖĞ¼ä´úÂë
+		Intermediate_code::push_back(Quaternion("~PARA", "!"+typ, name, ""));//Éú³ÉÖĞ¼ä´úÂë
 		Lexer::getToken();
 		d++;
 		if (Lexer::symbol != kinds::COMMASY) {
@@ -615,17 +615,17 @@ int Parse::proc_if_stat() {
 	}
 	//½ÓÏÂÀ´´¦ÀíÓï¾ä
 	const string lable1 = new_lable();
-	Intermediate_code::push_back(Quaternion("BZ", val1, lable1, ""));//´¦ÀíÓï¾äÇ°ÒªÉú³ÉÌø×ªÖ¸Áî
+	Intermediate_code::push_back(Quaternion("~BZ", val1, lable1, ""));//´¦ÀíÓï¾äÇ°ÒªÉú³ÉÌø×ªÖ¸Áî
 	Lexer::getToken();
 	proc_stat();
 	const string lable2 = new_lable();
-	Intermediate_code::push_back(Quaternion("GOTO", lable2, "", ""));//²åÈëÎŞÌõ¼şÌø×ªÓï¾ä
-	Intermediate_code::push_back(Quaternion("LABLE", lable1, "", ""));//²åÈë±êÇ©
+	Intermediate_code::push_back(Quaternion("~GOTO", lable2, "", ""));//²åÈëÎŞÌõ¼şÌø×ªÓï¾ä
+	Intermediate_code::push_back(Quaternion("~LABLE", lable1, "", ""));//²åÈë±êÇ©
 	if (Lexer::symbol == kinds::ELSE) {
 		Lexer::getToken();
 		proc_stat();
 	}
-	Intermediate_code::push_back(Quaternion("LABLE", lable2, "", ""));//²åÈë±êÇ©
+	Intermediate_code::push_back(Quaternion("~LABLE", lable2, "", ""));//²åÈë±êÇ©
 	if(print_grammar_item) cout <<"ifÓï¾ä"<<endl;
 	return 0;
 }
@@ -763,7 +763,8 @@ int Parse::proc_expr(string &result, kinds &type) {
 	proc_term(term_result, term_type);//Ïî´¦Àí
 	type = term_type;
 	const string tmp_result = new_val(type, 0);
-	Intermediate_code::push_back(Quaternion(sign, "0", term_result, tmp_result));
+	if (sign == "-") Intermediate_code::push_back(Quaternion(sign, "0", term_result, tmp_result));//ÕıºÅ¾Í²»²Ù×÷ÁË
+	else Intermediate_code::push_back(Quaternion("=", term_result, "", tmp_result));
 	while (Lexer::symbol == kinds::PLUSSY || Lexer::symbol == kinds::MINUSSY) {
 		//Ö»ÒªÓĞ¼Ó·¨ÔËËã·û£¬¾Í±ØÓĞterm£¬·ñÔò¾ÍÊÇ´íµÄ£¬ËùÒÔÖ»ÒªÊÇÕıÈ·µÄÊäÈë£¬Ñ­»·Ö»»áÒòÎªÑ­»·Ìõ¼ş½ØÖ¹¶ø²»»áreturn 1Ç¿ÖÆ½ØÖ¹
 		sign = Lexer::symbol==kinds::PLUSSY?"+":"-";
@@ -824,7 +825,7 @@ int Parse::proc_fact(string &result, kinds &type) {
 		break;
 	case kinds::CHARSY://×Ö·û
 		//result = new_val(CHARSY, Lexer::num);
-		result = int2str(Lexer::num);
+		result = "$"+int2str(Lexer::num);
 		type = kinds::CHARSY;
 		Lexer::getToken();
 		break;
@@ -942,8 +943,7 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 					Error::addError(Lexer::line, CAL_FUN_UNMATCHING);
 				}
 				dim++;
-				string typ = para_type==kinds::INTSY?"INTSY":"CHARSY";
-				Intermediate_code::push_back(Quaternion("PUSH", para_name, fun_para[0].name, fun_name));
+				Intermediate_code::push_back(Quaternion("~PUSH", para_name, fun_para[0].name, fun_name));
 				while (Lexer::symbol == kinds::COMMASY ) {//¶Áµ½¶ººÅËµÃ÷»¹ÓĞ²ÎÊı
 					Lexer::getToken();
 					proc_expr(para_name, para_type);
@@ -951,8 +951,8 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 					{	
 						Error::addError(Lexer::line, CAL_FUN_UNMATCHING);
 					}
-					typ = para_type==kinds::INTSY?"INTSY":"CHARSY";
-					Intermediate_code::push_back(Quaternion("PUSH", para_name, fun_para[dim].name, fun_name));
+					string typ = para_type==kinds::INTSY?"INTSY":"CHARSY";
+					Intermediate_code::push_back(Quaternion("~PUSH", para_name, fun_para[dim].name, fun_name));
 					dim++;
 				}
 
@@ -970,8 +970,8 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 	}
 	type = Table::get_type(cur_fun, fun_name);//INTSY/CHARSY/VOID
 	result = new_val(type, 0);
-	Intermediate_code::push_back(Quaternion("CALL", fun_name, "", ""));
-	Intermediate_code::push_back(Quaternion("LOAD_RETURN_VALUE", "", "", result));//±£´æ·µ»ØÖµ
+	Intermediate_code::push_back(Quaternion("~CALL", fun_name, "", ""));
+	Intermediate_code::push_back(Quaternion("=", "$v0", "", result));//±£´æ·µ»ØÖµ
 	Lexer::getToken();
 	if(print_grammar_item) cout<<"ÓĞ·µ»ØÖµº¯Êıµ÷ÓÃÓï¾ä"<<endl;
 	return 0;
@@ -981,6 +981,7 @@ int Parse::proc_cal_fun(string &result, kinds &type) {
 int Parse::proc_for_stat() {
 	const int save1 = save_ptr++;
 	const int save2 = save_ptr++;
+	//Intermediate_code::push_back(Quaternion("~LOOP", "~BEDIN", "", ""));
 	if (Lexer::symbol != kinds::FOR) {
 		return 1;
 	}
@@ -1015,7 +1016,7 @@ int Parse::proc_for_stat() {
 				}
 				Intermediate_code::push_back(Quaternion("=", expr_name, "", ID_name));
 				const string lable = new_lable();
-				Intermediate_code::push_back(Quaternion("LABLE", lable, "", ""));
+				Intermediate_code::push_back(Quaternion("~LABLE", lable, "", ""));
 				if (Lexer::symbol != kinds::SEMISY ) {
 					//²»ÊÇ·ÖºÅ£¬±¨´í
 					Error::addError(Lexer::line, MISS_SEMISY);
@@ -1101,7 +1102,8 @@ int Parse::proc_for_stat() {
 													enum kinds cond_type;
 													proc_cond(cond_name, cond_type);//ÖĞ¼äÌõ¼ş
 													Lexer::recover(save2);
-													Intermediate_code::push_back(Quaternion("BNZ", cond_name, lable, ""));
+													Intermediate_code::push_back(Quaternion("~BNZ", cond_name, lable, ""));
+													//Intermediate_code::push_back(Quaternion("~LOOP", "~END"	, "", ""));
 													return 0;
 												}
 												//²»ÊÇÓï¾äµÄ¿ªÍ··ûºÅ£¬Õı³£Çé¿ö²»»áµ½´Ë·ÖÖ§
@@ -1148,7 +1150,7 @@ int Parse::proc_swit_stat() {
 		//È±ÉÙ}£¬±¨´í
 		Error::addError(Lexer::line, MISS_RCBRACSY);
 	}
-	Intermediate_code::push_back(Quaternion("LABLE", end_lable, "", ""));
+	Intermediate_code::push_back(Quaternion("~LABLE", end_lable, "", ""));
 	Lexer::getToken();//Ô¤¶ÁÈë
 	if(print_grammar_item) cout <<"switch-caseÓï¾ä"<<endl;
 	return 0;
@@ -1176,7 +1178,7 @@ int Parse::proc_case_stat(const string name, const enum kinds type, const string
 	const string tmp = new_val(INTSY, 0);
 	const string case_lable = new_lable();
 	Intermediate_code::push_back(Quaternion("-", name, int2str(const_value), tmp));
-	Intermediate_code::push_back(Quaternion("BNZ", tmp, case_lable, ""));
+	Intermediate_code::push_back(Quaternion("~BNZ", tmp, case_lable, ""));
 	if (type != const_type) {
 		Error::addError(Lexer::line, ERROR_TYPE_IN_CASE);
 	}
@@ -1186,8 +1188,8 @@ int Parse::proc_case_stat(const string name, const enum kinds type, const string
 	} else {
 		Lexer::getToken();
 		proc_stat();//ÕâÀïÊµÏÖÁËÔ¤¶ÁÈë
-		Intermediate_code::push_back(Quaternion("GOTO", end_lable, "", ""));
-		Intermediate_code::push_back(Quaternion("LABLE", case_lable, "", ""));
+		Intermediate_code::push_back(Quaternion("~GOTO", end_lable, "", ""));
+		Intermediate_code::push_back(Quaternion("~LABLE", case_lable, "", ""));
 		if(print_grammar_item) cout <<"Çé¿ö×ÓÓï¾ä"<<endl;
 		return 0;
 	}
@@ -1292,7 +1294,7 @@ int Parse::proc_assi_stat() {
 		string expr_name;
 		enum kinds expr_type;
 		proc_expr(expr_name, expr_type);//±í´ïÊ½
-		Intermediate_code::push_back(Quaternion("[]=", ID_name, index_name, expr_name));//¸øÊı×éÔªËØ¸³Öµ
+		Intermediate_code::push_back(Quaternion("[]=", index_name, expr_name, ID_name));//¸øÊı×éÔªËØ¸³Öµ
 		if(print_grammar_item) cout <<"¸³ÖµÓï¾ä"<<endl;
 		return 0;		
 	} else {
@@ -1322,12 +1324,14 @@ int Parse::proc_read_stat() {
 		return 1;
 	}
 	string para_name = Lexer::token;
-	if (Table::get_CLASS(cur_fun, para_name) != _CLASS::VAL_CLASS) {
+	if (!Table::contain(cur_fun, para_name)) {//Î´¶¨Òå±êÊ¶·û
+		Error::addError(Lexer::line, UNDEFINED_IDSY);
+	} else if (Table::get_CLASS(cur_fun, para_name) != _CLASS::VAL_CLASS) {
 		Error::addError(Lexer::line, ERROR_SCANF);	
 	}
 	enum kinds type = Table::get_type(cur_fun, para_name);
 	string typ = type==kinds::INTSY?"INTSY":"CHARSY";
-	Intermediate_code::push_back(Quaternion("SCANF", typ, para_name, ""));
+	Intermediate_code::push_back(Quaternion("~SCANF", "!"+typ, para_name, ""));
 	Lexer::getToken();
 	while (Lexer::symbol == kinds::COMMASY) {//ÓĞ¶ººÅËµÃ÷»¹ÓĞÒª¶ÁµÄ
 		Lexer::getToken();
@@ -1345,7 +1349,7 @@ int Parse::proc_read_stat() {
 		}
 		type = Table::get_type(cur_fun, para_name);
 		typ = type==kinds::INTSY?"INTSY":"CHARSY";
-	Intermediate_code::push_back(Quaternion("SCANF", typ, para_name, ""));
+	Intermediate_code::push_back(Quaternion("~SCANF", "!"+typ, para_name, ""));
 		Lexer::getToken();
 	}
 	if (Lexer::symbol != kinds::RPARSY) {
@@ -1371,7 +1375,7 @@ int Parse::proc_writ_stat() {
 	Lexer::getToken();
 	if (Lexer::symbol == kinds::STRSY) {
 		//ÏÖÔÚ¶Áµ½ÁË×Ö·û´®£¬ºóÃæ¿ÉÄÜ»¹ÓĞ¶ººÅ£¬±êÊ¶·û
-		Intermediate_code::push_back(Quaternion("PRINT", "STRING", StringTable::add(Lexer::token), ""));
+		const string token_lable = StringTable::add(Lexer::token);
 		Lexer::getToken();
 		if (Lexer::symbol == kinds::COMMASY) {
 			//ÓĞ¶Áµ½ÁË¶ººÅ£¬ÆÚÍûºóÃæÓĞ±í´ïÊ½
@@ -1386,10 +1390,12 @@ int Parse::proc_writ_stat() {
 				}
 				return 1;
 			}
+			Intermediate_code::push_back(Quaternion("~PRINT", "!STRING", token_lable, ""));
 			const string typ = expr_type==kinds::INTSY?"INTSY":"CHARSY";
-			Intermediate_code::push_back(Quaternion("PRINT", typ, expr_name, ""));
+			Intermediate_code::push_back(Quaternion("~PRINT", "!"+typ, expr_name, ""));
 			//´ïµ½ÁËÆÚÍû£¬¼´print×Ö·û´®ºÍ±í´ïÊ½£¬²¢ÇÒÓĞÁËÔ¤¶ÁÈë
-		}
+		} else 
+			Intermediate_code::push_back(Quaternion("~PRINT", "!STRING", token_lable, ""));
 	} else {//Ö»ÓĞ±í´ïÊ½
 		string expr_name;
 		enum kinds expr_type;
@@ -1402,13 +1408,13 @@ int Parse::proc_writ_stat() {
 			return 1;
 		}
 		const string typ = expr_type==kinds::INTSY?"INTSY":"CHARSY";
-		Intermediate_code::push_back(Quaternion("PRINT", typ, expr_name, ""));
+		Intermediate_code::push_back(Quaternion("~PRINT", "!"+typ, expr_name, ""));
 	}
 	if (Lexer::symbol != kinds::RPARSY) {
 		//È±ÉÙ×îºóµÄÓÒÀ¨ºÅ£¬±¨´í
 		Error::addError(Lexer::line, MISS_RPARSY);
 	}
-	Intermediate_code::push_back(Quaternion("PRINT", "STRING", "string_0", ""));
+	Intermediate_code::push_back(Quaternion("~PRINT", "!STRING", "string_0", ""));
 	Lexer::getToken();
 	if(print_grammar_item) cout <<"Ğ´Óï¾ä"<<endl;
 	return 0;
@@ -1423,7 +1429,7 @@ int Parse::proc_retu_stat() {//ÕâÀïÆäÊµÓ¦¸Ã»Ø´«·µ»ØÀàĞÍ£¬²¢ÔÚº¯ÊıÖĞÅĞ¶ÏÓĞÎŞ·µ»ØÓ
 	Lexer::getToken();
 	if (Lexer::symbol == kinds::SEMISY) {
 		//return; Óï¾ä£¬Ïàµ±ÓÚÓĞÁËÔ¤¶ÁÈë
-		Intermediate_code::push_back(Quaternion("RETURN", "NONE", "", ""));
+		Intermediate_code::push_back(Quaternion("~RETURN", "~NONE", "", ""));
 		if(print_grammar_item) cout <<"returnÓï¾ä£¨ÎŞ·µ»ØÖµ£©"<<endl;
 		return 0;
 	}
@@ -1439,7 +1445,7 @@ int Parse::proc_retu_stat() {//ÕâÀïÆäÊµÓ¦¸Ã»Ø´«·µ»ØÀàĞÍ£¬²¢ÔÚº¯ÊıÖĞÅĞ¶ÏÓĞÎŞ·µ»ØÓ
 		Error::addError(Lexer::line, ERROR_RETURN_TYPE);
 	}
 	const string typ = expr_type==kinds::INTSY?"INTSY":"CHARSY";
-	Intermediate_code::push_back(Quaternion("RETURN", typ, expr_name, ""));
+	Intermediate_code::push_back(Quaternion("~RETURN", "!"+typ, expr_name, ""));
 	if (Lexer::symbol != kinds::RPARSY) {
 		//)´íÎó£¬±¨´í
 		Error::addError(Lexer::line, MISS_RPARSY);
@@ -1459,6 +1465,6 @@ string Parse::new_lable() {
 string Parse::new_val(const kinds type, const int value) {
 	static int val_num = 0;
 	string name = int2str(val_num++) + "_t";//ÕâÑùÈ¡Ãû×Ö±ÜÃâÁËºÍÁÙÊ±±äÁ¿ÖØÃû
-	Table::val_enter(name, type, value);
+	Table::val_enter_t(name, type, value);
 	return name;
 }

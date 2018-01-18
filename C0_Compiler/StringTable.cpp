@@ -5,12 +5,12 @@ int StringTable::i = 1;//0Œª÷√ «"\\n"
 vector<string> StringTable::names;
 vector<string> StringTable::contents;
 
-StringTable::StringTable(void)
+StringTable::StringTable()
 {
 }
 
 
-StringTable::~StringTable(void)
+StringTable::~StringTable()
 {
 }
 
@@ -20,6 +20,9 @@ void StringTable::init() {
 }
 
 string StringTable::add(const string content) {
+	for (int i=0; i<contents.size(); i++)
+		if (contents[i] == content)
+			return names[i];
 	string name = "string_" + int2str(i++);
 	names.push_back(name);
 	contents.push_back(content);

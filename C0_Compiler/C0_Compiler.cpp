@@ -6,24 +6,17 @@ bool debug_in_main = false;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	StringTable::init();//³õÊ¼»¯×Ö·û´®±í
-	if (debug_in_main) {
-		int b;
-		cin >> b;
-		Lexer::init(b==1?"../data/in.txt":"../data/in2.txt");
-	} else {
-		char ipath[100];
-		cin >> ipath;
-		Lexer::init(ipath);
-	}
+	char ipath[100];
+	cin >> ipath;
+	Lexer::init(ipath);
 	Lexer::getToken();
 	Parse::proc_program();
-	Table::print("../data/table.txt");
-	StringTable::print("../data/StringTable.txt");
 	Intermediate_code::print("../data/Intermediate_code.txt");
+	Intermediate_code::optimize();
+	Intermediate_code::print("../data/Intermediate_code_after_optimize.txt");
 	Translator::init("../data/mips.asm");
 	Translator::translate();
 	cout << "Done!" << endl;
-
 
 	return 0;
 }

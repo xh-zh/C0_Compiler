@@ -1,255 +1,514 @@
-CONST	INTSY	10	MAX_FACTOR
-CONST	INTSY	0	MIN_FACTOR
-CONST	CHARSY	95	SUBSCRIPT
-VAL	INTSY		m
-VAL	INTSY		n
-VAL	INTSY		result
-FUN	BEGIN		
-FUN	INTSY	factorial	
-PARA	INTSY	f	
-+	0	f	0_t
-+	0	1	1_t
-<=	0_t	1_t	2_t
-BZ	2_t	lable_0	
-+	0	1	3_t
-RETURN	INTSY	3_t	
-GOTO	lable_1		
-LABLE	lable_0		
-=	f		4_t
-+	0	f	5_t
--	5_t	1	5_t
-PUSH	5_t	f	factorial
-CALL	factorial		
-LOAD_RETURN_VALUE			6_t
-*	4_t	6_t	4_t
-+	0	4_t	7_t
-RETURN	INTSY	7_t	
-LABLE	lable_1		
-END	factorial		
-FUN	VOID	display_error	
-PARA	INTSY	error_code	
-+	0	error_code	8_t
--	8_t	1	9_t
-BNZ	9_t	lable_3	
-PRINT	STRING	string_1	
-PRINT	STRING	string_0	
-GOTO	lable_2		
-LABLE	lable_3		
--	8_t	2	10_t
-BNZ	10_t	lable_4	
-PRINT	STRING	string_2	
-PRINT	STRING	string_0	
-GOTO	lable_2		
-LABLE	lable_4		
--	8_t	3	11_t
-BNZ	11_t	lable_5	
-PRINT	STRING	string_3	
-PRINT	STRING	string_0	
-GOTO	lable_2		
-LABLE	lable_5		
--	8_t	4	12_t
-BNZ	12_t	lable_6	
-PRINT	STRING	string_4	
-PRINT	STRING	string_0	
-GOTO	lable_2		
-LABLE	lable_6		
--	8_t	5	13_t
-BNZ	13_t	lable_7	
-PRINT	STRING	string_5	
-PRINT	STRING	string_0	
-GOTO	lable_2		
-LABLE	lable_7		
-PRINT	STRING	string_6	
-PRINT	STRING	string_0	
-LABLE	lable_2		
-END	display_error		
-FUN	INTSY	expression_test	
-VAL	INTSY		this_is_1
-+	0	1	14_t
-+	0	1	15_t
-+	0	1	16_t
-+	0	1	17_t
-+	0	1	18_t
-+	0	1	19_t
-+	0	1	20_t
-+	0	1	21_t
-+	0	1	22_t
-+	0	1	23_t
-+	0	1	24_t
-+	0	1	25_t
-+	0	1	26_t
-+	0	1	27_t
-+	0	1	28_t
-+	0	1	29_t
-+	0	1	30_t
-+	0	1	31_t
-+	0	1	32_t
--	31_t	32_t	31_t
--	30_t	31_t	30_t
--	29_t	30_t	29_t
--	28_t	29_t	28_t
--	27_t	28_t	27_t
--	26_t	27_t	26_t
--	25_t	26_t	25_t
--	24_t	25_t	24_t
--	23_t	24_t	23_t
--	22_t	23_t	22_t
--	21_t	22_t	21_t
--	20_t	21_t	20_t
--	19_t	20_t	19_t
--	18_t	19_t	18_t
--	17_t	18_t	17_t
--	16_t	17_t	16_t
--	15_t	16_t	15_t
--	14_t	15_t	14_t
-=	14_t		this_is_1
-+	0	this_is_1	33_t
-RETURN	INTSY	33_t	
-END	expression_test		
-FUN	INTSY	for_factorial	
-PARA	INTSY	m	
-VAL	INTSY		f
-+	0	m	34_t
-=	34_t		f
-+	0	m	35_t
--	35_t	1	35_t
-=	35_t		m
-LABLE	lable_8		
-=	f		36_t
-*	36_t	m	36_t
-+	0	36_t	37_t
-=	37_t		f
--	m	1	m
-+	0	m	38_t
-BNZ	38_t	lable_8	
-+	0	f	39_t
-RETURN	INTSY	39_t	
-END	for_factorial		
-FUN	VOID	main	
-VAL	INTSY		error_code
-VAL	INTSY		fact_m
-VAL	INTSY		fact_n
-VAL	INTSY		fact_m_sub_n
-+	0	0	40_t
-=	40_t		error_code
-SCANF	INTSY	m	
-SCANF	INTSY	n	
-CALL	expression_test		
-LOAD_RETURN_VALUE			41_t
-+	0	41_t	42_t
-+	0	1	43_t
-!=	42_t	43_t	44_t
-BZ	44_t	lable_9	
-PRINT	STRING	string_7	
-PRINT	STRING	string_0	
-GOTO	lable_10		
-LABLE	lable_9		
-LABLE	lable_10		
-+	0	m	45_t
-+	0	MAX_FACTOR	46_t
->	45_t	46_t	47_t
-BZ	47_t	lable_11	
-+	0	1	48_t
-=	48_t		error_code
-GOTO	lable_12		
-LABLE	lable_11		
-LABLE	lable_12		
-+	0	m	49_t
-+	0	MIN_FACTOR	50_t
-<	49_t	50_t	51_t
-BZ	51_t	lable_13	
-+	0	2	52_t
-=	52_t		error_code
-GOTO	lable_14		
-LABLE	lable_13		
-LABLE	lable_14		
-+	0	n	53_t
-+	0	MAX_FACTOR	54_t
->	53_t	54_t	55_t
-BZ	55_t	lable_15	
-+	0	3	56_t
-=	56_t		error_code
-GOTO	lable_16		
-LABLE	lable_15		
-LABLE	lable_16		
-+	0	n	57_t
-+	0	MIN_FACTOR	58_t
-<	57_t	58_t	59_t
-BZ	59_t	lable_17	
-+	0	4	60_t
-=	60_t		error_code
-GOTO	lable_18		
-LABLE	lable_17		
-LABLE	lable_18		
-+	0	m	61_t
--	61_t	n	61_t
-+	0	0	62_t
-<	61_t	62_t	63_t
-BZ	63_t	lable_19	
-+	0	5	64_t
-=	64_t		error_code
-GOTO	lable_20		
-LABLE	lable_19		
-LABLE	lable_20		
-+	0	error_code	65_t
-PUSH	65_t	error_code	display_error
-CALL	display_error		
-LOAD_RETURN_VALUE			66_t
-+	0	error_code	67_t
-+	0	0	68_t
-==	67_t	68_t	69_t
-BZ	69_t	lable_21	
-+	0	m	70_t
-PUSH	70_t	f	factorial
-CALL	factorial		
-LOAD_RETURN_VALUE			71_t
-+	0	71_t	72_t
-=	72_t		fact_m
-+	0	n	73_t
-PUSH	73_t	f	factorial
-CALL	factorial		
-LOAD_RETURN_VALUE			74_t
-+	0	74_t	75_t
-=	75_t		fact_n
-+	0	m	76_t
--	76_t	n	76_t
-PUSH	76_t	f	factorial
-CALL	factorial		
-LOAD_RETURN_VALUE			77_t
-+	0	77_t	78_t
-=	78_t		fact_m_sub_n
-PRINT	STRING	string_8	
-+	0	fact_m	79_t
-PRINT	INTSY	79_t	
-PRINT	STRING	string_0	
-PRINT	STRING	string_9	
-+	0	m	80_t
-PUSH	80_t	m	for_factorial
-CALL	for_factorial		
-LOAD_RETURN_VALUE			81_t
-+	0	81_t	82_t
-PRINT	INTSY	82_t	
-PRINT	STRING	string_0	
-PRINT	STRING	string_10	
-+	0	fact_n	83_t
-PRINT	INTSY	83_t	
-PRINT	STRING	string_0	
-PRINT	STRING	string_11	
-+	0	n	84_t
-PUSH	84_t	m	for_factorial
-CALL	for_factorial		
-LOAD_RETURN_VALUE			85_t
-+	0	85_t	86_t
-PRINT	INTSY	86_t	
-PRINT	STRING	string_0	
-PRINT	STRING	string_12	
-=	fact_m		87_t
-/	87_t	fact_n	87_t
-/	87_t	fact_m_sub_n	87_t
-+	0	87_t	88_t
-PRINT	INTSY	88_t	
-PRINT	STRING	string_0	
-GOTO	lable_22		
-LABLE	lable_21		
-LABLE	lable_22		
-TERMINATE			
+CONST	INT	con_i_1=1
+CONST	INT	con_i_2=1
+CONST	INT	con_i_3=2
+CONST	CHAR	con_c_1=43
+CONST	CHAR	con_c_2=45
+CONST	CHAR	con_c_3=42
+VAR	INT	i_1
+VAR	INT	i_2
+VAR	INT	i_3
+INT	i_4[10]
+INT	str[10]
+VAR	CHAR	c_1
+VAR	CHAR	c_2
+VAR	CHAR	c_3
+CHAR	c_4[10]
+INT	testArray()
+CONST	INT	num_0=0
+INT	abc[10]
+0_t = 0
+1_t = 1
+str[0_t] = 1_t
+2_t = 1
+3_t = 2
+abc[2_t] = 3_t
+4_t = 2
+5_t = 3
+str[4_t] = 5_t
+6_t = 3
+7_t = 4
+abc[6_t] = 7_t
+8_t = 4
+9_t = 5
+str[8_t] = 9_t
+10_t = 5
+11_t = 6
+abc[10_t] = 11_t
+12_t = num_0
+13_t = str[12_t]
+14_t = 13_t
+15_t = abc[14_t]
+16_t = 15_t
+17_t = str[16_t]
+18_t = 17_t
+19_t = abc[18_t]
+20_t = 19_t
+21_t = str[20_t]
+22_t = 21_t
+23_t = abc[22_t]
+24_t = 23_t
+25_t = 7
+str[24_t] = 25_t
+26_t = num_0
+27_t = str[26_t]
+28_t = 27_t
+29_t = abc[28_t]
+30_t = 29_t
+31_t = str[30_t]
+32_t = 31_t
+33_t = abc[32_t]
+34_t = 33_t
+35_t = str[34_t]
+36_t = 35_t
+37_t = abc[36_t]
+38_t = 37_t
+39_t = str[38_t]
+40_t = 39_t
+41_t = num_0
+42_t = str[41_t]
+43_t = 42_t
+44_t = abc[43_t]
+45_t = 44_t
+46_t = str[45_t]
+47_t = 46_t
+48_t = abc[47_t]
+49_t = 48_t
+50_t = str[49_t]
+51_t = 50_t
+52_t = abc[51_t]
+53_t = 52_t
+54_t = str[53_t]
+55_t = 54_t
+56_t = num_0
+57_t = str[56_t]
+58_t = 57_t
+59_t = abc[58_t]
+60_t = 59_t
+61_t = str[60_t]
+62_t = 61_t
+63_t = abc[62_t]
+64_t = 63_t
+65_t = str[64_t]
+66_t = 65_t
+67_t = abc[66_t]
+55_t = 55_t + 67_t
+abc[40_t] = 55_t
+68_t = 4
+69_t = num_0
+70_t = str[69_t]
+71_t = 70_t
+72_t = 6
+73_t = 5
+74_t = 0 - 1
+75_t = 0
+76_t = str[75_t]
+74_t = 74_t + 76_t
+74_t = 74_t + 1
+77_t = abc[74_t]
+73_t = 73_t + 77_t
+73_t = 73_t - 5
+78_t = str[73_t]
+72_t = 72_t * 78_t
+72_t = 72_t / 2
+72_t = 72_t / 3
+79_t = 72_t
+80_t = abc[79_t]
+71_t = 71_t * 80_t
+81_t = 71_t
+82_t = str[81_t]
+68_t = 68_t + 82_t
+83_t = 2
+84_t = str[83_t]
+85_t = 84_t
+86_t = abc[85_t]
+68_t = 68_t - 86_t
+87_t = abc[68_t]
+88_t = 87_t
+89_t = str[88_t]
+90_t = 89_t
+91_t = abc[90_t]
+92_t = 91_t
+RETURN	92_t
+END	testArray
+INT	fun0()
+PARA	INT	a
+93_t = a
+RETURN	93_t
+END	fun0
+INT	fun1()
+PARA	INT	a
+PARA	INT	b
+VAR	INT	fun
+94_t = a
+94_t = 94_t + b
+fun = 94_t
+95_t = fun
+RETURN	95_t
+END	fun1
+CHAR	fun2()
+96_t = 65
+RETURN	96_t
+END	fun2
+VOID	fun3()
+PARA	INT	a
+RETURN	
+END	fun3
+VOID	fun4()
+PARA	INT	a
+PARA	CHAR	b
+97_t = a
+PRINT	INT	97_t
+PRINT	"\n"
+98_t = b
+PRINT	CHAR	98_t
+PRINT	"\n"
+END	fun4
+VOID	fun5()
+PRINT	"Funtion_5"
+PRINT	"\n"
+END	fun5
+INT	fun6()
+PARA	INT	n
+99_t = n
+100_t = 1
+101_t = 99_t == 100_t
+102_t = 1
+RETURN	102_t
+103_t = n
+104_t = n
+104_t = 104_t - 1
+PUSH	n
+105_t = $v0
+103_t = 103_t * 105_t
+106_t = 103_t
+RETURN	106_t
+END	fun6
+VOID	main()
+CONST	INT	m_con_i_1=1
+CONST	INT	M_con_i_1=100
+CONST	INT	m_con_i_2=1
+CONST	INT	m_con_i_3=2
+CONST	CHAR	m_con_c_1=43
+CONST	CHAR	m_con_c_2=45
+CONST	CHAR	m_con_c_3=42
+VAR	INT	m_i_1
+VAR	INT	M_i_1
+VAR	INT	m_i_2
+VAR	INT	m_i_3
+INT	m_i_4[10]
+VAR	CHAR	m_c_1
+VAR	CHAR	m_c_2
+VAR	CHAR	m_c_3
+CHAR	m_c_4[10]
+VAR	INT	i
+VAR	INT	j
+VAR	INT	k
+VAR	INT	m
+VAR	CHAR	c
+107_t = 97
+c = 107_t
+108_t = 97
+m = 108_t
+109_t = 1
+i = 109_t
+110_t = 2
+j = 110_t
+111_t = 3
+k = 111_t
+112_t = 1
+m_i_1 = 112_t
+113_t = 100
+M_i_1 = 113_t
+114_t = 1
+m_i_2 = 114_t
+115_t = 2
+m_i_3 = 115_t
+116_t = 43
+m_c_1 = 116_t
+117_t = 45
+m_c_2 = 117_t
+118_t = 42
+m_c_3 = 118_t
+119_t = m_i_1
+120_t = 100
+121_t = 119_t == 120_t
+PRINT	"Error!"
+PRINT	"\n"
+122_t = 0
+PRINT	"Error!"
+PRINT	"\n"
+123_t = m_i_3
+124_t = 1
+125_t = 123_t > 124_t
+126_t = 0 - m_i_3
+126_t = 126_t + 1
+m_i_3 = 126_t
+127_t = m_i_3
+PRINT	INT	127_t
+PRINT	"\n"
+128_t = m_i_3
+129_t = m_con_i_1
+130_t = 128_t
+PRINT	"Test_1"
+PRINT	"\n"
+PRINT	"Test_2"
+PRINT	"\n"
+131_t = 97
+m_i_1 = 131_t
+132_t = m_i_1
+133_t = m_i_1
+m_c_4[132_t] = 133_t
+134_t = m_i_1
+135_t = m_c_4[134_t]
+136_t = 135_t
+PRINT	CHAR	136_t
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+137_t = m_i_1
+138_t = 97
+138_t = 138_t + 10
+139_t = 137_t < 138_t
+PRINT	"Test_3"
+PRINT	"\n"
+140_t = 0
+m_i_1 = 140_t
+141_t = 0
+m_i_2 = 141_t
+142_t = m_i_1
+142_t = 142_t + m_i_2
+PRINT	INT	142_t
+PRINT	"\n"
+m_i_2 = m_i_2 + 1
+143_t = m_i_2
+144_t = 3
+145_t = 143_t < 144_t
+m_i_1 = m_i_1 + 2
+146_t = m_i_1
+147_t = 5
+148_t = 146_t < 147_t
+149_t = 9
+150_t = m_i_4[149_t]
+151_t = 150_t
+PRINT	INT	151_t
+PRINT	"\n"
+PRINT	"Test_4"
+PRINT	"\n"
+152_t = 0
+m_i_1 = 152_t
+PRINT	"Test_5"
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+153_t = m_i_1
+154_t = 1
+155_t = 153_t == 154_t
+156_t = 8
+157_t = m_i_4[156_t]
+158_t = 157_t
+PRINT	INT	158_t
+PRINT	"\n"
+159_t = m_i_1
+PUSH	a
+160_t = m_i_1
+PUSH	b
+161_t = $v0
+162_t = 161_t
+PRINT	INT	162_t
+PRINT	"\n"
+163_t = $v0
+164_t = m_i_1
+164_t = 164_t - 1
+165_t = 164_t - 1
+166_t = m_i_1
+PUSH	n
+167_t = $v0
+168_t = 167_t
+169_t = 168_t - 1
+PRINT	"Test_6"
+PRINT	"\n"
+170_t = m_c_1
+171_t = 170_t - 43
+172_t = 1
+m_i_1 = 172_t
+173_t = m_i_1
+PUSH	n
+174_t = $v0
+175_t = 174_t
+PRINT	INT	175_t
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+176_t = m_i_1
+177_t = 4
+178_t = 176_t < 177_t
+179_t = 170_t - 45
+PRINT	"Error!"
+PRINT	"\n"
+180_t = 164_t - 2
+181_t = 9
+PUSH	n
+182_t = $v0
+183_t = 182_t
+PRINT	INT	183_t
+PRINT	"\n"
+184_t = 0
+m_i_1 = 184_t
+185_t = 9
+PUSH	n
+186_t = $v0
+187_t = 186_t
+PRINT	INT	187_t
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+188_t = m_i_1
+189_t = 1
+190_t = 188_t == 189_t
+191_t = 0 - m_c_1
+m_i_1 = 191_t
+192_t = m_i_1
+193_t = 0 - 43
+194_t = 192_t == 193_t
+PRINT	"Test_7"
+PRINT	"\n"
+195_t = m_i_1
+195_t = 195_t + 43
+PRINT	"Test_7_ERROR"
+PRINT	"\n"
+196_t = m_i_1
+197_t = 196_t - -43
+PRINT	"Test_7_1"
+PRINT	"\n"
+198_t = m_c_1
+199_t = 198_t - 43
+PRINT	"Test_7_2"
+PRINT	"\n"
+200_t = 43
+m_c_2 = 200_t
+201_t = m_c_2
+PRINT	CHAR	201_t
+PRINT	"\n"
+202_t = 45
+m_c_2 = 202_t
+203_t = m_c_2
+PRINT	CHAR	203_t
+PRINT	"\n"
+204_t = 42
+m_c_2 = 204_t
+205_t = m_c_2
+PRINT	CHAR	205_t
+PRINT	"\n"
+206_t = 47
+m_c_2 = 206_t
+207_t = m_c_2
+PRINT	CHAR	207_t
+PRINT	"\n"
+208_t = 95
+m_c_2 = 208_t
+209_t = m_c_2
+PRINT	CHAR	209_t
+PRINT	"\n"
+210_t = 97
+m_i_1 = 210_t
+211_t = m_i_1
+m_c_2 = 211_t
+212_t = m_c_2
+PRINT	CHAR	212_t
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+213_t = m_i_1
+214_t = 122
+215_t = 213_t <= 214_t
+216_t = 65
+m_i_1 = 216_t
+217_t = m_i_1
+m_c_2 = 217_t
+218_t = m_c_2
+PRINT	CHAR	218_t
+PRINT	"\n"
+m_i_1 = m_i_1 + 1
+219_t = m_i_1
+220_t = 90
+221_t = 219_t <= 220_t
+222_t = i
+223_t = j
+224_t = 222_t > 223_t
+PRINT	"Test_1_Error"
+PRINT	"\n"
+225_t = j
+226_t = i
+227_t = 225_t > 226_t
+PRINT	"Test_1_Correct"
+PRINT	"\n"
+228_t = k
+229_t = j
+230_t = 228_t < 229_t
+PRINT	"Test_2_Error"
+PRINT	"\n"
+231_t = j
+232_t = k
+233_t = 231_t < 232_t
+PRINT	"Test_2_Correct"
+PRINT	"\n"
+234_t = k
+235_t = j
+236_t = 234_t <= 235_t
+PRINT	"Test_3_Error"
+PRINT	"\n"
+237_t = j
+238_t = k
+239_t = 237_t <= 238_t
+PRINT	"Test_3_Correct"
+PRINT	"\n"
+240_t = j
+241_t = j
+242_t = 240_t <= 241_t
+PRINT	"Test_3_Correct"
+PRINT	"\n"
+243_t = j
+244_t = k
+245_t = 243_t >= 244_t
+PRINT	"Test_4_Error"
+PRINT	"\n"
+246_t = k
+247_t = j
+248_t = 246_t >= 247_t
+PRINT	"Test_4_Correct"
+PRINT	"\n"
+249_t = k
+250_t = k
+251_t = 249_t >= 250_t
+PRINT	"Test_4_Correct"
+PRINT	"\n"
+252_t = i
+253_t = j
+254_t = 252_t == 253_t
+PRINT	"Test_5_Error"
+PRINT	"\n"
+255_t = c
+256_t = m
+257_t = 255_t == 256_t
+PRINT	"Test_5_Correct"
+PRINT	"\n"
+258_t = c
+259_t = m
+260_t = 258_t
+PRINT	"Test_6_Error"
+PRINT	"\n"
+261_t = i
+262_t = j
+263_t = 261_t
+PRINT	"Test_6_Correct"
+PRINT	"\n"
+264_t = $v0
+265_t = 264_t
+PRINT	"test array "
+PRINT	INT	265_t
+PRINT	"\n"
+SCANF	INT	m_i_1
+266_t = m_i_1
+PRINT	INT	266_t
+PRINT	"\n"
+SCANF	CHAR	m_c_1
+267_t = m_c_1
+PRINT	CHAR	267_t
+PRINT	"\n"
+PRINT	"DONE!"
+PRINT	"\n"

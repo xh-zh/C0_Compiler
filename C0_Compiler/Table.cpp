@@ -46,6 +46,15 @@ int Table::val_enter(const string name, const enum kinds type, const int value) 
 	return 0;
 }
 
+int Table::val_enter_t(const string name, const enum kinds type, const int value){
+	if (in_this_level(name)) {//当前层有同名标识符
+		return 1;
+	}
+	table.push_back(TableEntity(name, addr, _CLASS::VAL_CLASS, type, value, -1, cur_parent));
+	addr += 4;
+	return 0;
+}
+
 int Table::array_enter(const string name, const enum kinds type, const int dim) {
 	if (in_this_level(name)) {//当前层有同名标识符
 		return 1;
@@ -55,11 +64,13 @@ int Table::array_enter(const string name, const enum kinds type, const int dim) 
 	return 0;
 }
 
-int Table::para_enter(const string name, const kinds type) {
+int Table::para_enter(const string name, const kinds type, const int para_dim_cut) {
 	if (in_this_level(name)) {//当前层有同名标识符
 		return 1;
 	}
-	table.push_back(TableEntity(name, addr, _CLASS::PARA_CLASS, type, 0, 0, cur_parent));
+	table.push_back(TableEntity(name, addr, _CLASS::PARA_CLASS, type, 0, para_dim_cut, cur_parent));
+	//if (para_dim_cut >= 4) addr += 4;//少于四个参数就不分配栈空间了，从0开始计数
+	//那样会出问题
 	addr += 4;
 	return 0;
 }
@@ -70,7 +81,7 @@ int Table::func_enter(const string name, const kinds type) {
 	}
 	const enum _CLASS kind = type == kinds::VOID?_CLASS::FUN_VOID_CLASS:_CLASS::FUN_IOC_CLASS;
 	table.push_back(TableEntity(name, 0, kind, type, 0, 0, cur_parent));//value(size)、dim暂时设为0
-	addr = 4;//0保存$ra
+	addr = 4 + 4 * 8;//0保存$ra，其余8个word保存$s0-$s7
 	cur_parent = name;//函数声明后，马上改父函数名，声明结束时记得要改回去
 	cur_level_pointer = table.size();//level_pointer改为当前函数u所在位置++，声明结束时要改回去
 	return 0;
@@ -235,15 +246,26 @@ int Table::get_fun_size(const string fun_name) {
 	return get_value("top", fun_name);
 }
 
+string Table::get_parent(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			return fun_name;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name)
+			return "top";
+	}
+	return "";
+}
+
 vector<TableEntity> Table::get_para(const string name) {
 	vector<TableEntity> para;
 	for (int i=0; i < table.size(); i++) {
 		if (table[i].name == name && (table[i]._class == FUN_IOC_CLASS || table[i]._class == FUN_VOID_CLASS)) {
-			for (int j=i+1;j <table.size();j++)
-				if (table[j]._class == PARA_CLASS) {
-					para.push_back(TableEntity(table[j]));
-				} else 
-					return para;
+			for (int j=i+1; j<=i+table[i].dim; j++)
+				para.push_back(TableEntity(table[j]));
 		}
 	}
 	return para;
@@ -258,13 +280,228 @@ void Table::print(char *path) {
 	out.close();
 }
 
-bool Table::set_type(const string name, const enum kinds type) {
-		for	(int i = cur_level_pointer; i < table.size(); i++)
-			if (table[i].name == name) {
-				table[i].type = type;
+void Table::add_addr(const string fun_name, const string name, const string addr) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			for (vector<string>::iterator iter=table[i].address_descriptor.begin(); iter!=table[i].address_descriptor.end(); ++iter)
+				if (*iter == addr) {
+					return;
+				}
+			table[i].address_descriptor.push_back(addr);
+			return;//在局部区找到了，就可以返回了
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			for (vector<string>::iterator iter=table[i].address_descriptor.begin(); iter!=table[i].address_descriptor.end(); ++iter)
+				if (*iter == addr) {
+					return;
+				}
+			table[i].address_descriptor.push_back(addr);
+			return;
+		}
+	}
+}
+
+void Table::del_addr(const string fun_name, const string name, const string addr) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter != table[i].address_descriptor.end(); ++iter) {
+				if (*iter == addr) {
+					table[i].address_descriptor.erase(iter);
+					return;
+				}
+			}
+			return;//在局部区找到了，不管删不删除，都要返回
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter != table[i].address_descriptor.end(); ++iter) {
+				if (*iter == addr) {
+					table[i].address_descriptor.erase(iter);
+					return;
+				}
+			}
+			return;//找到并操作完成就可以返回了
+		}
+	}
+}
+
+bool Table::have_addr(const string fun_name, const string name, const string addr) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter != table[i].address_descriptor.end(); ++iter) {
+				if (*iter == addr) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter != table[i].address_descriptor.end(); ++iter) {
+				if (*iter == addr) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	return false;
+}
+
+void Table::clear_addr(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			table[i].address_descriptor.clear();
+			return;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			table[i].address_descriptor.clear();
+			return;
+		}
+	}
+}
+
+void Table::add_stack_addr(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			table[i].address_descriptor.push_back(int2str(table[i].addr));
+			return;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			table[i].address_descriptor.push_back(int2str(table[i].addr));
+			return;
+		}
+	}
+}
+
+bool Table::only_in_stack(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			if (table[i].address_descriptor.size() == 1 && Translator::isnum(table[i].address_descriptor[0])) {
 				return true;
 			}
-		return false;
+			return false;
+		}
 	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			if (table[i].address_descriptor.size() == 1 && Translator::isnum(table[i].address_descriptor[0])) {
+				return true;
+			}
+			return false;
+		}
+	}
+	return false;
+}
+
+bool Table::only_here(const string fun_name, const string name, const string reg_name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			if (table[i].address_descriptor.size() == 1 && table[i].address_descriptor[0] == reg_name) {
+				return true;
+			}
+			return false;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			if (table[i].address_descriptor.size() == 1 && table[i].address_descriptor[0] == reg_name) {
+				return true;
+			}
+			return false;
+		}
+	}
+	return false;
+}
+
+bool Table::in_stack(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter!=table[i].address_descriptor.end(); ++iter) {
+				if (Translator::isnum(*iter)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter!=table[i].address_descriptor.end(); ++iter) {
+				if (Translator::isnum(*iter)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	return false;
+}
+
+string Table::get_reg(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter != table[i].address_descriptor.end(); ++iter) {
+				if (!Translator::isnum(*iter)) {
+					return *iter;
+				}
+			}
+			return int2str(table[i].addr);//按照约定，只有在寄存器中的变量才会被调用此方法，因此不会执行这个分支
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			for (vector<string>::iterator iter = table[i].address_descriptor.begin(); iter != table[i].address_descriptor.end(); ++iter) {
+				if (!Translator::isnum(*iter)) {
+					return *iter;
+				}
+			}
+			return int2str(table[i].addr);//按照约定，只有在寄存器中的变量才会被调用此方法，因此不会执行这个分支
+		}
+	}
+	return "";//按照约定，只有在寄存器中的变量才会被调用此方法，因此不会执行这个分支
+}
+
+vector<string> Table::get_address_descriptor(const string fun_name, const string name) {
+	for (int i=0; i<table.size(); i++) {
+		if (fun_name == "top") break;
+		if (table[i].parent == fun_name && table[i].name == name) {
+			return table[i].address_descriptor;
+		}
+	}
+	for (int i=0; i<table.size(); i++) {//在全局区找
+		if (table[i].parent == "top" && table[i].name == name) {
+			return table[i].address_descriptor;
+		}
+	}
+	vector<string> v;
+	return v;
+}
+
+bool Table::set_type(const string name, const enum kinds type) {
+	for	(int i = cur_level_pointer; i < table.size(); i++)
+		if (table[i].name == name) {
+			table[i].type = type;
+			return true;
+		}
+	return false;
+}
 
 

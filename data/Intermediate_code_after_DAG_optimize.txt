@@ -1,0 +1,443 @@
+~CONST	!INTSY	1	con_i_1
+~CONST	!INTSY	1	con_i_2
+~CONST	!INTSY	2	con_i_3
+~CONST	!CHARSY	43	con_c_1
+~CONST	!CHARSY	45	con_c_2
+~CONST	!CHARSY	42	con_c_3
+~VAL	!INTSY		i_1
+~VAL	!INTSY		i_2
+~VAL	!INTSY		i_3
+~ARRAY	!INTSY	10	i_4
+~ARRAY	!INTSY	10	str
+~VAL	!CHARSY		c_1
+~VAL	!CHARSY		c_2
+~VAL	!CHARSY		c_3
+~ARRAY	!CHARSY	10	c_4
+~FUN	~BEGIN		
+~FUN	!INTSY	testArray	
+~CONST	!INTSY	0	num_0
+~ARRAY	!INTSY	10	abc
+[]=	0	1	str
+[]=	1	2	abc
+[]=	2	3	str
+[]=	3	4	abc
+[]=	4	5	str
+[]=	5	6	abc
+=[]	str	num_0	14_t
+=[]	abc	14_t	16_t
+=[]	str	16_t	18_t
+=[]	abc	18_t	20_t
+=[]	str	20_t	22_t
+=[]	abc	22_t	24_t
+[]=	24_t	7	str
+=[]	str	num_0	28_t
+=[]	abc	28_t	30_t
+=[]	str	30_t	32_t
+=[]	abc	32_t	34_t
+=[]	str	34_t	36_t
+=[]	abc	36_t	38_t
+=[]	str	38_t	55_t
+=	55_t		40_t
++	55_t	38_t	55_t
+[]=	40_t	55_t	abc
+=	4		68_t
+=	28_t		71_t
+=	6		72_t
+=	5		73_t
+-	0	1	74_t
+=[]	str	0	76_t
++	74_t	76_t	74_t
++	74_t	1	74_t
+=[]	abc	74_t	77_t
++	5	77_t	73_t
+-	73_t	5	73_t
+=[]	str	73_t	78_t
+*	6	78_t	72_t
+/	72_t	2	72_t
+/	72_t	3	72_t
+=[]	abc	72_t	80_t
+*	28_t	80_t	71_t
+=[]	str	71_t	82_t
++	4	82_t	68_t
+=[]	str	2	85_t
+=[]	abc	85_t	86_t
+-	68_t	86_t	68_t
+=[]	abc	68_t	88_t
+=[]	str	88_t	90_t
+=[]	abc	90_t	92_t
+~RETURN	!INTSY	92_t	
+~END	testArray		
+~FUN	!INTSY	fun0	
+~PARA	!INTSY	a	
+~RETURN	!INTSY	a	
+~END	fun0		
+~FUN	!INTSY	fun1	
+~PARA	!INTSY	a	
+~PARA	!INTSY	b	
+~VAL	!INTSY		fun
++	a	b	fun
+~RETURN	!INTSY	fun	
+~END	fun1		
+~FUN	!CHARSY	fun2	
+~RETURN	!CHARSY	$65	
+~END	fun2		
+~FUN	!VOID	fun3	
+~PARA	!INTSY	a	
+~RETURN	~NONE		
+~END	fun3		
+~FUN	!VOID	fun4	
+~PARA	!INTSY	a	
+~PARA	!CHARSY	b	
+~PRINT	!INTSY	a	
+~PRINT	!STRING	string_0	
+~PRINT	!CHARSY	b	
+~PRINT	!STRING	string_0	
+~END	fun4		
+~FUN	!VOID	fun5	
+~PRINT	!STRING	string_1	
+~PRINT	!STRING	string_0	
+~END	fun5		
+~FUN	!INTSY	fun6	
+~PARA	!INTSY	n	
+==	n	1	101_t
+~BZ	101_t	lable_0	
+~RETURN	!INTSY	1	
+~GOTO	lable_1		
+~LABLE	lable_0		
+=	n		103_t
+-	n	1	104_t
+~PUSH	104_t	n	fun6
+~CALL	fun6		
+*	103_t	$v0	103_t
+~RETURN	!INTSY	103_t	
+~LABLE	lable_1		
+~END	fun6		
+~FUN	!VOID	main	
+~CONST	!INTSY	1	m_con_i_1
+~CONST	!INTSY	100	M_con_i_1
+~CONST	!INTSY	1	m_con_i_2
+~CONST	!INTSY	2	m_con_i_3
+~CONST	!CHARSY	43	m_con_c_1
+~CONST	!CHARSY	45	m_con_c_2
+~CONST	!CHARSY	42	m_con_c_3
+~VAL	!INTSY		m_i_1
+~VAL	!INTSY		M_i_1
+~VAL	!INTSY		m_i_2
+~VAL	!INTSY		m_i_3
+~ARRAY	!INTSY	10	m_i_4
+~VAL	!CHARSY		m_c_1
+~VAL	!CHARSY		m_c_2
+~VAL	!CHARSY		m_c_3
+~ARRAY	!CHARSY	10	m_c_4
+~VAL	!INTSY		i
+~VAL	!INTSY		j
+~VAL	!INTSY		k
+~VAL	!INTSY		m
+~VAL	!CHARSY		c
+=	$97		c
+=	97		m
+=	1		i
+=	2		j
+=	3		k
+=	1		m_i_1
+=	1		m_i_2
+=	2		m_i_3
+=	$43		m_c_1
+==	1	100	121_t
+~BZ	121_t	lable_2	
+~PRINT	!STRING	string_2	
+~PRINT	!STRING	string_0	
+~GOTO	lable_3		
+~LABLE	lable_2		
+~LABLE	lable_3		
+~BZ	0	lable_4	
+~PRINT	!STRING	string_2	
+~PRINT	!STRING	string_0	
+~GOTO	lable_5		
+~LABLE	lable_4		
+~LABLE	lable_5		
+>	m_i_3	1	125_t
+~BZ	125_t	lable_6	
+-	0	m_i_3	126_t
++	126_t	1	m_i_3
+=	m_i_3		126_t
+~PRINT	!INTSY	m_i_3	
+~PRINT	!STRING	string_0	
+~GOTO	lable_7		
+~LABLE	lable_6		
+~LABLE	lable_7		
+!=	m_i_3	m_con_i_1	130_t
+~BZ	130_t	lable_8	
+~PRINT	!STRING	string_3	
+~PRINT	!STRING	string_0	
+~GOTO	lable_9		
+~LABLE	lable_8		
+~PRINT	!STRING	string_4	
+~PRINT	!STRING	string_0	
+~LABLE	lable_9		
+=	$97		m_i_1
+~LABLE	lable_10		
+[]=	m_i_1	m_i_1	m_c_4
+=[]	m_c_4	m_i_1	136_t
+~PRINT	!CHARSY	136_t	
+~PRINT	!STRING	string_0	
++	m_i_1	1	137_t
+=	137_t		m_i_1
++	$97	10	138_t
+<	137_t	138_t	139_t
+~BNZ	139_t	lable_10	
+~PRINT	!STRING	string_5	
+~PRINT	!STRING	string_0	
+=	0		m_i_1
+~LABLE	lable_11		
+=	0		m_i_2
+~LABLE	lable_12		
++	m_i_1	m_i_2	142_t
+~PRINT	!INTSY	142_t	
+~PRINT	!STRING	string_0	
++	m_i_2	1	m_i_2
+<	m_i_2	3	145_t
+~BNZ	145_t	lable_12	
++	m_i_1	2	m_i_1
+<	m_i_1	5	148_t
+~BNZ	148_t	lable_11	
+=[]	m_i_4	9	151_t
+~PRINT	!INTSY	151_t	
+~PRINT	!STRING	string_0	
+~PRINT	!STRING	string_6	
+~PRINT	!STRING	string_0	
+=	0		m_i_1
+~LABLE	lable_13		
+~PRINT	!STRING	string_7	
+~PRINT	!STRING	string_0	
++	m_i_1	1	m_i_1
+==	m_i_1	1	155_t
+~BNZ	155_t	lable_13	
+=[]	m_i_4	8	158_t
+~PRINT	!INTSY	158_t	
+~PRINT	!STRING	string_0	
+~PUSH	m_i_1	a	fun1
+~PUSH	m_i_1	b	fun1
+~CALL	fun1		
+~PRINT	!INTSY	$v0	
+~PRINT	!STRING	string_0	
+~CALL	fun5		
+-	m_i_1	1	164_t
+-	164_t	1	165_t
+~BNZ	165_t	lable_15	
+~PUSH	m_i_1	n	fun6
+~CALL	fun6		
+-	$v0	1	169_t
+~BNZ	169_t	lable_17	
+~PRINT	!STRING	string_8	
+~PRINT	!STRING	string_0	
+~GOTO	lable_16		
+~LABLE	lable_17		
+~LABLE	lable_16		
+=	m_c_1		170_t
+-	m_c_1	43	171_t
+~BNZ	171_t	lable_19	
+=	1		m_i_1
+~LABLE	lable_20		
+~PUSH	m_i_1	n	fun6
+~CALL	fun6		
+~PRINT	!INTSY	$v0	
+~PRINT	!STRING	string_0	
++	m_i_1	1	m_i_1
+<	m_i_1	4	178_t
+~BNZ	178_t	lable_20	
+~GOTO	lable_18		
+~LABLE	lable_19		
+-	170_t	45	179_t
+~BNZ	179_t	lable_21	
+~PRINT	!STRING	string_2	
+~PRINT	!STRING	string_0	
+~GOTO	lable_18		
+~LABLE	lable_21		
+~LABLE	lable_18		
+~GOTO	lable_14		
+~LABLE	lable_15		
+-	164_t	2	180_t
+~BNZ	180_t	lable_22	
+~PUSH	9	n	fun6
+~CALL	fun6		
+~PRINT	!INTSY	$v0	
+~PRINT	!STRING	string_0	
+~GOTO	lable_14		
+~LABLE	lable_22		
+=	0		m_i_1
+~LABLE	lable_23		
+~PUSH	9	n	fun6
+~CALL	fun6		
+~PRINT	!INTSY	$v0	
+~PRINT	!STRING	string_0	
++	m_i_1	1	m_i_1
+==	m_i_1	1	190_t
+~BNZ	190_t	lable_23	
+~LABLE	lable_14		
+-	0	m_c_1	m_i_1
+-	0	43	193_t
+==	m_i_1	193_t	194_t
+~BZ	194_t	lable_24	
+~PRINT	!STRING	string_9	
+~PRINT	!STRING	string_0	
+~GOTO	lable_25		
+~LABLE	lable_24		
+~LABLE	lable_25		
++	m_i_1	43	195_t
+~BZ	195_t	lable_26	
+~PRINT	!STRING	string_10	
+~PRINT	!STRING	string_0	
+~GOTO	lable_27		
+~LABLE	lable_26		
+~LABLE	lable_27		
+-	m_i_1	-43	197_t
+~BNZ	197_t	lable_29	
+~PRINT	!STRING	string_11	
+~PRINT	!STRING	string_0	
+~GOTO	lable_28		
+~LABLE	lable_29		
+~LABLE	lable_28		
+-	m_c_1	43	199_t
+~BNZ	199_t	lable_31	
+~PRINT	!STRING	string_12	
+~PRINT	!STRING	string_0	
+~GOTO	lable_30		
+~LABLE	lable_31		
+~LABLE	lable_30		
+~PRINT	!CHARSY	$43	
+~PRINT	!STRING	string_0	
+~PRINT	!CHARSY	$45	
+~PRINT	!STRING	string_0	
+~PRINT	!CHARSY	$42	
+~PRINT	!STRING	string_0	
+~PRINT	!CHARSY	$47	
+~PRINT	!STRING	string_0	
+~PRINT	!CHARSY	$95	
+~PRINT	!STRING	string_0	
+=	$97		m_i_1
+~LABLE	lable_32		
+~PRINT	!CHARSY	m_i_1	
+~PRINT	!STRING	string_0	
++	m_i_1	1	m_i_1
+<=	m_i_1	$122	215_t
+~BNZ	215_t	lable_32	
+=	$65		m_i_1
+~LABLE	lable_33		
+~PRINT	!CHARSY	m_i_1	
+~PRINT	!STRING	string_0	
++	m_i_1	1	m_i_1
+<=	m_i_1	$90	221_t
+~BNZ	221_t	lable_33	
+>	i	j	224_t
+~BZ	224_t	lable_34	
+~PRINT	!STRING	string_13	
+~PRINT	!STRING	string_0	
+~GOTO	lable_35		
+~LABLE	lable_34		
+~LABLE	lable_35		
+>	j	i	227_t
+~BZ	227_t	lable_36	
+~PRINT	!STRING	string_14	
+~PRINT	!STRING	string_0	
+~GOTO	lable_37		
+~LABLE	lable_36		
+~LABLE	lable_37		
+<	k	j	230_t
+~BZ	230_t	lable_38	
+~PRINT	!STRING	string_15	
+~PRINT	!STRING	string_0	
+~GOTO	lable_39		
+~LABLE	lable_38		
+~LABLE	lable_39		
+<	j	k	233_t
+~BZ	233_t	lable_40	
+~PRINT	!STRING	string_16	
+~PRINT	!STRING	string_0	
+~GOTO	lable_41		
+~LABLE	lable_40		
+~LABLE	lable_41		
+<=	k	j	236_t
+~BZ	236_t	lable_42	
+~PRINT	!STRING	string_17	
+~PRINT	!STRING	string_0	
+~GOTO	lable_43		
+~LABLE	lable_42		
+~LABLE	lable_43		
+<=	j	k	239_t
+~BZ	239_t	lable_44	
+~PRINT	!STRING	string_18	
+~PRINT	!STRING	string_0	
+~GOTO	lable_45		
+~LABLE	lable_44		
+~LABLE	lable_45		
+<=	j	j	242_t
+~BZ	242_t	lable_46	
+~PRINT	!STRING	string_18	
+~PRINT	!STRING	string_0	
+~GOTO	lable_47		
+~LABLE	lable_46		
+~LABLE	lable_47		
+>=	j	k	245_t
+~BZ	245_t	lable_48	
+~PRINT	!STRING	string_19	
+~PRINT	!STRING	string_0	
+~GOTO	lable_49		
+~LABLE	lable_48		
+~LABLE	lable_49		
+>=	k	j	248_t
+~BZ	248_t	lable_50	
+~PRINT	!STRING	string_20	
+~PRINT	!STRING	string_0	
+~GOTO	lable_51		
+~LABLE	lable_50		
+~LABLE	lable_51		
+>=	k	k	251_t
+~BZ	251_t	lable_52	
+~PRINT	!STRING	string_20	
+~PRINT	!STRING	string_0	
+~GOTO	lable_53		
+~LABLE	lable_52		
+~LABLE	lable_53		
+==	i	j	254_t
+~BZ	254_t	lable_54	
+~PRINT	!STRING	string_21	
+~PRINT	!STRING	string_0	
+~GOTO	lable_55		
+~LABLE	lable_54		
+~LABLE	lable_55		
+==	c	m	257_t
+~BZ	257_t	lable_56	
+~PRINT	!STRING	string_22	
+~PRINT	!STRING	string_0	
+~GOTO	lable_57		
+~LABLE	lable_56		
+~LABLE	lable_57		
+!=	c	m	260_t
+~BZ	260_t	lable_58	
+~PRINT	!STRING	string_23	
+~PRINT	!STRING	string_0	
+~GOTO	lable_59		
+~LABLE	lable_58		
+~LABLE	lable_59		
+!=	i	j	263_t
+~BZ	263_t	lable_60	
+~PRINT	!STRING	string_24	
+~PRINT	!STRING	string_0	
+~GOTO	lable_61		
+~LABLE	lable_60		
+~LABLE	lable_61		
+~CALL	testArray		
+=	$v0		265_t
+~PRINT	!STRING	string_25	
+~PRINT	!INTSY	265_t	
+~PRINT	!STRING	string_0	
+~SCANF	!INTSY	m_i_1	
+~PRINT	!INTSY	m_i_1	
+~PRINT	!STRING	string_0	
+~SCANF	!CHARSY	m_c_1	
+~PRINT	!CHARSY	m_c_1	
+~PRINT	!STRING	string_0	
+~PRINT	!STRING	string_26	
+~PRINT	!STRING	string_0	
+~TERMINATE			

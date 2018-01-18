@@ -21,6 +21,7 @@ TableEntity::TableEntity(const string name, const int addr, const _CLASS _class,
 	this->value = value;
 	this->dim = dim;
 	this->parent = parent;
+	this->address_descriptor.push_back(int2str(addr));
 }
 
 
